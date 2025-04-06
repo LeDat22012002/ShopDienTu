@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import 'tailwindcss';
+
+@theme {
+    --color-main: #ee3131;
+    --width-main: 1220px;
+    --backgroundColor-main: '#ee3131';
+    --backgroundColor-overlay: 'rgba(0,0,0,0.8)';
+    --fontFamily-main: [ 'Poppins', 'sans-serif'];
+    --flex-2: 2 2 0%;
+    --flex-3: 3 3 0%;
+    --flex-4: 4 4 0%;
+    --flex-5: 5 5 0%;
+    --flex-6: 6 6 0%;
+    --flex-7: 7 7 0%;
+    --flex-8: 8 8 0%;
+    --animate-slide-up: slide-up 0.5s ease-out;
+    --animate-slide-up-sm: slide-up-sm 0.2s ease-out;
+    --animate-spin-slow: spin-show 30s linear infinite;
+    @keyframes spin-show {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes slide-up {
+        0% {
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    @keyframes slide-up-sm {
+        0% {
+            opacity: 0;
+            transform: translateY(8px) scale(0.95);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+}
+
+.imageSlider button.slick-prev:before {
+    font-family: 'slick';
+    font-size: 30px;
+    line-height: 1;
+    opacity: 0.75;
+    color: gray;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    /* background-color: #ffd3d3; */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: '\276E';
+}
+
+.imageSlider button.slick-next:before {
+    font-family: 'slick';
+    font-size: 30px;
+    line-height: 1;
+    opacity: 0.75;
+    color: gray;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    /* background-color: #ffd3d3; */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: '\276F';
+}
+
+.imageSlider button.slick-prev {
+    font-size: 0;
+    line-height: 0;
+    position: absolute;
+    top: 43%;
+    left: 0px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    cursor: pointer;
+    color: transparent;
+    border: none;
+    outline: none;
+    background: transparent;
+    z-index: 10;
+}
+
+.imageSlider button.slick-next {
+    font-size: 14px;
+    line-height: 0;
+    position: absolute;
+    top: 43%;
+    right: 30px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    cursor: pointer;
+    color: transparent;
+    border: none;
+    outline: none;
+    background: transparent;
+    z-index: 10;
+}
+
+.customSlider button.slick-prev:before {
+    font-family: 'slick';
+    font-size: 30px;
+    line-height: 1;
+    opacity: 0.75;
+    color: gray;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-color: #ffd3d3;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: '\276E';
+}
+
+.customSlider button.slick-next:before {
+    font-family: 'slick';
+    font-size: 30px;
+    line-height: 1;
+    opacity: 0.75;
+    color: gray;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-color: #ffd3d3;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: '\276F';
+}
+
+.customSlider button.slick-prev {
+    font-size: 0;
+    line-height: 0;
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    cursor: pointer;
+    color: transparent;
+    border: none;
+    outline: none;
+    background: transparent;
+    z-index: 10;
+}
+
+.customSlider button.slick-next {
+    font-size: 14px;
+    line-height: 0;
+    position: absolute;
+    top: 50%;
+    right: 50px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    cursor: pointer;
+    color: transparent;
+    border: none;
+    outline: none;
+    background: transparent;
+    z-index: 10;
+}
+
+@plugins: [ require('@tailwindcss/line-clamp'),
+    // ...];
+
+@layer base {
+    :root {
+        --fontFamily-main: 'Poppins', sans-serif;
+    }
+
+    body {
+        font-family: var(--fontFamily-main);
+    }
+}
+@mode: 'jit' .my-masonry-grid_column > div {
+    margin-bottom: 20px;
+}
+.w500 {
+    width: 500px;
+    background-color: white;
+    border-color: rgb(199, 194, 194);
+}
+
+.input-no-spinner::-webkit-inner-spin-button,
+.input-no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-no-spinner {
+    -moz-appearance: textfield;
+}
