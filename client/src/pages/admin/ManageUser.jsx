@@ -10,7 +10,12 @@ import {
     Select,
     Button,
 } from '../../components';
-import { useSearchParams } from 'react-router-dom';
+import {
+    useSearchParams,
+    createSearchParams,
+    useNavigate,
+    useLocation,
+} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
@@ -21,7 +26,7 @@ const ManageUser = () => {
         handleSubmit,
         register,
         formState: { errors },
-        // reset,
+        reset,
     } = useForm({
         email: '',
         name: '',
@@ -29,6 +34,9 @@ const ManageUser = () => {
         phone: '',
         isBlocked: '',
     });
+
+    const navigate = useNavigate();
+    const location = useLocation();
     // API lấy danh sách user
     const [allUser, setAllUser] = useState(null);
     const [queries, setQueries] = useState({
@@ -53,12 +61,31 @@ const ManageUser = () => {
     const queriesDebounce = UseDebouce(queries.q, 800);
 
     useEffect(() => {
-        const queries = Object.fromEntries([...params]);
         if (queriesDebounce) {
-            queries.q = queriesDebounce;
+            navigate({
+                pathname: location.pathname,
+                search: createSearchParams({ q: queriesDebounce }).toString(),
+            });
+        } else {
+            navigate({
+                pathname: location.pathname,
+            });
         }
+    }, [queriesDebounce]);
+
+    useEffect(() => {
+        const queries = Object.fromEntries([...params]);
+
         fetchapiUsers(queries);
-    }, [queriesDebounce, params, update]);
+    }, [params, update]);
+
+    // useEffect(() => {
+    //     const queries = Object.fromEntries([...params]);
+    //     if (queriesDebounce) {
+    //         queries.q = queriesDebounce;
+    //     }
+    //     fetchapiUsers(queries);
+    // }, [queriesDebounce, params, update]);
 
     // console.log(queries.q);
     // console.log(editElm);
@@ -68,6 +95,7 @@ const ManageUser = () => {
         const response = await apiUpdateUser(data, editElm?._id);
         if (response.success) {
             setEditElm(null);
+            reset();
             render();
             toast.success(response.mess);
         } else {
@@ -99,12 +127,17 @@ const ManageUser = () => {
     //             isBlocked: editElm.isBlocked,
     //         });
     // }, [editElm]);
+
+    const handleBack = () => {
+        setEditElm(null);
+        reset();
+    };
     return (
         <div className={clsx('w-full ', editElm && 'pl-14')}>
             <h1 className="h-[75px] flex justify-between items-center text-3xl font-bold px-4 border-b border-gray-300">
                 <span>Manage users</span>
             </h1>
-            <div className="w-full p-4">
+            <div className="flex flex-col w-full gap-4 p-4">
                 <div className="flex justify-end py-4">
                     <InputField
                         nameKey={'q'}
@@ -137,7 +170,14 @@ const ManageUser = () => {
                                     key={el._id}
                                     className="transition hover:bg-gray-100"
                                 >
-                                    <td className="px-4 py-3 ">{index + 1}</td>
+                                    <td className="px-4 py-3 ">
+                                        {(+params.get('page') > 1
+                                            ? +params.get('page') - 1
+                                            : 0) *
+                                            import.meta.env.VITE_LIMIT +
+                                            index +
+                                            1}
+                                    </td>
                                     <td className="px-4 py-3">
                                         {editElm?._id === el._id ? (
                                             <InputForm
@@ -258,7 +298,7 @@ const ManageUser = () => {
                                     <td className="px-4 py-3 space-x-2 ">
                                         {editElm?._id === el._id ? (
                                             <span
-                                                onClick={() => setEditElm(null)}
+                                                onClick={handleBack}
                                                 className="text-blue-500 cursor-pointer hover:underline"
                                             >
                                                 Back

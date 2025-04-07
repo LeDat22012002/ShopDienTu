@@ -1,12 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { InputForm, Select, Button, MarkdownEditor } from '../../components';
+import {
+    InputForm,
+    Select,
+    Button,
+    MarkdownEditor,
+    Loading,
+} from '../../components';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { validate, convertToBase64 } from '../../ultils/helpers';
 import { toast } from 'react-toastify';
-import { ImBin2 } from 'react-icons/im';
+import { apiCreateProduct } from '../../apis';
+import { showModal } from '../../store/app/appSlice';
+
 const CreateProduct = () => {
     const { categories } = useSelector((state) => state.app);
+    const dispatch = useDispatch();
     // console.log(categories);
     const {
         register,
@@ -24,6 +33,9 @@ const CreateProduct = () => {
     const [payload, setPayload] = useState({
         description: '',
     });
+    const [payloadDes, setPayloadDes] = useState({
+        shortDescription: '',
+    });
     const [invalidFields, setInvalidFields] = useState([]);
     const [hoverElm, setHoverElm] = useState(null);
     const changeValue = useCallback(
@@ -32,14 +44,31 @@ const CreateProduct = () => {
         },
         [payload]
     );
+    const changeValueDes = useCallback(
+        (e) => {
+            setPayloadDes(e);
+        },
+        [payloadDes]
+    );
     // Xử lý hiển thị ảnh trước khi tạo product
     const handlePreviewThumb = async (file) => {
-        if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
-            toast.warning('File not supported!');
+        if (!file) {
+            // toast.warning('Không có file được chọn!');
             return;
         }
-        const base64Thumb = await convertToBase64(file);
-        setPreview((prev) => ({ ...prev, thumb: base64Thumb }));
+
+        if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+            toast.warning('File không được hỗ trợ! Chỉ nhận PNG hoặc JPEG.');
+            return;
+        }
+
+        try {
+            const base64Thumb = await convertToBase64(file);
+            setPreview((prev) => ({ ...prev, thumb: base64Thumb }));
+        } catch (err) {
+            toast.error('Có lỗi khi xử lý ảnh!');
+            console.error(err);
+        }
     };
     const handlePreviewImages = async (files) => {
         // console.log(files);
@@ -56,18 +85,21 @@ const CreateProduct = () => {
         setPreview((prev) => ({ ...prev, images: imagesPreview }));
     };
     useEffect(() => {
-        handlePreviewThumb(watch('thumb')[0]);
+        const thumbFiles = watch('thumb');
+        if (thumbFiles && thumbFiles.length > 0) {
+            handlePreviewThumb(thumbFiles[0]);
+        }
     }, [watch('thumb')]);
 
     useEffect(() => {
         handlePreviewImages(watch('images'));
     }, [watch('images')]);
 
-    console.log(preview);
+    // console.log(preview);
     // console.log(preview);
     // console.log(watch('category'));
     // Xử lý  khi tạo sản phẩm
-    const handleCreateProduct = (data) => {
+    const handleCreateProduct = async (data) => {
         const invalids = validate(payload, setInvalidFields);
         if (invalids === 0) {
             if (data.category) {
@@ -81,12 +113,37 @@ const CreateProduct = () => {
                     ?.find((brand) => brand._id === data.brand);
                 data.brand = matchedBrand?.title;
             }
-            const finalPayload = { ...data, ...payload };
+            const finalPayload = { ...data, ...payload, ...payloadDes };
             const formData = new FormData();
             for (let i of Object.entries(finalPayload))
                 formData.append(i[0], i[1]);
-
-            // console.log(data);
+            if (finalPayload.thumb)
+                formData.append('thumb', finalPayload.thumb[0]);
+            if (finalPayload.images) {
+                for (let image of finalPayload.images)
+                    formData.append('images', image);
+            }
+            dispatch(
+                showModal({ isShowModal: true, modalChildren: <Loading /> })
+            );
+            const response = await apiCreateProduct(formData);
+            dispatch(showModal({ isShowModal: false, modalChildren: null }));
+            if (response.success) {
+                toast.success(response.mess);
+                reset();
+                setPayload({
+                    description: '',
+                });
+                setPayloadDes({
+                    shortDescription: '',
+                });
+                setPreview({
+                    thumb: null,
+                    images: [],
+                });
+            } else {
+                toast.error(response.message);
+            }
         }
     };
 
@@ -210,13 +267,26 @@ const CreateProduct = () => {
                             withFull
                         />
                     </div>
-                    <MarkdownEditor
-                        name="description"
-                        changeValue={changeValue}
-                        label="Product description"
-                        invalidFields={invalidFields}
-                        setInvalidFields={setInvalidFields}
-                    />
+                    <div className="w-full gap-4 my-6 ">
+                        <MarkdownEditor
+                            name="description"
+                            changeValue={changeValue}
+                            label="Product description"
+                            invalidFields={invalidFields}
+                            setInvalidFields={setInvalidFields}
+                        />
+                    </div>
+                    <div className="w-full gap-4 my-6 ">
+                        <MarkdownEditor
+                            name="shortDescription"
+                            changeValue={changeValueDes}
+                            label="Product description short"
+                            height={300}
+                            invalidFields={invalidFields}
+                            setInvalidFields={setInvalidFields}
+                        />
+                    </div>
+
                     <div className="flex flex-col gap-4 mt-6">
                         <label
                             className="text-lg font-semibold text-gray-700"

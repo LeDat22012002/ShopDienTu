@@ -17,6 +17,7 @@ import { formatMoney } from '../../ultils/helpers';
 import { renderStar } from '../../ultils/renderStar';
 import { toast } from 'react-toastify';
 import { productExtraInfomation } from '../../ultils/contans2';
+import DOMPurify from 'dompurify';
 
 const settings = {
     dots: false,
@@ -38,7 +39,9 @@ const DetailsProduct = () => {
         // console.log('Category Title:', response?.productData?.category?.title);
         if (response.success) {
             setProduct(response?.productData);
-            setCurrentImg(response?.productData?.images[0]);
+            setCurrentImg(
+                response?.productData?.thumb || response?.productData?.images[0]
+            );
         }
         // console.log(response?.productData?.category?.brand?.title);
     };
@@ -162,6 +165,18 @@ const DetailsProduct = () => {
                     <div className="flex items-center text-sm text-gray-600">
                         <h2 className="text-[20px] font-semibold text-main">{`Đã bán: ${product?.sold}`}</h2>
                         <span className="ml-2 text-sm italic font-semibold text-main">{`(Kho: ${product?.quantity})`}</span>
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                        {product?.shortDescription && (
+                            <div
+                                className="text-sm"
+                                dangerouslySetInnerHTML={{
+                                    __html: DOMPurify.sanitize(
+                                        product?.shortDescription
+                                    ),
+                                }}
+                            ></div>
+                        )}
                     </div>
                     <div className="flex flex-col gap-8">
                         <div className="flex items-center gap-4">

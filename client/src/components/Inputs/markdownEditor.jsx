@@ -8,6 +8,7 @@ const MarkdownEditor = ({
     name,
     invalidFields,
     setInvalidFields,
+    height = 500,
 }) => {
     return (
         <div className="flex flex-col">
@@ -16,7 +17,7 @@ const MarkdownEditor = ({
                 apiKey={import.meta.env.VITE_APP_MCETITNY} // Hoặc bỏ trống để dùng free
                 initialValue={value}
                 init={{
-                    height: 500,
+                    height,
                     menubar: true,
                     plugins:
                         'lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',

@@ -6,6 +6,10 @@ const uploadImages = require('../config/cloudinary.config');
 router.post(
     '/createProduct',
     [verifyAccessToken, isAdmin],
+    uploadImages.fields([
+        { name: 'images', maxCount: 10 },
+        { name: 'thumb', maxCount: 1 },
+    ]),
     Product.createProduct
 );
 router.put('/updatePr/:pid', [verifyAccessToken, isAdmin], Product.updatePr);

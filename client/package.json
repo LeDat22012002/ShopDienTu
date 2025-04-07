@@ -16,6 +16,7 @@
     "@tinymce/tinymce-react": "^6.1.0",
     "axios": "^1.8.3",
     "clsx": "^2.1.1",
+    "dompurify": "^3.2.5",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.5.0",
     "moment": "^2.30.1",

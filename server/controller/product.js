@@ -4,8 +4,29 @@ const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
 
 const createProduct = asyncHandler(async (req, res) => {
-    const { title, description, price, category, quantity } = req.body;
-    if (!title || !description || !category) throw new Error('Missing inputs');
+    const {
+        title,
+        description,
+        price,
+        category,
+        quantity,
+        brand,
+        color,
+        shortDescription,
+    } = req.body;
+    const thumb = req?.files?.thumb[0]?.path;
+    const images = req?.files?.images?.map((el) => el.path);
+    if (
+        !title ||
+        !description ||
+        !category ||
+        !price ||
+        !quantity ||
+        !brand ||
+        !color ||
+        !shortDescription
+    )
+        throw new Error('Missing inputs');
     // Kiểm tra xem title đã tồn tại chưa
     const existingProduct = await Product.findOne({ title });
     if (existingProduct) {
@@ -25,10 +46,15 @@ const createProduct = asyncHandler(async (req, res) => {
 
     // Tạo slug từ title nếu có
     if (title) req.body.slug = slugify(title);
+    if (thumb) req.body.thumb = thumb;
+    if (images) req.body.images = images;
     const newProduct = await Product.create(req.body);
     return res.status(200).json({
         success: newProduct ? true : false,
         createdProduct: newProduct ? newProduct : 'Can not new product !',
+        mess: newProduct
+            ? 'Create successful product !'
+            : 'Someting went wrong! ',
     });
 });
 
@@ -44,7 +70,7 @@ const getDetailsPr = asyncHandler(async (req, res) => {
 
     return res.status(200).json({
         success: product ? true : false,
-        productData: product ? product : 'Can not get details product !',
+        productData: product ? product : 'Can not product !',
     });
 });
 
@@ -76,8 +102,29 @@ const getAllPrs = asyncHandler(async (req, res) => {
         }));
         colorQueryObject = { $or: colorQuery };
     }
-    const q = { ...colorQueryObject, ...formatedQueries };
-    let queryCommand = Product.find(q);
+    let queryObject = {};
+    if (queries?.q) {
+        delete formatedQueries.q;
+
+        queryObject = {
+            $or: [
+                {
+                    color: { $regex: queries.q, $options: 'i' },
+                },
+                {
+                    title: { $regex: queries.q, $options: 'i' },
+                },
+                {
+                    category: { $regex: queries.q, $options: 'i' },
+                },
+                {
+                    brand: { $regex: queries.q, $options: 'i' },
+                },
+            ],
+        };
+    }
+    const qr = { ...colorQueryObject, ...formatedQueries, ...queryObject };
+    let queryCommand = Product.find(qr);
 
     // Sorting
     if (req.query.sort) {
@@ -100,7 +147,7 @@ const getAllPrs = asyncHandler(async (req, res) => {
     // Số lượng sp thõa mãn điều kiện !== số lượng sp trả về 1 lần gọi API
     try {
         const response = await queryCommand.exec(); // Loại bỏ callback
-        const counts = await Product.find(q).countDocuments();
+        const counts = await Product.find(qr).countDocuments();
 
         return res.status(200).json({
             success: response ? true : false,

@@ -18,7 +18,14 @@ var productSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        shortDescription: {
+            type: String,
+            required: true,
+        },
         brand: {
+            type: String,
+        },
+        thumb: {
             type: String,
         },
         price: {

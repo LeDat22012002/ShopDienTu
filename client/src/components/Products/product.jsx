@@ -12,7 +12,7 @@ const { AiOutlineEye, IoMdMenu, FaHeart } = icons;
 const Product = ({ productData, isNew, normal }) => {
     const [isShowOption, setIsShowOption] = useState(false);
     return (
-        <div className="w-full px-[10px] text-base">
+        <div className="w-full px-[10px] text-base mb-4">
             <Link
                 className="w-full border border-gray-400 p-[15px] flex flex-col items-center"
                 to={`/${productData?.category}/${productData?._id}/${productData?.title}`}
@@ -34,7 +34,7 @@ const Product = ({ productData, isNew, normal }) => {
                         </div>
                     )}
                     <img
-                        src={productData?.images[0] || ''}
+                        src={productData?.thumb || productData?.images[0] || ''}
                         alt="ảnh Product"
                         className="object-cover w-[274px] h-[274px] "
                     ></img>

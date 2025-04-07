@@ -230,3 +230,7 @@
 .input-no-spinner {
     -moz-appearance: textfield;
 }
+
+code {
+    white-space: initial;
+}

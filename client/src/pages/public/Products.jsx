@@ -149,7 +149,7 @@ const Products = () => {
             <div className="m-auto my-8 w-main ">
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
-                    className="flex my-masonry-grid mx-[-10px]"
+                    className="flex my-masonry-grid mx-[-10px] mb-[-10px]"
                     columnClassName="my-masonry-grid_column"
                 >
                     {products?.products?.map((el) => (
