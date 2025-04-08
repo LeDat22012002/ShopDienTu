@@ -133,10 +133,11 @@ const ManageUser = () => {
         reset();
     };
     return (
-        <div className={clsx('w-full ', editElm && 'pl-14')}>
-            <h1 className="h-[75px] flex justify-between items-center text-3xl font-bold px-4 border-b border-gray-300">
+        <div className={clsx('w-full relative', editElm && 'pl-14')}>
+            <h1 className="h-[75px] w-full flex justify-between items-center text-3xl font-bold px-4 border-b border-gray-300 fixed top-0">
                 <span>Manage users</span>
             </h1>
+            <div className="h-[69px] w-full mt-2"></div>
             <div className="flex flex-col w-full gap-4 p-4">
                 <div className="flex justify-end py-4">
                     <InputField

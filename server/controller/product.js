@@ -164,6 +164,13 @@ const getAllPrs = asyncHandler(async (req, res) => {
 
 const updatePr = asyncHandler(async (req, res) => {
     const { pid } = req.params;
+    const files = req?.files;
+    if (files?.thumb) {
+        req.body.thumb = files?.thumb[0]?.path;
+    }
+    if (files?.images) {
+        req.body.images = files?.images?.map((el) => el.path);
+    }
     if (req.body && req.body.title) req.body.slug = slugify(req.body.title);
     const updatedPr = await Product.findByIdAndUpdate(pid, req.body, {
         new: true,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { InputForm, Pagination } from '../../components';
 import { useForm } from 'react-hook-form';
 import { apiGetProduct } from '../../apis';
@@ -10,13 +10,14 @@ import {
     useLocation,
 } from 'react-router-dom';
 import UseDebouce from '../../hooks/useDebouce';
+import { UpdateProduct } from '.';
 
 const ManageProduct = () => {
     const {
         register,
         formState: { errors },
-        handleSubmit,
-        reset,
+        // handleSubmit,
+        // reset,
         watch,
     } = useForm();
 
@@ -26,6 +27,14 @@ const ManageProduct = () => {
     const [params] = useSearchParams();
     const [products, setProducts] = useState(null);
     const [counts, setCounts] = useState(0);
+
+    // update product
+    const [editProduct, setEditProduct] = useState(null);
+    const [update, setUpdate] = useState(false);
+
+    const render = useCallback(() => {
+        setUpdate(!update);
+    });
 
     const queriesDebounce = UseDebouce(watch('q'), 800);
     // Api lấy ds sản phẩm
@@ -57,12 +66,21 @@ const ManageProduct = () => {
         const searchParams = Object.fromEntries([...params]);
 
         fetchProducts(searchParams);
-    }, [params]);
+    }, [params, update]);
     // console.log(params.get('page'));
 
     // console.log(products);
     return (
         <div className="relative flex flex-col w-full">
+            {editProduct && (
+                <div className="absolute inset-0 z-50 min-h-screen bg-gray-100">
+                    <UpdateProduct
+                        editProduct={editProduct}
+                        render={render}
+                        setEditProduct={setEditProduct}
+                    />
+                </div>
+            )}
             <h1 className="h-[75px] w-full flex justify-between items-center text-3xl font-bold px-4 border-b border-gray-300 fixed top-0 bg-gray-100">
                 <span>Manage Product</span>
             </h1>
@@ -140,11 +158,11 @@ const ManageProduct = () => {
                                     <span>{el?.color}</span>
                                 </td>
                                 <td className="px-4 py-3 text-center ">
-                                    <span>{el?.totalRating || 'Null'}</span>
+                                    <span>{el?.totalRatings}</span>
                                 </td>
                                 <td className="px-4 py-3 space-x-2 text-center ">
                                     <span
-                                        // onClick={() => setEditElm(el)}
+                                        onClick={() => setEditProduct(el)}
                                         className="text-blue-500 cursor-pointer hover:underline"
                                     >
                                         Edit
