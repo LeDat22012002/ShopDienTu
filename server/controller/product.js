@@ -178,6 +178,9 @@ const updatePr = asyncHandler(async (req, res) => {
     return res.status(200).json({
         success: updatedPr ? true : false,
         productData: updatedPr ? updatedPr : 'Can not update product !',
+        mess: updatedPr
+            ? 'Product update successful! '
+            : 'Can not update product !',
     });
 });
 
@@ -187,7 +190,9 @@ const deletePr = asyncHandler(async (req, res) => {
     return res.status(200).json({
         success: deletedPr ? true : false,
         productData: deletedPr ? deletedPr : 'Can not delete product !',
-        mes: 'Delete product successfully !',
+        mess: deletedPr
+            ? 'Delete product successfully !'
+            : 'Can not delete product !',
     });
 });
 

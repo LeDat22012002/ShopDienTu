@@ -120,7 +120,7 @@ const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
                 return;
             }
             const base64 = await convertToBase64(file);
-            imagesPreview.push({ name: file.name, path: base64 });
+            imagesPreview.push(base64);
         }
 
         setPreview((prev) => ({ ...prev, images: imagesPreview }));
@@ -194,23 +194,25 @@ const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
             );
             const response = await apiUpdateProduct(formData, editProduct?._id);
             dispatch(showModal({ isShowModal: false, modalChildren: null }));
-            console.log('dataaa', response);
-            // if (response.success) {
-            //     toast.success(response.mess);
-            //     reset();
-            //     setPayload({
-            //         description: '',
-            //     });
-            //     setPayloadDes({
-            //         shortDescription: '',
-            //     });
-            //     setPreview({
-            //         thumb: null,
-            //         images: [],
-            //     });
-            // } else {
-            //     toast.error(response.message);
-            // }
+            // console.log('dataaa', response);
+            if (response.success) {
+                toast.success(response.mess);
+                render();
+                setEditProduct(null);
+                // reset();
+                // setPayload({
+                //     description: '',
+                // });
+                // setPayloadDes({
+                //     shortDescription: '',
+                // });
+                // setPreview({
+                //     thumb: null,
+                //     images: [],
+                // });
+            } else {
+                toast.error(response.message);
+            }
         }
     };
     return (
@@ -409,7 +411,7 @@ const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
                                     onMouseLeave={() => setHoverElm(null)}
                                 >
                                     <img
-                                        src={el.path}
+                                        src={el}
                                         alt="products"
                                         className="w-[200px] object-contain "
                                     ></img>

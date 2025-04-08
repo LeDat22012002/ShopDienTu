@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { InputForm, Pagination } from '../../components';
 import { useForm } from 'react-hook-form';
-import { apiGetProduct } from '../../apis';
+import { apiGetProduct, apiDeleteProduct } from '../../apis';
 import { formatMoney } from '../../ultils/helpers';
 import {
     useSearchParams,
@@ -11,6 +11,8 @@ import {
 } from 'react-router-dom';
 import UseDebouce from '../../hooks/useDebouce';
 import { UpdateProduct } from '.';
+import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 const ManageProduct = () => {
     const {
@@ -70,6 +72,26 @@ const ManageProduct = () => {
     // console.log(params.get('page'));
 
     // console.log(products);
+
+    // Delete Product
+    const handleDeleteProduct = (pid) => {
+        Swal.fire({
+            title: 'Are you sure...?',
+            text: 'Are you sure remove this product ? ',
+            icon: 'warning',
+            showCancelButton: true,
+        }).then(async (rs) => {
+            if (rs.isConfirmed) {
+                const responseDelete = await apiDeleteProduct(pid);
+                if (responseDelete.success) {
+                    toast.success(responseDelete.mess);
+                } else {
+                    toast.error(responseDelete.mess);
+                }
+                render();
+            }
+        });
+    };
     return (
         <div className="relative flex flex-col w-full">
             {editProduct && (
@@ -169,9 +191,9 @@ const ManageProduct = () => {
                                     </span>
 
                                     <span
-                                        // onClick={() =>
-                                        //     handleDeleteUser(el._id)
-                                        // }
+                                        onClick={() =>
+                                            handleDeleteProduct(el._id)
+                                        }
                                         className="text-red-500 cursor-pointer hover:underline"
                                     >
                                         Delete
