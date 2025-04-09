@@ -1,55 +1,40 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-    InputForm,
-    Select,
-    Button,
-    MarkdownEditor,
-    Loading,
-} from '../../components';
+import React, { memo, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
-import { validate, convertToBase64 } from '../../ultils/helpers';
+import { Button, InputForm, Loading } from '..';
 import { toast } from 'react-toastify';
-import { apiCreateProduct } from '../../apis';
+import { convertToBase64 } from '../../ultils/helpers';
 import { showModal } from '../../store/app/appSlice';
+import { useDispatch } from 'react-redux';
+import { apiAddVarriant } from '../../apis';
 
-const CreateProduct = () => {
-    const { categories } = useSelector((state) => state.app);
-    const dispatch = useDispatch();
-    // console.log(categories);
+const CustomizeVarriants = ({
+    customizeVarriants,
+    setCustomizeVarriants,
+    // render,
+}) => {
     const {
         register,
         formState: { errors },
         reset,
         handleSubmit,
         watch,
+        // setValue,
     } = useForm();
-
+    const dispatch = useDispatch();
     // Review hình ảnh
     const [preview, setPreview] = useState({
         thumb: null,
         images: [],
     });
-    const [payload, setPayload] = useState({
-        description: '',
-    });
-    const [payloadDes, setPayloadDes] = useState({
-        shortDescription: '',
-    });
-    const [invalidFields, setInvalidFields] = useState([]);
     const [hoverElm, setHoverElm] = useState(null);
-    const changeValue = useCallback(
-        (e) => {
-            setPayload(e);
-        },
-        [payload]
-    );
-    const changeValueDes = useCallback(
-        (e) => {
-            setPayloadDes(e);
-        },
-        [payloadDes]
-    );
+    useEffect(() => {
+        reset({
+            title: customizeVarriants?.title,
+            color: customizeVarriants?.color,
+            price: customizeVarriants?.price,
+        });
+    }, [customizeVarriants]);
+
     // Xử lý hiển thị ảnh trước khi tạo product
     const handlePreviewThumb = async (file) => {
         if (!file) {
@@ -79,64 +64,47 @@ const CreateProduct = () => {
                 return;
             }
             const base64 = await convertToBase64(file);
-            imagesPreview.push({ name: file.name, path: base64 });
+            imagesPreview.push(base64);
         }
 
         setPreview((prev) => ({ ...prev, images: imagesPreview }));
     };
+
+    // Image
     useEffect(() => {
-        const thumbFiles = watch('thumb');
-        if (thumbFiles && thumbFiles.length > 0) {
-            handlePreviewThumb(thumbFiles[0]);
+        if (watch('thumb') instanceof FileList && watch('thumb').length > 0) {
+            handlePreviewThumb(watch('thumb')[0]);
         }
     }, [watch('thumb')]);
 
     useEffect(() => {
-        handlePreviewImages(watch('images'));
+        if (watch('images') instanceof FileList && watch('images').length > 0) {
+            handlePreviewImages(watch('images'));
+        }
     }, [watch('images')]);
 
-    // console.log(preview);
-    // console.log(preview);
-    // console.log(watch('category'));
-    // Xử lý  khi tạo sản phẩm
-    const handleCreateProduct = async (data) => {
-        const invalids = validate(payload, setInvalidFields);
-        if (invalids === 0) {
-            if (data.category) {
-                data.category = categories?.find(
-                    (el) => el._id === data.category
-                )?.title;
-            }
-            if (data.brand) {
-                const matchedBrand = categories
-                    ?.flatMap((cat) => cat.brand)
-                    ?.find((brand) => brand._id === data.brand);
-                data.brand = matchedBrand?.title;
-            }
-            const finalPayload = { ...data, ...payload, ...payloadDes };
+    // Funtion xử lý add varriant
+    const handleAddVarriant = async (data) => {
+        if (data?.color === customizeVarriants?.color) {
+            toast.error('Color not changed !');
+        } else {
             const formData = new FormData();
-            for (let i of Object.entries(finalPayload))
-                formData.append(i[0], i[1]);
-            if (finalPayload.thumb)
-                formData.append('thumb', finalPayload.thumb[0]);
-            if (finalPayload.images) {
-                for (let image of finalPayload.images)
-                    formData.append('images', image);
+            for (let i of Object.entries(data)) formData.append(i[0], i[1]);
+            if (data.thumb) formData.append('thumb', data.thumb[0]);
+            if (data.images) {
+                for (let image of data.images) formData.append('images', image);
             }
             dispatch(
                 showModal({ isShowModal: true, modalChildren: <Loading /> })
             );
-            const response = await apiCreateProduct(formData);
+            const response = await apiAddVarriant(
+                formData,
+                customizeVarriants?._id
+            );
             dispatch(showModal({ isShowModal: false, modalChildren: null }));
             if (response.success) {
                 toast.success(response.mess);
                 reset();
-                setPayload({
-                    description: '',
-                });
-                setPayloadDes({
-                    shortDescription: '',
-                });
                 setPreview({
                     thumb: null,
                     images: [],
@@ -146,44 +114,63 @@ const CreateProduct = () => {
             }
         }
     };
-
-    // const handleRemoveImage = (name) => {
-    //     const files = [...watch('images')]
-    //     reset({
-    //         images: files?.filter(el => el.name !== name)
-    //     })
-    //     if (preview.images?.some((el) => el.name === name))
-    //         setPreview((prev) => ({
-    //             ...prev,
-    //             images: prev.images?.filter((el) => el.name !== name),
-    //         }));
-    // };
     return (
-        <div className="w-full">
-            <h1 className="h-[75px] flex justify-between items-center text-3xl font-bold px-4 border-b border-gray-300">
-                <span>Create New Product</span>
-            </h1>
-            <div className="p-4">
-                <form onSubmit={handleSubmit(handleCreateProduct)}>
-                    <InputForm
-                        label="Name product"
-                        register={register}
-                        errors={errors}
-                        id="title"
-                        validate={{
-                            required: 'Product name cannot be blank !',
-                            pattern: {
-                                value: /^[^\s]/,
-                                message:
-                                    'Product name cannot start with a space !',
-                            },
-                        }}
-                        fullWith
-                        placeholder="Name of new product..."
-                    />
+        <div className="relative flex flex-col w-full">
+            <div className="h-[75px]  flex justify-between items-center  px-4 border-b border-gray-300 fixed right-0 left-[327px] top-0 bg-gray-100">
+                <h1 className="text-3xl font-bold">
+                    Customize varriants of Product
+                </h1>
+                <span
+                    onClick={() => setCustomizeVarriants(null)}
+                    className="text-[17px] cursor-pointer text-main hover:underline"
+                >
+                    Cancel
+                </span>
+            </div>
+            <div className="h-[69px] w-full mt-2"></div>
+            <div className="flex flex-col p-4">
+                <form onSubmit={handleSubmit(handleAddVarriant)}>
+                    <div className="w-full gap-4 my-6 ">
+                        <InputForm
+                            label="Original name"
+                            register={register}
+                            errors={errors}
+                            id="title"
+                            validate={{
+                                required: 'Product name cannot be blank !',
+                                pattern: {
+                                    value: /^[^\s]/,
+                                    message:
+                                        'Product name cannot start with a space !',
+                                },
+                            }}
+                            placeholder="Name of varriant..."
+                            // readOnly
+                            fullWith
+                            // style="flex-2/4 "
+                        />
+                        {/* <InputForm
+                            label=" Original price"
+                            register={register}
+                            errors={errors}
+                            id="price"
+                            readOnly
+                            fullWith
+                            style="flex-1/4 "
+                        />
+                        <InputForm
+                            label=" Original color "
+                            register={register}
+                            errors={errors}
+                            id="color"
+                            readOnly
+                            fullWith
+                            style="flex-1/4 "
+                        /> */}
+                    </div>
                     <div className="flex w-full gap-4 my-6">
                         <InputForm
-                            label="Price product"
+                            label="Price varriant"
                             register={register}
                             errors={errors}
                             id="price"
@@ -196,28 +183,11 @@ const CreateProduct = () => {
                                 },
                             }}
                             style="flex-auto "
-                            placeholder="Price of new product..."
+                            placeholder="Price of varriant..."
                             type="number"
                         />
                         <InputForm
-                            label="Quantity product"
-                            register={register}
-                            errors={errors}
-                            id="quantity"
-                            validate={{
-                                required: 'Product price cannot be blank !',
-                                pattern: {
-                                    value: /^[^\s]/,
-                                    message:
-                                        'Product price cannot start with a space !',
-                                },
-                            }}
-                            style="flex-auto "
-                            placeholder="Quantity of new product..."
-                            type="number"
-                        />
-                        <InputForm
-                            label="Color product"
+                            label="Color varriant"
                             register={register}
                             errors={errors}
                             id="color"
@@ -230,63 +200,9 @@ const CreateProduct = () => {
                                 },
                             }}
                             style="flex-auto "
-                            placeholder="Color of new product..."
+                            placeholder="Color of varriant..."
                         />
                     </div>
-                    <div className="flex w-full gap-4 my-6">
-                        <Select
-                            label="Category product"
-                            options={categories?.map((el) => ({
-                                code: el?._id,
-                                value: el?.title,
-                            }))}
-                            register={register}
-                            id="category"
-                            validate={{
-                                required: 'Please select a product category !',
-                            }}
-                            style="flex-auto "
-                            errors={errors}
-                            withFull
-                        />
-                        <Select
-                            label="Brand product"
-                            options={categories
-                                ?.find((el) => el?._id === watch('category'))
-                                ?.brand?.map((item) => ({
-                                    code: item?._id,
-                                    value: item?.title,
-                                }))}
-                            register={register}
-                            id="brand"
-                            validate={{
-                                required: 'Please select a product brand !',
-                            }}
-                            style="flex-auto "
-                            errors={errors}
-                            withFull
-                        />
-                    </div>
-                    <div className="w-full gap-4 my-6 ">
-                        <MarkdownEditor
-                            name="description"
-                            changeValue={changeValue}
-                            label="Product description"
-                            invalidFields={invalidFields}
-                            setInvalidFields={setInvalidFields}
-                        />
-                    </div>
-                    <div className="w-full gap-4 my-6 ">
-                        <MarkdownEditor
-                            name="shortDescription"
-                            changeValue={changeValueDes}
-                            label="Product description short"
-                            height={300}
-                            invalidFields={invalidFields}
-                            setInvalidFields={setInvalidFields}
-                        />
-                    </div>
-
                     <div className="flex flex-col gap-4 mt-6">
                         <label
                             className="text-lg font-semibold text-gray-700"
@@ -349,7 +265,7 @@ const CreateProduct = () => {
                                     onMouseLeave={() => setHoverElm(null)}
                                 >
                                     <img
-                                        src={el?.path}
+                                        src={el}
                                         alt="products"
                                         className="w-[200px] object-contain "
                                     ></img>
@@ -362,7 +278,7 @@ const CreateProduct = () => {
                     )}
 
                     <div className="my-6">
-                        <Button type="submit">Create new product</Button>
+                        <Button type="submit">Add varriant</Button>
                     </div>
                 </form>
             </div>
@@ -370,4 +286,4 @@ const CreateProduct = () => {
     );
 };
 
-export default CreateProduct;
+export default memo(CustomizeVarriants);

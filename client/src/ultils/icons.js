@@ -1,6 +1,11 @@
 import { HiPhone, HiOutlineDotsHorizontal } from 'react-icons/hi';
-import { MdDashboardCustomize, MdGroups } from 'react-icons/md';
-import { MdEmail } from 'react-icons/md';
+import {
+    MdDashboardCustomize,
+    MdGroups,
+    MdEmail,
+    MdOutlineDashboardCustomize,
+} from 'react-icons/md';
+
 import { IoBagCheck, IoHome, IoGiftSharp } from 'react-icons/io5';
 import { HiMiniUserCircle } from 'react-icons/hi2';
 import { BsStar, BsStarFill } from 'react-icons/bs';
@@ -17,8 +22,9 @@ import {
     FaChevronDown,
     FaSortDown,
     FaCaretRight,
+    FaRegEdit,
 } from 'react-icons/fa';
-
+import { ImBin } from 'react-icons/im';
 import { RiLogoutCircleRLine, RiProductHuntLine } from 'react-icons/ri';
 import { FaCartArrowDown } from 'react-icons/fa6';
 
@@ -51,6 +57,9 @@ const icons = {
     AiOutlineDownCircle,
     FaSortDown,
     FaCaretRight,
+    ImBin,
+    FaRegEdit,
+    MdOutlineDashboardCustomize,
 };
 
 export default icons;

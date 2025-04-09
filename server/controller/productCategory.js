@@ -42,6 +42,74 @@ const getCategorys = AsyncHandler(async (req, res) => {
     });
 });
 
+const getAllCategorys = AsyncHandler(async (req, res) => {
+    const queries = { ...req.query };
+    // Tách các trường đặc biệt ra khỏi query
+    const excludeFields = ['limit', 'sort', 'page', 'fields'];
+    excludeFields.forEach((el) => delete queries[el]);
+
+    // Format lại các operators cho đúng cú pháp mongdb
+    let queryString = JSON.stringify(queries);
+    queryString = queryString.replace(
+        /\b(gte|gt|lt|lte)\b/g,
+        (macthedEl) => `$${macthedEl}`
+    );
+    const formatedQueries = JSON.parse(queryString);
+    // let colorQueryObject = {};
+
+    let queryObject = {};
+    if (queries?.q) {
+        delete formatedQueries.q;
+
+        queryObject = {
+            $or: [
+                {
+                    title: { $regex: queries.q, $options: 'i' },
+                },
+            ],
+        };
+    }
+    const qr = { ...formatedQueries, ...queryObject };
+    let queryCommand = ProductCategory.find(qr);
+
+    // Sorting
+    if (req.query.sort) {
+        const sortBy = req.query.sort.split(',').join(' ');
+        queryCommand = queryCommand.sort(sortBy);
+    }
+
+    // Fields limiting
+    if (req.query.fields) {
+        const fields = req.query.fields.split(',').join(' ');
+        queryCommand = queryCommand.select(fields);
+    }
+
+    // Pagination
+    // limit : số oject lấy về 1 lần gọi API
+    const page = +req.query.page || 1;
+    const limit = +req.query.limit || process.env.LIMIT_PRODUCT;
+    const skip = (page - 1) * limit;
+    queryCommand.skip(skip).limit(limit);
+    // Số lượng sp thõa mãn điều kiện !== số lượng sp trả về 1 lần gọi API
+    try {
+        const response = await queryCommand.exec(); // Loại bỏ callback
+        const counts = await ProductCategory.find(qr)
+            .countDocuments()
+            .populate('brand');
+
+        return res.status(200).json({
+            success: response ? true : false,
+            categorys: response || 'Cannot get all brand !',
+            counts,
+        });
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        });
+    }
+});
+
 const updateCategory = AsyncHandler(async (req, res) => {
     const { pcid } = req.params;
     let { title, image, brand } = req.body;
@@ -113,4 +181,5 @@ module.exports = {
     getCategorys,
     updateCategory,
     deleteCategory,
+    getAllCategorys,
 };

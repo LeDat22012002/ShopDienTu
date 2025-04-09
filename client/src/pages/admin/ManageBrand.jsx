@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { CustomizeVarriants, InputForm, Pagination } from '../../components';
+import { InputForm, Pagination } from '../../components';
 import { useForm } from 'react-hook-form';
-import { apiGetProduct, apiDeleteProduct } from '../../apis';
-import { formatMoney } from '../../ultils/helpers';
 import {
     useSearchParams,
     createSearchParams,
@@ -10,14 +8,16 @@ import {
     useLocation,
 } from 'react-router-dom';
 import UseDebouce from '../../hooks/useDebouce';
-import { UpdateProduct } from '.';
 import Swal from 'sweetalert2';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import icons from '../../ultils/icons';
+import { apiGetAllBrands, apiDeleteBrand } from '../../apis';
+import { UpdateBrand } from '.';
+import { toast } from 'react-toastify';
 
-const { ImBin, FaRegEdit, MdOutlineDashboardCustomize } = icons;
+const { ImBin, FaRegEdit } = icons;
 
-const ManageProduct = () => {
+const ManageBrand = () => {
     const {
         register,
         formState: { errors },
@@ -30,29 +30,26 @@ const ManageProduct = () => {
     const location = useLocation();
     // Lấy cái dữ liệu từ params
     const [params] = useSearchParams();
-    const [products, setProducts] = useState(null);
+    const [brands, setBrands] = useState(null);
     const [counts, setCounts] = useState(0);
 
-    //Varriants Product
-    const [customizeVarriants, setCustomizeVarriants] = useState(null);
-    // update product
-    const [editProduct, setEditProduct] = useState(null);
+    // update brand
+    const [editBrand, setEditBrand] = useState(null);
     const [update, setUpdate] = useState(false);
 
     const render = useCallback(() => {
         setUpdate(!update);
     });
-
     const queriesDebounce = UseDebouce(watch('q'), 800);
     // Api lấy ds sản phẩm
-    const fetchProducts = async (params) => {
-        const response = await apiGetProduct({
+    const fetchBrands = async (params) => {
+        const response = await apiGetAllBrands({
             ...params,
             limit: import.meta.env.VITE_LIMIT,
         });
         if (response.success) {
             setCounts(response.counts);
-            setProducts(response.products);
+            setBrands(response.brands);
         }
     };
 
@@ -72,22 +69,19 @@ const ManageProduct = () => {
     useEffect(() => {
         const searchParams = Object.fromEntries([...params]);
 
-        fetchProducts(searchParams);
+        fetchBrands(searchParams);
     }, [params, update]);
-    // console.log(params.get('page'));
-
-    // console.log(products);
 
     // Delete Product
-    const handleDeleteProduct = (pid) => {
+    const handleDeleteBrand = (brid) => {
         Swal.fire({
             title: 'Are you sure...?',
-            text: 'Are you sure remove this product ? ',
+            text: 'Are you sure remove this brand ? ',
             icon: 'warning',
             showCancelButton: true,
         }).then(async (rs) => {
             if (rs.isConfirmed) {
-                const responseDelete = await apiDeleteProduct(pid);
+                const responseDelete = await apiDeleteBrand(brid);
                 if (responseDelete.success) {
                     toast.success(responseDelete.mess);
                 } else {
@@ -99,26 +93,17 @@ const ManageProduct = () => {
     };
     return (
         <div className="relative flex flex-col w-full">
-            {editProduct && (
+            {editBrand && (
                 <div className="absolute inset-0 z-50 min-h-screen bg-gray-100">
-                    <UpdateProduct
-                        editProduct={editProduct}
+                    <UpdateBrand
+                        editBrand={editBrand}
                         render={render}
-                        setEditProduct={setEditProduct}
-                    />
-                </div>
-            )}
-            {customizeVarriants && (
-                <div className="absolute inset-0 z-50 min-h-screen bg-gray-100">
-                    <CustomizeVarriants
-                        customizeVarriants={customizeVarriants}
-                        render={render}
-                        setCustomizeVarriants={setCustomizeVarriants}
+                        setEditBrand={setEditBrand}
                     />
                 </div>
             )}
             <h1 className="h-[75px] w-full flex justify-between items-center text-3xl font-bold px-4 border-b border-gray-300 fixed top-0 bg-gray-100">
-                <span>Manage Product</span>
+                <span>Manage Brands</span>
             </h1>
             <div className="h-[69px] w-full mt-2"></div>
             <div className="flex flex-col w-full gap-4 p-4">
@@ -129,7 +114,7 @@ const ManageProduct = () => {
                             register={register}
                             errors={errors}
                             fullWith
-                            placeholder="Search name or description product..."
+                            placeholder="Search name brand..."
                         />
                     </form>
                 </div>
@@ -138,22 +123,12 @@ const ManageProduct = () => {
                         <tr>
                             <th className="px-4 py-2 text-center">#</th>
                             <th className="px-4 py-2 ">Title</th>
-                            <th className="px-4 py-2 ">Thumb</th>
-                            <th className="px-4 py-2 text-center">Brand</th>
-                            <th className="px-4 py-2 text-center">Category</th>
-                            <th className="px-4 py-2 text-center ">Price</th>
-                            <th className="px-4 py-2 text-center ">Quantity</th>
-                            <th className="px-4 py-2 text-center ">Sold</th>
-                            <th className="px-4 py-2 text-center">Color</th>
-                            <th className="px-4 py-2 text-center">Rating</th>
-                            <th className="px-4 py-2 text-center ">
-                                Varriants
-                            </th>
+
                             <th className="px-4 py-2 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-300">
-                        {products?.map((el, index) => (
+                        {brands?.map((el, index) => (
                             <tr
                                 key={el?._id}
                                 className="transition hover:bg-gray-100"
@@ -169,41 +144,11 @@ const ManageProduct = () => {
                                 <td className="px-4 py-3 w-[200px]">
                                     <span>{el?.title}</span>
                                 </td>
-                                <td className="px-4 py-3 text-center">
-                                    <img
-                                        src={el?.thumb || el?.images[0]}
-                                        alt="thumb"
-                                        className="w-[60px] h-[60px] object-cover"
-                                    ></img>
-                                </td>
-                                <td className="px-4 py-3 text-center">
-                                    <span> {el?.brand}</span>
-                                </td>
-                                <td className="px-4 py-3 text-center ">
-                                    <span>{el?.category}</span>
-                                </td>
-                                <td className="px-4 py-3 text-center ">
-                                    <span>{formatMoney(el?.price)} VNĐ</span>
-                                </td>
-                                <td className="px-4 py-3 text-center">
-                                    <span>{el?.quantity}</span>
-                                </td>
-                                <td className="px-4 py-3 text-center ">
-                                    <span>{el?.sold}</span>
-                                </td>
-                                <td className="px-4 py-3 text-center ">
-                                    <span>{el?.color}</span>
-                                </td>
-                                <td className="px-4 py-3 text-center ">
-                                    <span>{el?.totalRatings}</span>
-                                </td>
-                                <td className="px-4 py-3 text-center ">
-                                    <span>{el?.varriants?.length || 0}</span>
-                                </td>
+
                                 <td className="px-4 py-3 space-x-2 text-center ">
                                     <div className="flex items-center justify-center gap-2">
                                         <span
-                                            onClick={() => setEditProduct(el)}
+                                            onClick={() => setEditBrand(el)}
                                             className="text-blue-500 cursor-pointer hover:underline hover:text-blue-900"
                                         >
                                             <FaRegEdit size={20} />
@@ -211,21 +156,11 @@ const ManageProduct = () => {
 
                                         <span
                                             onClick={() =>
-                                                handleDeleteProduct(el._id)
+                                                handleDeleteBrand(el?._id)
                                             }
                                             className="text-red-500 cursor-pointer hover:underline hover:text-red-900 "
                                         >
                                             <ImBin size={20} />
-                                        </span>
-                                        <span
-                                            onClick={() =>
-                                                setCustomizeVarriants(el)
-                                            }
-                                            className="cursor-pointer text-amber-500 hover:underline hover:text-amber-900"
-                                        >
-                                            <MdOutlineDashboardCustomize
-                                                size={20}
-                                            />
                                         </span>
                                     </div>
                                 </td>
@@ -241,4 +176,4 @@ const ManageProduct = () => {
     );
 };
 
-export default ManageProduct;
+export default ManageBrand;

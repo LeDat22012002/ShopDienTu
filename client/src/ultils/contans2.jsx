@@ -82,20 +82,36 @@ export const adminSidebar = [
         path: `/${path.ADMIN}/${path.MANAGE_ORDER}`,
         icon: <FaCartArrowDown size={20} />,
     },
-    // {
-    //     id: 5,
-    //     type: 'PARENT',
-    //     text: 'Product',
-    //     icon: <RiProductHuntLine />,
-    //     submenu: [
-    //         {
-    //             text: 'Create product',
-    //             path: `/${path.ADMIN}/${path.CREATE_PRODUCT}`,
-    //         },
-    //         {
-    //             text: 'Manage products',
-    //             path: `/${path.ADMIN}/${path.MANAGE_PRODUCT}`,
-    //         },
-    //     ],
-    // },
+    {
+        id: 5,
+        type: 'PARENT',
+        text: 'Brand',
+        icon: <RiProductHuntLine />,
+        submenu: [
+            {
+                text: 'Create brand',
+                path: `/${path.ADMIN}/${path.CREATE_BRAND}`,
+            },
+            {
+                text: 'Manage brands',
+                path: `/${path.ADMIN}/${path.MANAGE_BRAND}`,
+            },
+        ],
+    },
+    {
+        id: 6,
+        type: 'PARENT',
+        text: 'Category',
+        icon: <RiProductHuntLine />,
+        submenu: [
+            {
+                text: 'Create category',
+                path: `/${path.ADMIN}/${path.CREATE_CATEGORY}`,
+            },
+            {
+                text: 'Manage categorys',
+                path: `/${path.ADMIN}/${path.MANAGE_CATEGORY}`,
+            },
+        ],
+    },
 ];

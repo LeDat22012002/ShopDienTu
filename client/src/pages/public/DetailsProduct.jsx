@@ -18,6 +18,7 @@ import { renderStar } from '../../ultils/renderStar';
 import { toast } from 'react-toastify';
 import { productExtraInfomation } from '../../ultils/contans2';
 import DOMPurify from 'dompurify';
+import clsx from 'clsx';
 
 const settings = {
     dots: false,
@@ -27,12 +28,23 @@ const settings = {
     slidesToScroll: 1,
 };
 const DetailsProduct = () => {
-    const { pid, title, category } = useParams();
+    // const { pid, title, category } = useParams();
+    const { pid, category } = useParams();
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [relatedProducts, setRelatedProducts] = useState(null);
     const [currentImg, setCurrentImg] = useState(null);
     const [update, setUpdate] = useState(false);
+
+    // Varriant
+    const [varriant, setVarriant] = useState(null);
+    const [currentProduct, setCurrentProduct] = useState({
+        title: '',
+        thumb: '',
+        images: [],
+        price: 0,
+        color: '',
+    });
     const fetchProductData = async () => {
         const response = await apiGetDetailsProduct(pid);
         // console.log(response);
@@ -47,6 +59,7 @@ const DetailsProduct = () => {
     };
     // const prss= product?.category?._id;
     // console.log(productsss);
+
     const fetchProducts = async () => {
         const response = await apiGetProduct({ category });
 
@@ -54,6 +67,23 @@ const DetailsProduct = () => {
             setRelatedProducts(response?.products);
         }
     };
+
+    useEffect(() => {
+        if (varriant) {
+            setCurrentProduct({
+                title: product?.varriants?.find((el) => el?.sku === varriant)
+                    ?.title,
+                color: product?.varriants?.find((el) => el?.sku === varriant)
+                    ?.color,
+                price: product?.varriants?.find((el) => el?.sku === varriant)
+                    ?.price,
+                images: product?.varriants?.find((el) => el?.sku === varriant)
+                    ?.images,
+                thumb: product?.varriants?.find((el) => el?.sku === varriant)
+                    ?.thumb,
+            });
+        }
+    }, [varriant]);
 
     useEffect(() => {
         if (pid) {
@@ -109,19 +139,25 @@ const DetailsProduct = () => {
         e.stopPropagation();
         setCurrentImg(el);
     };
+    console.log(currentProduct?.price);
     return (
         <div className="w-full ">
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
                 <div className="w-main">
-                    <h3 className="font-semibold">{title}</h3>
-                    <Breadcrumb title={title} category={category} />
+                    <h3 className="font-semibold">
+                        {currentProduct?.title || product?.title}
+                    </h3>
+                    <Breadcrumb
+                        title={currentProduct?.title || product?.title}
+                        category={category}
+                    />
                 </div>
             </div>
             <div className="flex gap-4 m-auto mt-4 w-main">
                 <div className="flex flex-col w-2/5 gap-4">
                     <Zoom>
                         <img
-                            src={currentImg}
+                            src={currentProduct?.thumb || currentImg}
                             alt="product"
                             className="h-[458px] w-[458px] object-cover border border-gray-200 "
                         ></img>
@@ -132,16 +168,32 @@ const DetailsProduct = () => {
                             className="flex gap-2 imageSlider"
                             {...settings}
                         >
-                            {product?.images?.map((el) => (
-                                <div className="flex-1" key={el}>
-                                    <img
-                                        onClick={(e) => handleClickImage(e, el)}
-                                        src={el}
-                                        alt="itemImg"
-                                        className="h-[143px] w-[143px] object-cover border  border-gray-200 cursor-pointer"
-                                    ></img>
-                                </div>
-                            ))}
+                            {currentProduct?.images?.length === 0 &&
+                                product?.images?.map((el) => (
+                                    <div className="flex-1" key={el}>
+                                        <img
+                                            onClick={(e) =>
+                                                handleClickImage(e, el)
+                                            }
+                                            src={el}
+                                            alt="itemImg"
+                                            className="h-[143px] w-[143px] object-cover border  border-gray-200 cursor-pointer"
+                                        ></img>
+                                    </div>
+                                ))}
+                            {currentProduct?.images?.length > 0 &&
+                                currentProduct?.images?.map((el, index) => (
+                                    <div className="flex-1" key={index}>
+                                        <img
+                                            onClick={(e) =>
+                                                handleClickImage(e, el)
+                                            }
+                                            src={el}
+                                            alt="itemImg"
+                                            className="h-[143px] w-[143px] object-cover border  border-gray-200 cursor-pointer"
+                                        ></img>
+                                    </div>
+                                ))}
                         </Slider>
                     </div>
                 </div>
@@ -151,7 +203,9 @@ const DetailsProduct = () => {
                     </h2>
 
                     <h2 className="text-3xl font-bold text-red-500">
-                        {`${formatMoney(product?.price)} VNĐ`}
+                        {`${formatMoney(
+                            +currentProduct?.price || product?.price
+                        )} VNĐ`}
                     </h2>
 
                     <div className="flex items-center gap-1">
@@ -177,6 +231,52 @@ const DetailsProduct = () => {
                                 }}
                             ></div>
                         )}
+                    </div>
+                    <div className="flex gap-4 my-4">
+                        <span className="font-bold">Color:</span>
+                        <div className="flex flex-wrap items-center w-full gap-4">
+                            <div
+                                onClick={() => setVarriant(null)}
+                                className={clsx(
+                                    'flex items-center gap-2 p-2 border border-gray-500 cursor-pointer',
+                                    !varriant && 'border-main'
+                                )}
+                            >
+                                <img
+                                    src={product?.thumb}
+                                    alt="thumb"
+                                    className="w-[30px] h-[30px] object-cover"
+                                ></img>
+                                <span className="flex flex-col">
+                                    <span>{product?.color}</span>
+                                    <span className="text-sm">
+                                        {product?.price}
+                                    </span>
+                                </span>
+                            </div>
+                            {product?.varriants?.map((el) => (
+                                <div
+                                    key={el?._id}
+                                    className={clsx(
+                                        'flex items-center gap-2 p-2 border border-gray-500 cursor-pointer',
+                                        varriant === el.sku && 'border-main'
+                                    )}
+                                    onClick={() => setVarriant(el?.sku)}
+                                >
+                                    <img
+                                        src={el?.thumb}
+                                        alt="thumb"
+                                        className="w-[30px] h-[30px]  object-cover"
+                                    ></img>
+                                    <span className="flex flex-col">
+                                        <span>{el?.color}</span>
+                                        <span className="text-sm">
+                                            {el?.price}
+                                        </span>
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                     <div className="flex flex-col gap-8">
                         <div className="flex items-center gap-4">

@@ -211,7 +211,7 @@ const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
                 //     images: [],
                 // });
             } else {
-                toast.error(response.message);
+                toast.error(response.mess);
             }
         }
     };

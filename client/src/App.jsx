@@ -21,6 +21,10 @@ import {
     ManageUser,
     ManageOrder,
     DashBoard,
+    CreateBrand,
+    ManageBrand,
+    CreateCategory,
+    ManageCategory,
 } from './pages/admin';
 import { Personal, MemberLayout } from './pages/member';
 import path from './ultils/path';
@@ -53,6 +57,16 @@ function App() {
                     <Route path={path.ALL} element={<Home />} />
                 </Route>
                 <Route path={path.ADMIN} element={<AdminLayout />}>
+                    <Route path={path.CREATE_BRAND} element={<CreateBrand />} />
+                    <Route path={path.MANAGE_BRAND} element={<ManageBrand />} />
+                    <Route
+                        path={path.CREATE_CATEGORY}
+                        element={<CreateCategory />}
+                    />
+                    <Route
+                        path={path.MANAGE_CATEGORY}
+                        element={<ManageCategory />}
+                    />
                     <Route
                         path={path.CREATE_PRODUCT}
                         element={<CreateProduct />}

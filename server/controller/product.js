@@ -2,6 +2,7 @@ const Product = require('../models/product');
 const Category = require('../models/productCategory');
 const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
+const makeSKU = require('uniqid');
 
 const createProduct = asyncHandler(async (req, res) => {
     const {
@@ -269,6 +270,40 @@ const uploadImages = asyncHandler(async (req, res) => {
     });
 });
 
+const addVarriant = asyncHandler(async (req, res) => {
+    const { pid } = req.params;
+    const { title, price, color } = req.body;
+    const thumb = req?.files?.thumb[0]?.path;
+    const images = req?.files?.images?.map((el) => el.path);
+    if (!title || !price || !color) throw new Error('Missing inputs');
+    // Tạo slug từ title nếu có
+    // if (thumb) req.body.thumb = thumb;
+    // if (images) req.body.images = images;
+    const response = await Product.findByIdAndUpdate(
+        pid,
+        {
+            $push: {
+                varriants: {
+                    color,
+                    price,
+                    title,
+                    thumb,
+                    images,
+                    sku: makeSKU().toUpperCase(),
+                },
+            },
+        },
+        { new: true }
+    );
+    return res.status(200).json({
+        success: response ? true : false,
+        mess: response
+            ? 'Add varriant successfully !'
+            : 'Something went wrong !',
+        dataVarriant: response ? response : 'Something went wrong !',
+    });
+});
+
 module.exports = {
     createProduct,
     getDetailsPr,
@@ -277,4 +312,5 @@ module.exports = {
     deletePr,
     ratings,
     uploadImages,
+    addVarriant,
 };

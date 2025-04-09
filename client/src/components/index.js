@@ -31,3 +31,4 @@ export { default as AdminSidebar } from './Sidebar/adminSidebar';
 export { default as InputForm } from './Inputs/inputForm';
 export { default as Select } from './Inputs/select';
 export { default as MarkdownEditor } from './Inputs/markdownEditor';
+export { default as CustomizeVarriants } from './Products/customizeVarriants';
