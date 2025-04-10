@@ -12,3 +12,10 @@ export const apiGetAllCategories = (params) =>
         method: 'get',
         params: params,
     });
+
+export const apiCreateCategories = (data) =>
+    axios({
+        url: '/category/createCategory',
+        method: 'post',
+        data,
+    });

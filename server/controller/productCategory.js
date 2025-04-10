@@ -3,34 +3,33 @@ const Brand = require('../models/brand');
 const AsyncHandler = require('express-async-handler');
 
 const createCt = AsyncHandler(async (req, res) => {
-    const { title, image, brand } = req.body;
+    let { title, brand } = req.body;
+    const image = req?.files?.image[0]?.path;
+    if (!title || !brand) throw new Error('Missing inputs');
     // Chuyển đổi chuỗi `brand` thành mảng nếu cần
     if (typeof brand === 'string') {
         brand = brand.split(',').map((id) => id.trim());
+        req.body.brand = brand;
     }
     // Kiểm tra xem danh mục đã tồn tại chưa
     const categoryExists = await ProductCategory.findOne({ title });
     if (categoryExists) {
         return res.status(400).json({
             success: false,
-            message: 'Danh mục đã tồn tại',
-        });
-    }
-    // Kiểm tra xem tất cả các Brand có tồn tại không
-    const existingBrands = await Brand.find({ _id: { $in: brand } });
-    if (existingBrands.length !== brand.length) {
-        return res.status(400).json({
-            success: false,
-            message: 'Một hoặc nhiều thương hiệu không tồn tại',
+            mess: 'Category already exists!',
         });
     }
 
+    if (image) req.body.image = image;
     // Nếu hợp lệ, tạo danh mục mới
-    const response = await ProductCategory.create({ title, image, brand });
+    const response = await ProductCategory.create(req.body);
 
     return res.status(200).json({
         success: response ? true : false,
-        createdCategory: response || 'Không thể tạo danh mục',
+        createdCategory: response || 'Cannot create category',
+        mess: response
+            ? 'Create category successfully !'
+            : 'Something went wrong !',
     });
 });
 
@@ -70,7 +69,7 @@ const getAllCategorys = AsyncHandler(async (req, res) => {
         };
     }
     const qr = { ...formatedQueries, ...queryObject };
-    let queryCommand = ProductCategory.find(qr);
+    let queryCommand = ProductCategory.find(qr).populate('brand');
 
     // Sorting
     if (req.query.sort) {
@@ -87,15 +86,13 @@ const getAllCategorys = AsyncHandler(async (req, res) => {
     // Pagination
     // limit : số oject lấy về 1 lần gọi API
     const page = +req.query.page || 1;
-    const limit = +req.query.limit || process.env.LIMIT_PRODUCT;
+    const limit = +req.query.limit || null;
     const skip = (page - 1) * limit;
     queryCommand.skip(skip).limit(limit);
     // Số lượng sp thõa mãn điều kiện !== số lượng sp trả về 1 lần gọi API
     try {
         const response = await queryCommand.exec(); // Loại bỏ callback
-        const counts = await ProductCategory.find(qr)
-            .countDocuments()
-            .populate('brand');
+        const counts = await ProductCategory.find(qr).countDocuments();
 
         return res.status(200).json({
             success: response ? true : false,
@@ -118,7 +115,7 @@ const updateCategory = AsyncHandler(async (req, res) => {
     if (!pcid) {
         return res.status(400).json({
             success: false,
-            message: 'Thiếu ID danh mục!',
+            mess: 'Category missing!',
         });
     }
 
@@ -131,25 +128,13 @@ const updateCategory = AsyncHandler(async (req, res) => {
     if (existingCategory) {
         return res.status(400).json({
             success: false,
-            message: 'Danh mục đã tồn tại, vui lòng chọn tên khác!',
+            mess: 'Category already exists !',
         });
     }
 
     // Nếu brand được gửi dưới dạng chuỗi, chuyển thành mảng
     if (typeof brand === 'string') {
         brand = brand.split(',').map((id) => id.trim());
-    }
-
-    // Kiểm tra tất cả các Brand có tồn tại không
-    if (brand && brand.length > 0) {
-        const existingBrands = await Brand.find({ _id: { $in: brand } });
-
-        if (existingBrands.length !== brand.length) {
-            return res.status(400).json({
-                success: false,
-                message: 'Một hoặc nhiều thương hiệu không tồn tại!',
-            });
-        }
     }
 
     // Cập nhật danh mục
@@ -161,7 +146,10 @@ const updateCategory = AsyncHandler(async (req, res) => {
 
     return res.status(200).json({
         success: response ? true : false,
-        dataCategory: response || 'Không thể cập nhật danh mục!',
+        dataCategory: response ? response : 'Unable to update category!',
+        mess: response
+            ? 'Update category successfully !'
+            : 'Someting went wrong !',
     });
 });
 
@@ -172,7 +160,8 @@ const deleteCategory = AsyncHandler(async (req, res) => {
         success: response ? true : false,
         deletedCategory: response
             ? response
-            : 'Cannot delete product - category !',
+            : 'Cannot delete product category !',
+        mess: response ? 'Delete category successfully' : 'Someting went wrong',
     });
 });
 

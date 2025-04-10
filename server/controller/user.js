@@ -103,7 +103,7 @@ const loginUser = asyncHandeler(async (req, res) => {
             userData: userData,
         });
     } else {
-        throw new Error(' Email hoặc mật khẩu không đúng !');
+        throw new Error(' Email or password is incorrect!');
     }
 });
 
@@ -112,7 +112,7 @@ const getDetailsUser = asyncHandeler(async (req, res) => {
     const user = await User.findById(_id).select('-refreshToken -password ');
     return res.status(200).json({
         success: user ? true : false,
-        rs: user ? user : 'Người dùng không tồn tại',
+        rs: user ? user : 'User does not exist!',
     });
 });
 
@@ -132,7 +132,7 @@ const refreshAccessToken = asyncHandeler(async (req, res) => {
         success: response ? true : false,
         newAccessToken: response
             ? generateAccessToken(response._id, response.role)
-            : 'Refresh Token không hợp lệ',
+            : 'Refresh Token is not valid',
     });
 });
 
@@ -154,7 +154,7 @@ const logoutUser = asyncHandeler(async (req, res) => {
 
     return res.status(200).json({
         success: true,
-        mess: 'Logout thành công !',
+        mess: 'Logout successfully !',
     });
 });
 

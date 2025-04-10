@@ -14,10 +14,12 @@ import icons from '../../ultils/icons';
 import { apiGetAllCategories } from '../../apis';
 import { UpdateBrand } from '.';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const { ImBin, FaRegEdit } = icons;
 
 const ManageCategory = () => {
+    const { categories } = useSelector((state) => state.app);
     const {
         register,
         formState: { errors },
@@ -46,7 +48,7 @@ const ManageCategory = () => {
             ...params,
             limit: import.meta.env.VITE_LIMIT,
         });
-        console.log(response);
+        // console.log(response);
         if (response.success) {
             setCounts(response.counts);
             setCategorys(response.categorys);

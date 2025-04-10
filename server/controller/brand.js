@@ -10,7 +10,7 @@ const createBrand = AsyncHandler(async (req, res) => {
     if (brandExists) {
         return res.status(400).json({
             success: false,
-            message: 'Thương hiệu đã tồn tại',
+            message: 'Brand already exists!',
         });
     }
 
@@ -76,7 +76,7 @@ const getAllBrands = AsyncHandler(async (req, res) => {
     // Pagination
     // limit : số oject lấy về 1 lần gọi API
     const page = +req.query.page || 1;
-    const limit = +req.query.limit || process.env.LIMIT_PRODUCT;
+    const limit = +req.query.limit || null;
     const skip = (page - 1) * limit;
     queryCommand.skip(skip).limit(limit);
     // Số lượng sp thõa mãn điều kiện !== số lượng sp trả về 1 lần gọi API
@@ -108,7 +108,7 @@ const updateBrand = AsyncHandler(async (req, res) => {
     if (existingBrand) {
         return res.status(400).json({
             success: false,
-            message: 'Brand đã tồn tại, vui lòng chọn tên khác!',
+            message: 'Brand already exists!',
         });
     }
     // Cập nhật danh mục

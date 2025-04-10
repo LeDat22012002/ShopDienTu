@@ -16,7 +16,7 @@ const CreateBrand = () => {
     const handleCreateBrand = async (data) => {
         const response = await apiCreateBrand(data);
 
-        console.log(response);
+        // console.log(response);
         if (response.success) {
             toast.success(response.mess);
             reset();
@@ -50,7 +50,7 @@ const CreateBrand = () => {
                         placeholder="Brand of new product..."
                     />
                     <div className="my-6">
-                        <Button type="submit">Create new product</Button>
+                        <Button type="submit">Create new brand</Button>
                     </div>
                 </form>
             </div>

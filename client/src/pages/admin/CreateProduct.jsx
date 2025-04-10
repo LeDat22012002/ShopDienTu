@@ -15,6 +15,7 @@ import { showModal } from '../../store/app/appSlice';
 
 const CreateProduct = () => {
     const { categories } = useSelector((state) => state.app);
+    // console.log(categories);
     const dispatch = useDispatch();
     // console.log(categories);
     const {
