@@ -30,7 +30,7 @@ const Home = () => {
             <div className="my-8">
                 <FeatureProducts />
             </div>
-            <div className="w-full my-8">
+            <div className="my-8 w-main">
                 <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                     NEW ARRIVALS
                 </h3>
@@ -38,7 +38,7 @@ const Home = () => {
                     <CustomSlider products={newProducts} />
                 </div>
             </div>
-            <div className="w-full my-8">
+            <div className="my-8 w-main">
                 <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                     HOT COLLECTIONS
                 </h3>
@@ -76,7 +76,7 @@ const Home = () => {
                         ))}
                 </div>
             </div>
-            <div className="w-full my-8">
+            <div className="my-8 w-main">
                 <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                     BLOGS
                 </h3>

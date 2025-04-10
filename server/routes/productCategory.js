@@ -13,6 +13,7 @@ router.get('/getCategorys', productCategory.getAllCategorys);
 router.put(
     '/updateCategory/:pcid',
     [verifyAccessToken, isAdmin],
+    uploadImages.fields([{ name: 'image', maxCount: 1 }]),
     productCategory.updateCategory
 );
 router.delete(

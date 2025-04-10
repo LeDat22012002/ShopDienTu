@@ -20,11 +20,11 @@ const FeatureProducts = () => {
         fetchProducts();
     }, []);
     return (
-        <div className="w-full">
+        <div className="w-main">
             <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                 FEATURED PRODUCTS
             </h3>
-            <div className="flex flex-wrap mt-[15px] mx-[-10px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-[15px] mb-[15px]">
                 {products?.map((el) => (
                     <ProductCard
                         key={el._id}
@@ -32,23 +32,30 @@ const FeatureProducts = () => {
                         title={el.title}
                         totalRatings={el.totalRatings}
                         price={el.price}
+                        style
                     />
                 ))}
             </div>
-            <div className="flex justify-between mt-[20px]">
+            <div className="grid grid-cols-4 grid-rows-2 gap-4">
                 <img
                     src={Banner4}
                     alt="banner4"
-                    className="w-[50%] object-contain"
+                    className="object-cover w-full h-full col-span-2 row-span-2"
                 ></img>
-                <div className="flex flex-col justify-between gap-4 w-[24%]">
-                    <img src={Banner5} alt="banner5"></img>
-                    <img src={Banner6} alt="banner6"></img>
-                </div>
+                <img
+                    src={Banner5}
+                    alt="banner5"
+                    className="object-cover w-full h-full col-span-1 row-span-1"
+                ></img>
                 <img
                     src={Banner7}
                     alt="banner7"
-                    className="w-[24%] object-contain "
+                    className="object-cover w-full h-full col-span-1 row-span-2"
+                ></img>
+                <img
+                    src={Banner6}
+                    alt="banner6"
+                    className="object-cover w-full h-full col-span-1 row-span-1"
                 ></img>
             </div>
         </div>

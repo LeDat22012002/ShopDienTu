@@ -109,14 +109,16 @@ const getAllCategorys = AsyncHandler(async (req, res) => {
 
 const updateCategory = AsyncHandler(async (req, res) => {
     const { pcid } = req.params;
-    let { title, image, brand } = req.body;
-
-    // Kiểm tra nếu không có ID danh mục
-    if (!pcid) {
-        return res.status(400).json({
-            success: false,
-            mess: 'Category missing!',
-        });
+    const files = req?.files;
+    if (files?.image) {
+        req.body.image = files?.image[0]?.path;
+    }
+    let { title, brand } = req.body;
+    // if (!title || !brand) throw new Error('Missing inputs');
+    // Chuyển đổi chuỗi `brand` thành mảng nếu cần
+    if (typeof brand === 'string') {
+        brand = brand.split(',').map((id) => id.trim());
+        req.body.brand = brand;
     }
 
     // Kiểm tra xem title mới có bị trùng với danh mục khác không
@@ -132,18 +134,12 @@ const updateCategory = AsyncHandler(async (req, res) => {
         });
     }
 
-    // Nếu brand được gửi dưới dạng chuỗi, chuyển thành mảng
-    if (typeof brand === 'string') {
-        brand = brand.split(',').map((id) => id.trim());
-    }
-
     // Cập nhật danh mục
     const response = await ProductCategory.findByIdAndUpdate(
         pcid,
-        { title, image, brand }, // Cập nhật title, image, brand
+        req.body, // Cập nhật title, image, brand
         { new: true }
     );
-
     return res.status(200).json({
         success: response ? true : false,
         dataCategory: response ? response : 'Unable to update category!',

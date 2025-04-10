@@ -10,3 +10,4 @@ export { default as CreateBrand } from './CreateBrand';
 export { default as UpdateBrand } from './UpdateBrand';
 export { default as CreateCategory } from './CreateCategory';
 export { default as ManageCategory } from './ManageCategory';
+export { default as UpdateCategory } from './UpdateCategory';

@@ -11,8 +11,8 @@ import UseDebouce from '../../hooks/useDebouce';
 import Swal from 'sweetalert2';
 // import { toast } from 'react-toastify';
 import icons from '../../ultils/icons';
-import { apiGetAllCategories } from '../../apis';
-import { UpdateBrand } from '.';
+import { apiGetAllCategories, apiDeleteCategories } from '../../apis';
+import { UpdateCategory } from '.';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
@@ -35,12 +35,12 @@ const ManageCategory = () => {
     const [counts, setCounts] = useState(0);
 
     // update brand
-    // const [editBrand, setEditBrand] = useState(null);
-    // const [update, setUpdate] = useState(false);
+    const [editCategory, setEditCategory] = useState(null);
+    const [update, setUpdate] = useState(false);
 
-    // const render = useCallback(() => {
-    //     setUpdate(!update);
-    // });
+    const render = useCallback(() => {
+        setUpdate(!update);
+    });
     const queriesDebounce = UseDebouce(watch('q'), 800);
     // Api lấy ds sản phẩm
     const fetchCategorys = async (params) => {
@@ -70,21 +70,40 @@ const ManageCategory = () => {
 
     useEffect(() => {
         const searchParams = Object.fromEntries([...params]);
-
         fetchCategorys(searchParams);
-    }, [params]);
+    }, [params, update]);
+
+    // Delete Product
+    const handleDeleteCategory = (pcid) => {
+        Swal.fire({
+            title: 'Are you sure...?',
+            text: 'Are you sure remove this product ? ',
+            icon: 'warning',
+            showCancelButton: true,
+        }).then(async (rs) => {
+            if (rs.isConfirmed) {
+                const responseDelete = await apiDeleteCategories(pcid);
+                if (responseDelete.success) {
+                    toast.success(responseDelete.mess);
+                } else {
+                    toast.error(responseDelete.mess);
+                }
+                render();
+            }
+        });
+    };
 
     return (
         <div className="relative flex flex-col w-full">
-            {/* {editBrand && (
-                    <div className="absolute inset-0 z-50 min-h-screen bg-gray-100">
-                        <UpdateBrand
-                            editBrand={editBrand}
-                            render={render}
-                            setEditBrand={setEditBrand}
-                        />
-                    </div>
-                )} */}
+            {editCategory && (
+                <div className="absolute inset-0 z-50 min-h-screen bg-gray-100">
+                    <UpdateCategory
+                        editCategory={editCategory}
+                        render={render}
+                        setEditCategory={setEditCategory}
+                    />
+                </div>
+            )}
             <h1 className="h-[75px] w-full flex justify-between items-center text-3xl font-bold px-4 border-b border-gray-300 fixed top-0 bg-gray-100">
                 <span>Manage Categorys</span>
             </h1>
@@ -131,16 +150,16 @@ const ManageCategory = () => {
                                 <td className="px-4 py-3 space-x-2 text-center ">
                                     <div className="flex items-center justify-center gap-2">
                                         <span
-                                            // onClick={() => setEditBrand(el)}
+                                            onClick={() => setEditCategory(el)}
                                             className="text-blue-500 cursor-pointer hover:underline hover:text-blue-900"
                                         >
                                             <FaRegEdit size={20} />
                                         </span>
 
                                         <span
-                                            // onClick={() =>
-                                            //     handleDeleteBrand(el?._id)
-                                            // }
+                                            onClick={() =>
+                                                handleDeleteCategory(el?._id)
+                                            }
                                             className="text-red-500 cursor-pointer hover:underline hover:text-red-900 "
                                         >
                                             <ImBin size={20} />

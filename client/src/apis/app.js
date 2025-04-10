@@ -19,3 +19,16 @@ export const apiCreateCategories = (data) =>
         method: 'post',
         data,
     });
+
+export const apiUpdateCategories = (data, pcid) =>
+    axios({
+        url: '/category/updateCategory/' + pcid,
+        method: 'put',
+        data,
+    });
+
+export const apiDeleteCategories = (pcid) =>
+    axios({
+        url: '/category/deleteCategory/' + pcid,
+        method: 'delete',
+    });

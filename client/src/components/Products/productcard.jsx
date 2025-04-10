@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 import { renderStar } from '../../ultils/renderStar';
 import { formatMoney } from '../../ultils/helpers';
+import clsx from 'clsx';
 
-const ProductCard = ({ price, totalRatings, title, image }) => {
+const ProductCard = ({ price, totalRatings, title, image, style }) => {
     return (
-        <div className=" flex-auto w-1/3  px-[10px] mb-[20ox]">
-            <div className="flex w-full border">
+        <div className={clsx(' border w-full')}>
+            <div className={clsx('flex w-full ')}>
                 <img
                     src={image}
                     alt="ảnh pr"
