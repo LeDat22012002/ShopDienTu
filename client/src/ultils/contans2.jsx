@@ -133,3 +133,52 @@ export const adminSidebar = [
         ],
     },
 ];
+
+export const memberSidebar = [
+    {
+        id: 1,
+        type: 'SINGLE',
+        text: 'Personal',
+        path: `/${path.MEMBER}/${path.PERSONAL}`,
+        icon: <MdDashboardCustomize size={20} />,
+    },
+    {
+        id: 2,
+        type: 'SINGLE',
+        text: 'My cart',
+        path: `/${path.MEMBER}/${path.MY_CART}`,
+        icon: <FaCartArrowDown size={20} />,
+    },
+
+    {
+        id: 3,
+        type: 'SINGLE',
+        text: 'Wishlist',
+        path: `/${path.MEMBER}/${path.WISHLIST}`,
+        icon: <FaCartArrowDown size={20} />,
+    },
+    {
+        id: 3,
+        type: 'SINGLE',
+        text: 'History order',
+        path: `/${path.MEMBER}/${path.HISTORY_ORDER}`,
+        icon: <FaCartArrowDown size={20} />,
+    },
+
+    // {
+    //     id: 7,
+    //     type: 'PARENT',
+    //     text: 'Color',
+    //     icon: <MdOutlineColorLens size={20} />,
+    //     submenu: [
+    //         {
+    //             text: 'Create color',
+    //             path: `/${path.ADMIN}/${path.CREATE_COLOR}`,
+    //         },
+    //         {
+    //             text: 'Manage colors',
+    //             path: `/${path.ADMIN}/${path.MANAGE_COLOR}`,
+    //         },
+    //     ],
+    // },
+];
