@@ -24,6 +24,8 @@ const path = {
     MANAGE_BRAND: 'manage-brand',
     CREATE_CATEGORY: 'create-category',
     MANAGE_CATEGORY: 'manage-category',
+    CREATE_COLOR: 'create-color',
+    MANAGE_COLOR: 'manage-color',
 
     //MEMBER
     MEMBER: 'member',

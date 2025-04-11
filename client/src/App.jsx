@@ -25,6 +25,8 @@ import {
     ManageBrand,
     CreateCategory,
     ManageCategory,
+    CreateColor,
+    ManageColor,
 } from './pages/admin';
 import { Personal, MemberLayout } from './pages/member';
 import path from './ultils/path';
@@ -57,6 +59,8 @@ function App() {
                     <Route path={path.ALL} element={<Home />} />
                 </Route>
                 <Route path={path.ADMIN} element={<AdminLayout />}>
+                    <Route path={path.CREATE_COLOR} element={<CreateColor />} />
+                    <Route path={path.MANAGE_COLOR} element={<ManageColor />} />
                     <Route path={path.CREATE_BRAND} element={<CreateBrand />} />
                     <Route path={path.MANAGE_BRAND} element={<ManageBrand />} />
                     <Route

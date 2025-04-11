@@ -1,11 +1,11 @@
 import React, { memo, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, InputForm, Loading } from '..';
+import { Button, InputForm, Loading, Select } from '..';
 import { toast } from 'react-toastify';
 import { convertToBase64 } from '../../ultils/helpers';
 import { showModal } from '../../store/app/appSlice';
 import { useDispatch } from 'react-redux';
-import { apiAddVarriant } from '../../apis';
+import { apiAddVarriant, apiGetAllColors } from '../../apis';
 
 const CustomizeVarriants = ({
     customizeVarriants,
@@ -18,7 +18,7 @@ const CustomizeVarriants = ({
         reset,
         handleSubmit,
         watch,
-        // setValue,
+        setValue,
     } = useForm();
     const dispatch = useDispatch();
     // Review hình ảnh
@@ -26,6 +26,7 @@ const CustomizeVarriants = ({
         thumb: null,
         images: [],
     });
+    const [colors, setColors] = useState(null);
     const [hoverElm, setHoverElm] = useState(null);
     useEffect(() => {
         reset({
@@ -83,8 +84,30 @@ const CustomizeVarriants = ({
         }
     }, [watch('images')]);
 
+    // Call Api Color
+    const fetchApiColors = async () => {
+        const rsColors = await apiGetAllColors();
+        console.log(rsColors);
+        if (rsColors.success) {
+            setColors(rsColors.colors);
+        }
+    };
+
+    useEffect(() => {
+        fetchApiColors();
+    }, []);
+
+    useEffect(() => {
+        if (colors && customizeVarriants?.color) {
+            setValue('color', customizeVarriants.color);
+        }
+    }, [colors, customizeVarriants]);
+
     // Funtion xử lý add varriant
     const handleAddVarriant = async (data) => {
+        if (data.color) {
+            data.color = colors?.find((el) => el.title === data.color)?.title;
+        }
         if (data?.color === customizeVarriants?.color) {
             toast.error('Color not changed !');
         } else {
@@ -186,7 +209,7 @@ const CustomizeVarriants = ({
                             placeholder="Price of varriant..."
                             type="number"
                         />
-                        <InputForm
+                        {/* <InputForm
                             label="Color varriant"
                             register={register}
                             errors={errors}
@@ -201,6 +224,21 @@ const CustomizeVarriants = ({
                             }}
                             style="flex-auto "
                             placeholder="Color of varriant..."
+                        /> */}
+                        <Select
+                            label="Color varriant"
+                            options={colors?.map((el) => ({
+                                code: el?.title,
+                                value: el?.title,
+                            }))}
+                            register={register}
+                            id="color"
+                            validate={{
+                                required: 'Please select a product color !',
+                            }}
+                            style="flex-auto "
+                            errors={errors}
+                            withFull
                         />
                     </div>
                     <div className="flex flex-col gap-4 mt-6">

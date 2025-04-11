@@ -1,37 +1,25 @@
-const Brand = require('../models/brand');
+const Color = require('../models/color');
 const AsyncHandler = require('express-async-handler');
 
-const createBrand = AsyncHandler(async (req, res) => {
-    const { title } = req.body;
-    if (!title) throw new Error('Missing input');
-    // Kiểm tra xem thương hiệu đã tồn tại chưa
-
-    const brandExists = await Brand.findOne({ title: title });
-    if (brandExists) {
+const createColor = AsyncHandler(async (req, res) => {
+    const { title, hexCode } = req.body;
+    if (!title || !hexCode) throw new Error('Missing inputs');
+    const existsColor = await Color.findOne({ title: title });
+    if (existsColor) {
         return res.status(400).json({
             success: false,
-            mess: 'Brand already exists!',
+            mess: 'Color already exists!',
         });
     }
 
-    // Nếu chưa tồn tại, tạo mới
-    const response = await Brand.create(req.body);
-    return res.json({
-        success: response ? true : false,
-        createdBrand: response ? response : 'Cannot create Brand !',
-        mess: response ? 'Create Brand successfully !' : 'Something went wrong',
-    });
-});
-
-const getBrands = AsyncHandler(async (req, res) => {
-    const response = await Brand.find();
+    const response = await Color.create(req.body);
     return res.status(200).json({
         success: response ? true : false,
-        brands: response ? response : ' Cannot get All Brand !',
+        dataColor: response ? response : 'Cannot create Color!',
+        mess: response ? 'Create color successfully!' : 'Something went wrong!',
     });
 });
-
-const getAllBrands = AsyncHandler(async (req, res) => {
+const getAllColors = AsyncHandler(async (req, res) => {
     const queries = { ...req.query };
     // Tách các trường đặc biệt ra khỏi query
     const excludeFields = ['limit', 'sort', 'page', 'fields'];
@@ -55,11 +43,14 @@ const getAllBrands = AsyncHandler(async (req, res) => {
                 {
                     title: { $regex: queries.q, $options: 'i' },
                 },
+                {
+                    hexCode: { $regex: queries.q, $options: 'i' },
+                },
             ],
         };
     }
     const qr = { ...formatedQueries, ...queryObject };
-    let queryCommand = Brand.find(qr);
+    let queryCommand = Color.find(qr);
 
     // Sorting
     if (req.query.sort) {
@@ -82,11 +73,11 @@ const getAllBrands = AsyncHandler(async (req, res) => {
     // Số lượng sp thõa mãn điều kiện !== số lượng sp trả về 1 lần gọi API
     try {
         const response = await queryCommand.exec(); // Loại bỏ callback
-        const counts = await Brand.find(qr).countDocuments();
+        const counts = await Color.find(qr).countDocuments();
 
         return res.status(200).json({
             success: response ? true : false,
-            brands: response || 'Cannot get all brand !',
+            colors: response ? response : 'Cannot get all color!',
             counts,
         });
     } catch (err) {
@@ -97,47 +88,59 @@ const getAllBrands = AsyncHandler(async (req, res) => {
     }
 });
 
-const updateBrand = AsyncHandler(async (req, res) => {
-    const { brid } = req.params;
-    const { title } = req.body;
+const updateColor = AsyncHandler(async (req, res) => {
+    const { clid } = req.params;
+    const { title, hexCode } = req.body;
     // Kiểm tra xem title mới có bị trùng với danh mục khác không
-    const existingBrand = await Brand.findOne({
+    const existingColor = await Color.findOne({
         title: title,
-        _id: { $ne: brid }, // Loại trừ chính danh mục đang cập nhật
+        _id: { $ne: clid }, // Loại trừ chính danh mục đang cập nhật
     });
-    if (existingBrand) {
+    if (existingColor) {
         return res.status(400).json({
             success: false,
-            message: 'Brand already exists!',
+            mess: 'Color already exists!',
+        });
+    }
+
+    // Kiểm tra xem title mới có bị trùng với danh mục khác không
+    const existingHexCode = await Color.findOne({
+        hexCode: hexCode,
+        _id: { $ne: clid }, // Loại trừ chính danh mục đang cập nhật
+    });
+    if (existingHexCode) {
+        return res.status(400).json({
+            success: false,
+            mess: 'HexCode already exists!',
         });
     }
     // Cập nhật danh mục
-    const response = await Brand.findByIdAndUpdate(brid, req.body, {
+    const response = await Color.findByIdAndUpdate(clid, req.body, {
         new: true,
     });
     return res.status(200).json({
         success: response ? true : false,
-        dataBrand: response || 'Cannot update brand!',
+        colorUpdated: response ? response : 'Cannot update color!',
         mess: response
-            ? 'Update Brand successfully !'
+            ? 'Update Color successfully !'
             : 'Something went wrong !',
     });
 });
-const deleteBrand = AsyncHandler(async (req, res) => {
-    const { brid } = req.params;
-    const response = await Brand.findByIdAndDelete(brid);
+
+const deleteColor = AsyncHandler(async (req, res) => {
+    const { clid } = req.params;
+    const response = await Color.findByIdAndDelete(clid);
     return res.status(200).json({
         success: response ? true : false,
         mess: response
-            ? 'Delete brand successfully !'
-            : 'Cannot delete Brand !',
+            ? 'Delete color successfully !'
+            : 'Cannot delete color !',
     });
 });
 
 module.exports = {
-    createBrand,
-    getBrands,
-    updateBrand,
-    deleteBrand,
-    getAllBrands,
+    createColor,
+    getAllColors,
+    updateColor,
+    deleteColor,
 };

@@ -10,6 +10,8 @@ const {
     MdGroups,
     RiProductHuntLine,
     FaCartArrowDown,
+    MdOutlineColorLens,
+    MdOutlineCategory,
 } = icons;
 export const productExtraInfomation = [
     {
@@ -86,7 +88,7 @@ export const adminSidebar = [
         id: 5,
         type: 'PARENT',
         text: 'Brand',
-        icon: <RiProductHuntLine />,
+        icon: <RiProductHuntLine size={20} />,
         submenu: [
             {
                 text: 'Create brand',
@@ -102,7 +104,7 @@ export const adminSidebar = [
         id: 6,
         type: 'PARENT',
         text: 'Category',
-        icon: <RiProductHuntLine />,
+        icon: <MdOutlineCategory size={20} />,
         submenu: [
             {
                 text: 'Create category',
@@ -111,6 +113,22 @@ export const adminSidebar = [
             {
                 text: 'Manage categorys',
                 path: `/${path.ADMIN}/${path.MANAGE_CATEGORY}`,
+            },
+        ],
+    },
+    {
+        id: 7,
+        type: 'PARENT',
+        text: 'Color',
+        icon: <MdOutlineColorLens size={20} />,
+        submenu: [
+            {
+                text: 'Create color',
+                path: `/${path.ADMIN}/${path.CREATE_COLOR}`,
+            },
+            {
+                text: 'Manage colors',
+                path: `/${path.ADMIN}/${path.MANAGE_COLOR}`,
             },
         ],
     },

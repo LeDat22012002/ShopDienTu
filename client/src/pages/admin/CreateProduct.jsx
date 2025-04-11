@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { validate, convertToBase64 } from '../../ultils/helpers';
 import { toast } from 'react-toastify';
-import { apiCreateProduct } from '../../apis';
+import { apiCreateProduct, apiGetAllColors } from '../../apis';
 import { showModal } from '../../store/app/appSlice';
 
 const CreateProduct = () => {
@@ -37,6 +37,7 @@ const CreateProduct = () => {
     const [payloadDes, setPayloadDes] = useState({
         shortDescription: '',
     });
+    const [colors, setColors] = useState(null);
     const [invalidFields, setInvalidFields] = useState([]);
     const [hoverElm, setHoverElm] = useState(null);
     const changeValue = useCallback(
@@ -99,10 +100,25 @@ const CreateProduct = () => {
     // console.log(preview);
     // console.log(preview);
     // console.log(watch('category'));
+    // Call Api Color
+    const fetchApiColors = async () => {
+        const rsColors = await apiGetAllColors();
+
+        if (rsColors.success) {
+            setColors(rsColors.colors);
+        }
+    };
+
+    useEffect(() => {
+        fetchApiColors();
+    }, []);
     // Xử lý  khi tạo sản phẩm
     const handleCreateProduct = async (data) => {
         const invalids = validate(payload, setInvalidFields);
         if (invalids === 0) {
+            if (data.color) {
+                data.color = colors?.find((el) => el._id === data.color)?.title;
+            }
             if (data.category) {
                 data.category = categories?.find(
                     (el) => el._id === data.category
@@ -217,7 +233,8 @@ const CreateProduct = () => {
                             placeholder="Quantity of new product..."
                             type="number"
                         />
-                        <InputForm
+
+                        {/* <InputForm
                             label="Color product"
                             register={register}
                             errors={errors}
@@ -232,6 +249,20 @@ const CreateProduct = () => {
                             }}
                             style="flex-auto "
                             placeholder="Color of new product..."
+                        /> */}
+                        <Select
+                            label="Color product"
+                            options={colors?.map((el) => ({
+                                code: el?._id,
+                                value: el?.title,
+                            }))}
+                            register={register}
+                            id="color"
+                            validate={{
+                                required: 'Please select a product color !',
+                            }}
+                            style="flex-auto "
+                            errors={errors}
                         />
                     </div>
                     <div className="flex w-full gap-4 my-6">

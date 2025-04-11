@@ -173,6 +173,26 @@ const updatePr = asyncHandler(async (req, res) => {
         req.body.images = files?.images?.map((el) => el.path);
     }
     if (req.body && req.body.title) req.body.slug = slugify(req.body.title);
+    // Lấy sản phẩm hiện tại để kiểm tra varriants
+    const product = await Product.findById(pid);
+    if (!product) {
+        return res
+            .status(404)
+            .json({ success: false, mess: 'Product not found!' });
+    }
+    // Kiểm tra màu có bị trùng với variant hay không
+    const newColor = req.body.color;
+    if (
+        newColor &&
+        product.varriants.some(
+            (variant) => variant.color.toLowerCase() === newColor.toLowerCase()
+        )
+    ) {
+        return res.status(400).json({
+            success: false,
+            mess: `Color "${newColor}" already exists in variants!`,
+        });
+    }
     const updatedPr = await Product.findByIdAndUpdate(pid, req.body, {
         new: true,
     });
@@ -276,9 +296,25 @@ const addVarriant = asyncHandler(async (req, res) => {
     const thumb = req?.files?.thumb[0]?.path;
     const images = req?.files?.images?.map((el) => el.path);
     if (!title || !price || !color) throw new Error('Missing inputs');
-    // Tạo slug từ title nếu có
-    // if (thumb) req.body.thumb = thumb;
-    // if (images) req.body.images = images;
+    // Lấy product để kiểm tra trùng màu
+    const product = await Product.findById(pid);
+    if (!product) {
+        return res
+            .status(404)
+            .json({ success: false, mess: 'Product not found' });
+    }
+
+    const isColorExists = product.varriants?.some(
+        (variant) => variant.color.toLowerCase() === color.toLowerCase()
+    );
+
+    if (isColorExists) {
+        return res.status(400).json({
+            success: false,
+            mess: `Color "${color}" already exists in variants!`,
+        });
+    }
+
     const response = await Product.findByIdAndUpdate(
         pid,
         {

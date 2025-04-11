@@ -4,6 +4,8 @@ import {
     MdGroups,
     MdEmail,
     MdOutlineDashboardCustomize,
+    MdOutlineColorLens,
+    MdOutlineCategory,
 } from 'react-icons/md';
 
 import { IoBagCheck, IoHome, IoGiftSharp } from 'react-icons/io5';
@@ -60,6 +62,8 @@ const icons = {
     ImBin,
     FaRegEdit,
     MdOutlineDashboardCustomize,
+    MdOutlineColorLens,
+    MdOutlineCategory,
 };
 
 export default icons;

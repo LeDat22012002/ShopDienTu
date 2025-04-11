@@ -11,3 +11,6 @@ export { default as UpdateBrand } from './UpdateBrand';
 export { default as CreateCategory } from './CreateCategory';
 export { default as ManageCategory } from './ManageCategory';
 export { default as UpdateCategory } from './UpdateCategory';
+export { default as CreateColor } from './CreateColor';
+export { default as ManageColor } from './ManageColor';
+export { default as UpdateColor } from './UpdateColor';

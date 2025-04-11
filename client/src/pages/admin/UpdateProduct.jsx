@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { validate, convertToBase64 } from '../../ultils/helpers';
 import { toast } from 'react-toastify';
-import { apiUpdateProduct } from '../../apis';
+import { apiUpdateProduct, apiGetAllColors } from '../../apis';
 import { showModal } from '../../store/app/appSlice';
 
 const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
@@ -36,6 +36,7 @@ const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
     const [payloadDes, setPayloadDes] = useState({
         shortDescription: '',
     });
+    const [colors, setColors] = useState(null);
     const [invalidFields, setInvalidFields] = useState([]);
     const [hoverElm, setHoverElm] = useState(null);
 
@@ -125,19 +126,6 @@ const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
 
         setPreview((prev) => ({ ...prev, images: imagesPreview }));
     };
-    // IMAGE
-    // useEffect(() => {
-    //     const thumbFiles = watch('thumb');
-    //     if (thumbFiles && thumbFiles.length > 0) {
-    //         handlePreviewThumb(thumbFiles[0]);
-    //     }
-    // }, [watch('thumb')]);
-
-    // useEffect(() => {
-    //     if (watch('images')) {
-    //         handlePreviewImages(watch('images'));
-    //     }
-    // }, [watch('images')]);
 
     useEffect(() => {
         if (watch('thumb') instanceof FileList && watch('thumb').length > 0) {
@@ -151,9 +139,33 @@ const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
         }
     }, [watch('images')]);
 
+    // Call Api Color
+    const fetchApiColors = async () => {
+        const rsColors = await apiGetAllColors();
+        console.log(rsColors);
+        if (rsColors.success) {
+            setColors(rsColors.colors);
+        }
+    };
+
+    useEffect(() => {
+        fetchApiColors();
+    }, []);
+
+    useEffect(() => {
+        if (colors && editProduct?.color) {
+            setValue('color', editProduct.color);
+        }
+    }, [colors, editProduct]);
+
     const handleUpdateProduct = async (data) => {
         const invalids = validate(payload, setInvalidFields);
         if (invalids === 0) {
+            if (data.color) {
+                data.color = colors?.find(
+                    (el) => el.title === data.color
+                )?.title;
+            }
             if (data.category) {
                 data.category = categories?.find(
                     (el) => el.title === data.category
@@ -280,7 +292,7 @@ const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
                             placeholder="Quantity of new product..."
                             type="number"
                         />
-                        <InputForm
+                        {/* <InputForm
                             label="Color product"
                             register={register}
                             errors={errors}
@@ -295,6 +307,20 @@ const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
                             }}
                             style="flex-auto "
                             placeholder="Color of new product..."
+                        /> */}
+                        <Select
+                            label="Color product"
+                            options={colors?.map((el) => ({
+                                code: el?.title,
+                                value: el?.title,
+                            }))}
+                            register={register}
+                            id="color"
+                            validate={{
+                                required: 'Please select a product color !',
+                            }}
+                            style="flex-auto "
+                            errors={errors}
                         />
                     </div>
                     <div className="flex w-full gap-4 my-6">
