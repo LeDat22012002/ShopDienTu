@@ -24,6 +24,22 @@ const breakpointColumnsObj = {
 };
 
 const Products = () => {
+    const slugToTitleMap = {
+        'bo-mach-chu': 'Bo mạch chủ',
+        'tai-nghe': 'Tai nghe',
+        laptop: 'Laptop',
+        'pc-gaming': 'PC Gaming',
+        'ban-phim': 'Bàn phím',
+        chuot: 'Chuột',
+        'man-hinh': 'Màn hình',
+        'card-man-hinh': 'Card màn hình',
+        'vo-may-tinh': 'Vỏ máy tính',
+        ram: 'Ram',
+    };
+
+    const convertSlugToTitle = (slug) => {
+        return slugToTitleMap[slug] || slug;
+    };
     const navigate = useNavigate();
     const { category } = useParams();
     // console.log(category);
@@ -33,18 +49,13 @@ const Products = () => {
     const [params] = useSearchParams();
     // console.log(params);
 
-    // const convertSlugToTitle = (slug) => {
-    //     return slug
-    //         .split('-') // Tách chuỗi theo dấu "-"
-    //         .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Viết hoa chữ cái đầu
-    //         .join(' '); // Ghép lại thành chuỗi có dấu cách
-    // };
-
-    // const datngu = convertSlugToTitle(category);
-    // console.log(datngu);
-
     const fetchProductsByCategory = async (queries) => {
-        const response = await apiGetProduct(queries);
+        const convertedCategory = convertSlugToTitle(category);
+        console.log(convertedCategory);
+        const response = await apiGetProduct({
+            ...queries,
+            category: convertedCategory,
+        });
 
         if (response.success) {
             setProducts(response);
@@ -53,13 +64,7 @@ const Products = () => {
 
     useEffect(() => {
         const queries = Object.fromEntries([...params]);
-        // let param = [];
-        // for (let i of params.entries()) param.push(i);
-        // const queries = {};
-        // for (let i of params) queries[i[0]] = i[1];
-        // if (category) {
-        //     queries.category = convertSlugToTitle(category);
-        // }
+
         let priceQuery = {};
         if (queries.from && queries.to) {
             priceQuery = {
@@ -80,7 +85,7 @@ const Products = () => {
         // console.log(q);
         fetchProductsByCategory(q);
         window.scrollTo(0, 0);
-    }, [params, category]);
+    }, [params]);
 
     const changeActiveFilter = useCallback(
         (name) => {

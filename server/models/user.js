@@ -40,9 +40,15 @@ var userSchema = new mongoose.Schema(
                 color: String,
             },
         ],
-        address: {
-            type: String,
-        },
+        // address: {
+        //     type: String,
+        // },
+
+        city: { type: String }, // Thành phố
+        district: { type: String }, // Quận/Huyện
+        ward: { type: String }, // Phường/Xã
+        detail: { type: String }, // Địa chỉ chi tiết (số nhà, tên đường,...)
+
         wishlist: [{ type: mongoose.Types.ObjectId, ref: 'Product' }],
         isBlocked: {
             type: Boolean,

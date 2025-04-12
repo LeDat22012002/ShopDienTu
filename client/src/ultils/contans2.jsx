@@ -158,7 +158,7 @@ export const memberSidebar = [
         icon: <FaCartArrowDown size={20} />,
     },
     {
-        id: 3,
+        id: 4,
         type: 'SINGLE',
         text: 'History order',
         path: `/${path.MEMBER}/${path.HISTORY_ORDER}`,

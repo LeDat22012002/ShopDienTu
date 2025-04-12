@@ -304,14 +304,25 @@ const deleteUser = asyncHandeler(async (req, res) => {
 
 const updateUser = asyncHandeler(async (req, res) => {
     const { _id } = req.user;
-    if (!_id || Object.keys(req.body).length === 0)
-        throw new Error('Missing input');
+
+    const files = req?.files;
+    if (files?.avatar) {
+        req.body.avatar = files?.avatar[0]?.path;
+    }
+    const { name, email, phone, city, district, ward, detail } = req.body;
+    // const file = req?.file;
+
+    if (!_id || !name || !email || !phone) throw new Error('Missing input');
+
     const userUpdate = await User.findByIdAndUpdate(_id, req.body, {
         new: true,
     }).select('-refreshToken -password -role -passwordChangeAt ');
     return res.status(200).json({
         success: userUpdate ? true : false,
         updatedUser: userUpdate ? userUpdate : 'Some thing went wrong !',
+        mess: userUpdate
+            ? 'Update account successfully!'
+            : 'Some thing went wrong!',
     });
 });
 

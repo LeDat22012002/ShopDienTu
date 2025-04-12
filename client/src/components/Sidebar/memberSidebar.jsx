@@ -19,7 +19,7 @@ const MemberSidebar = () => {
             setActived((prev) => prev.filter((el) => el !== tabID));
         else setActived((prev) => [...prev, tabID]);
     };
-    console.log(current);
+    // console.log(current);
     return (
         <div className="h-full py-4 bg-white border border-gray-100">
             <div className="flex flex-col items-center justify-center w-full gap-4 py-4">

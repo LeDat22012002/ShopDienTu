@@ -2,6 +2,7 @@ const router = require('express').Router();
 const User = require('../controller/user');
 const { verifyAccessToken, isAdmin } = require('../middlewares/verifyToken');
 const passport = require('passport');
+const uploadImages = require('../config/cloudinary.config');
 
 router.post('/register', User.register);
 router.put('/finalregister/:token', User.finalRegister);
@@ -17,7 +18,12 @@ router.delete(
     [verifyAccessToken, isAdmin],
     User.deleteUser
 );
-router.put('/updateUser', verifyAccessToken, User.updateUser);
+router.put(
+    '/updateUser',
+    verifyAccessToken,
+    uploadImages.fields([{ name: 'avatar', maxCount: 1 }]),
+    User.updateUser
+);
 router.put(
     '/updateUserByAdmin/:uid',
     [verifyAccessToken, isAdmin],
