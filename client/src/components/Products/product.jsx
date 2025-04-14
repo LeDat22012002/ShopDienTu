@@ -7,6 +7,8 @@ import icons from '../../ultils/icons';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { addCart } from '../../store/cart/cartSlice';
 
 // import path from '../ultils/path';
 
@@ -14,15 +16,28 @@ const { AiOutlineEye, FaCartArrowDown, FaHeart } = icons;
 
 const Product = ({ productData, isNew, normal }) => {
     const [isShowOption, setIsShowOption] = useState(false);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const handleClickOptions = (e, flag) => {
         e.stopPropagation();
         if (flag === 'CART') {
-            console.log(productData);
+            dispatch(
+                addCart({
+                    cartItem: {
+                        title: productData?.title,
+                        count: productData?.quantity,
+                        color: productData?.color,
+                        price: productData?.price,
+                        thumb: productData?.thumb,
+                        product: productData?._id,
+                    },
+                })
+            );
         }
         if (flag === 'WISHLIST') toast.success('My add wishlist');
         if (flag === 'QUICK_VIEW') toast.success('Dat ngu');
     };
+    console.log(productData);
     return (
         <div className="w-full px-[10px] text-base mb-4">
             <div

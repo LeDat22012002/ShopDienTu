@@ -9,6 +9,7 @@ import { showModalCart } from '../../store/app/appSlice';
 
 const Header = () => {
     const { current } = useSelector((state) => state.user);
+    const { cartItems } = useSelector((state) => state.cart);
     const { HiPhone, MdEmail, IoBagCheck, HiMiniUserCircle } = icons;
     const [isShowOption, setIsShowOption] = useState(false);
     const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const Header = () => {
                     className="flex items-center justify-center gap-2 px-6 border-r cursor-pointer "
                 >
                     <IoBagCheck color="red" />
-                    <span>0 Item (s)</span>
+                    <span>{cartItems?.length || 0} (s)</span>
                 </div>
                 {current && (
                     <Fragment>
