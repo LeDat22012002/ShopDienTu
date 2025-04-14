@@ -51,7 +51,7 @@ const Products = () => {
 
     const fetchProductsByCategory = async (queries) => {
         const convertedCategory = convertSlugToTitle(category);
-        console.log(convertedCategory);
+        // console.log(convertedCategory);
         const response = await apiGetProduct({
             ...queries,
             category: convertedCategory,

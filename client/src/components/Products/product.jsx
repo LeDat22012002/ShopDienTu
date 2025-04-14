@@ -5,17 +5,33 @@ import { renderStar } from '../../ultils/renderStar';
 import { SelectOptions } from '..';
 import icons from '../../ultils/icons';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 // import path from '../ultils/path';
 
-const { AiOutlineEye, IoMdMenu, FaHeart } = icons;
+const { AiOutlineEye, FaCartArrowDown, FaHeart } = icons;
 
 const Product = ({ productData, isNew, normal }) => {
     const [isShowOption, setIsShowOption] = useState(false);
+    const navigate = useNavigate();
+    const handleClickOptions = (e, flag) => {
+        e.stopPropagation();
+        if (flag === 'CART') {
+            console.log(productData);
+        }
+        if (flag === 'WISHLIST') toast.success('My add wishlist');
+        if (flag === 'QUICK_VIEW') toast.success('Dat ngu');
+    };
     return (
         <div className="w-full px-[10px] text-base mb-4">
-            <Link
+            <div
                 className="w-full border border-gray-400 p-[15px] flex flex-col items-center"
-                to={`/${productData?.category}/${productData?._id}/${productData?.title}`}
+                onClick={() =>
+                    navigate(
+                        `/${productData?.category}/${productData?._id}/${productData?.title}`
+                    )
+                }
                 onMouseEnter={(e) => {
                     e.stopPropagation();
                     setIsShowOption(true);
@@ -28,9 +44,28 @@ const Product = ({ productData, isNew, normal }) => {
                 <div className="relative w-full">
                     {isShowOption && (
                         <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 animate-slide-up">
-                            <SelectOptions icon={<AiOutlineEye />} />
-                            <SelectOptions icon={<IoMdMenu />} />
-                            <SelectOptions icon={<FaHeart />} />
+                            <span
+                                title="quickview"
+                                onClick={(e) =>
+                                    handleClickOptions(e, 'QUICK_VIEW')
+                                }
+                            >
+                                <SelectOptions icon={<AiOutlineEye />} />
+                            </span>
+                            <span
+                                title="Add to cart"
+                                onClick={(e) => handleClickOptions(e, 'CART')}
+                            >
+                                <SelectOptions icon={<FaCartArrowDown />} />
+                            </span>
+                            <span
+                                title="Add to wishlist"
+                                onClick={(e) =>
+                                    handleClickOptions(e, 'WISHLIST')
+                                }
+                            >
+                                <SelectOptions icon={<FaHeart />} />
+                            </span>
                         </div>
                     )}
                     <img
@@ -68,7 +103,7 @@ const Product = ({ productData, isNew, normal }) => {
 
                     <span>{`${formatMoney(productData.price)} VNĐ`}</span>
                 </div>
-            </Link>
+            </div>
         </div>
     );
 };

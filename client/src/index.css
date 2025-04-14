@@ -5,7 +5,7 @@
     --color-main: #ee3131;
     --width-main: 1220px;
     --backgroundColor-main: '#ee3131';
-    --backgroundColor-overlay: 'rgba(0,0,0,0.8)';
+    --backgroundColor-overlay: rgba(0, 0, 0, 0.9);
     --fontFamily-main: [ 'Poppins', 'sans-serif'];
     --flex-2: 2 2 0%;
     --flex-3: 3 3 0%;

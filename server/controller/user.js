@@ -364,27 +364,18 @@ const addCart = asyncHandeler(async (req, res) => {
     );
 
     if (alreadyProduct) {
-        if (alreadyProduct.color === color) {
-            const response = await User.updateOne(
-                { cart: { $elemMatch: alreadyProduct } },
-                { $set: { 'cart.$.quantity': quantity } },
-                { new: true }
-            );
-            return res.status(200).json({
-                success: response ? true : false,
-                updatedUser: response ? response : 'Some thing went wrong !',
-            });
-        } else {
-            const response = await User.findByIdAndUpdate(
-                _id,
-                { $push: { cart: { product: pid, quantity, color } } },
-                { new: true }
-            );
-            return res.status(200).json({
-                success: response ? true : false,
-                updatedUser: response ? response : 'Some thing went wrong !',
-            });
-        }
+        const response = await User.updateOne(
+            { cart: { $elemMatch: alreadyProduct } },
+            { $set: { 'cart.$.quantity': quantity } },
+            { new: true }
+        );
+        return res.status(200).json({
+            success: response ? true : false,
+            updatedUser: response ? response : 'Some thing went wrong !',
+            mess: response
+                ? 'Update cart successfully'
+                : 'Some thing went wrong !',
+        });
     } else {
         const response = await User.findByIdAndUpdate(
             _id,
@@ -394,8 +385,37 @@ const addCart = asyncHandeler(async (req, res) => {
         return res.status(200).json({
             success: response ? true : false,
             updatedUser: response ? response : 'Some thing went wrong !',
+            mess: response
+                ? 'Update cart successfully'
+                : 'Some thing went wrong !',
         });
     }
+});
+
+const removeProuctInCart = asyncHandeler(async (req, res) => {
+    const { _id } = req.user;
+    const { pid } = req.params;
+
+    const user = await User.findById(_id).select('cart');
+    const alreadyProduct = user?.cart?.find(
+        (el) => el?.product?.toString() === pid?.toString()
+    );
+
+    if (!alreadyProduct)
+        return res.status(200).json({
+            success: true,
+            mess: 'Update cart successfully',
+        });
+    const response = await User.findByIdAndUpdate(
+        _id,
+        { $pull: { cart: { product: pid } } },
+        { new: true }
+    );
+    return res.status(200).json({
+        success: response ? true : false,
+        updatedUser: response ? response : 'Some thing went wrong !',
+        mess: response ? 'Update cart successfully' : 'Some thing went wrong !',
+    });
 });
 
 module.exports = {
@@ -413,4 +433,5 @@ module.exports = {
     updateAddressUser,
     addCart,
     finalRegister,
+    removeProuctInCart,
 };

@@ -155,13 +155,15 @@ const DetailsProduct = () => {
             </div>
             <div className="flex gap-4 m-auto mt-4 w-main">
                 <div className="flex flex-col w-2/5 gap-4">
-                    <Zoom>
-                        <img
-                            src={currentProduct?.thumb || currentImg}
-                            alt="product"
-                            className="h-[458px] w-[458px] object-cover border border-gray-200 "
-                        ></img>
-                    </Zoom>
+                    <div className="h-[458px] w-[450px] border flex items-center justify-center  border-gray-500">
+                        <Zoom>
+                            <img
+                                src={currentProduct?.thumb || currentImg}
+                                alt="product"
+                                className="h-[400px] w-[400px] object-cover  "
+                            ></img>
+                        </Zoom>
+                    </div>
 
                     <div className="w-[458px]">
                         <Slider
@@ -177,7 +179,7 @@ const DetailsProduct = () => {
                                             }
                                             src={el}
                                             alt="itemImg"
-                                            className="h-[143px] w-[143px] object-cover border  border-gray-200 cursor-pointer"
+                                            className="h-[143px] w-[143px] object-cover border  border-gray-500 cursor-pointer"
                                         ></img>
                                     </div>
                                 ))}

@@ -12,6 +12,7 @@ const {
     FaCartArrowDown,
     MdOutlineColorLens,
     MdOutlineCategory,
+    IoReturnDownBackSharp,
 } = icons;
 export const productExtraInfomation = [
     {
@@ -163,6 +164,14 @@ export const memberSidebar = [
         text: 'History order',
         path: `/${path.MEMBER}/${path.HISTORY_ORDER}`,
         icon: <FaCartArrowDown size={20} />,
+    },
+
+    {
+        id: 5,
+        type: 'SINGLE',
+        text: 'back home',
+        path: `/`,
+        icon: <IoReturnDownBackSharp size={20} />,
     },
 
     // {

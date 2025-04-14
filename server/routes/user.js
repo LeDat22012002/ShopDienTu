@@ -31,6 +31,7 @@ router.put(
 );
 router.put('/updateAddressUser', [verifyAccessToken], User.updateAddressUser);
 router.put('/addCart', [verifyAccessToken], User.addCart);
+router.delete('/removeCart/:pid', [verifyAccessToken], User.removeProuctInCart);
 
 // Đăng nhập với Google
 router.get(

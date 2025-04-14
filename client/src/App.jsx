@@ -39,17 +39,28 @@ import path from './ultils/path';
 import { getCategories } from './store/app/asyncAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import { Modal } from './components';
+import { Modal, ModalCart } from './components';
+import { showModalCart } from './store/app/appSlice';
 
 function App() {
     const dispatch = useDispatch();
-    const { isShowModal, modalChildren } = useSelector((state) => state.app);
+    const { isShowModal, modalChildren, isShowModalCart } = useSelector(
+        (state) => state.app
+    );
     useEffect(() => {
         dispatch(getCategories());
     }, []);
 
     return (
-        <div className="relative font-main">
+        <div className="relative h-screen font-main">
+            {isShowModalCart && (
+                <div
+                    onClick={() => dispatch(showModalCart())}
+                    className="absolute inset-0 z-50 flex justify-end bg-black/50 "
+                >
+                    <ModalCart />
+                </div>
+            )}
             {isShowModal && <Modal>{modalChildren}</Modal>}
             <Routes>
                 <Route path={path.PUBLIC} element={<Public />}>

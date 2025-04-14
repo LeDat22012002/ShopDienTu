@@ -34,3 +34,4 @@ export { default as Select } from './Inputs/select';
 export { default as InputCheckbox } from './Inputs/inputCheckbox';
 export { default as MarkdownEditor } from './Inputs/markdownEditor';
 export { default as CustomizeVarriants } from './Products/customizeVarriants';
+export { default as ModalCart } from './Products/modalCart';

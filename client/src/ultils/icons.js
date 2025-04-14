@@ -6,9 +6,15 @@ import {
     MdOutlineDashboardCustomize,
     MdOutlineColorLens,
     MdOutlineCategory,
+    MdClose,
 } from 'react-icons/md';
 
-import { IoBagCheck, IoHome, IoGiftSharp } from 'react-icons/io5';
+import {
+    IoBagCheck,
+    IoHome,
+    IoGiftSharp,
+    IoReturnDownBackSharp,
+} from 'react-icons/io5';
 import { HiMiniUserCircle } from 'react-icons/hi2';
 import { BsStar, BsStarFill } from 'react-icons/bs';
 import { AiOutlineEye, AiOutlineDownCircle } from 'react-icons/ai';
@@ -64,6 +70,8 @@ const icons = {
     MdOutlineDashboardCustomize,
     MdOutlineColorLens,
     MdOutlineCategory,
+    IoReturnDownBackSharp,
+    MdClose,
 };
 
 export default icons;

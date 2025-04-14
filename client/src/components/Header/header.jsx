@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import path from '../../ultils/path';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/user/userSlice';
+import { showModalCart } from '../../store/app/appSlice';
 
 const Header = () => {
     const { current } = useSelector((state) => state.user);
@@ -14,7 +15,7 @@ const Header = () => {
     useEffect(() => {
         const handleClickOutOption = (e) => {
             const profile = document.getElementById('profile');
-            if (!profile.contains(e.target)) {
+            if (!profile?.contains(e.target)) {
                 setIsShowOption(false);
             }
         };
@@ -50,12 +51,15 @@ const Header = () => {
                     </span>
                     <span>Online Support 24/7</span>
                 </div>
+                <div
+                    onClick={() => dispatch(showModalCart())}
+                    className="flex items-center justify-center gap-2 px-6 border-r cursor-pointer "
+                >
+                    <IoBagCheck color="red" />
+                    <span>0 Item (s)</span>
+                </div>
                 {current && (
                     <Fragment>
-                        <div className="flex items-center justify-center gap-2 px-6 border-r cursor-pointer ">
-                            <IoBagCheck color="red" />
-                            <span>0 Item (s)</span>
-                        </div>
                         <div
                             onClick={() => setIsShowOption((prev) => !prev)}
                             id="profile"
