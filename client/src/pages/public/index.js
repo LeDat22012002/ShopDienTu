@@ -10,3 +10,4 @@ export { default as FinalRegister } from './FinalRegister';
 export { default as ResetPassword } from './ResetPassword';
 export { default as Profile } from './Profile';
 export { default as ProfileFb } from './ProfileFb';
+export { default as YourCart } from './YourCart';

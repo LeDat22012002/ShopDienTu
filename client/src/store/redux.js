@@ -16,13 +16,20 @@ import {
     REGISTER,
 } from 'redux-persist';
 
+// Config chung
 const commonConfig = {
-    key: 'shop/user',
     storage,
 };
 const userConfig = {
     ...commonConfig,
+    key: 'shop/user',
     whitelist: ['isLoggedIn', 'token', 'current'],
+};
+// Config cho cart
+const cartConfig = {
+    ...commonConfig,
+    key: 'shop/cart',
+    whitelist: ['cartItems', 'productsSelected'], // tuỳ thuộc vào state bên trong cartSlice
 };
 
 export const store = configureStore({
@@ -30,7 +37,7 @@ export const store = configureStore({
         app: appSlice,
         products: productsSlice,
         user: persistReducer(userConfig, userSlice),
-        cart: cartSlice,
+        cart: persistReducer(cartConfig, cartSlice),
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

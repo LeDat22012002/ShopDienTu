@@ -19,6 +19,8 @@ import { toast } from 'react-toastify';
 import { productExtraInfomation } from '../../ultils/contans2';
 import DOMPurify from 'dompurify';
 import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCart } from '../../store/cart/cartSlice';
 
 const settings = {
     dots: false,
@@ -29,12 +31,15 @@ const settings = {
 };
 const DetailsProduct = () => {
     // const { pid, title, category } = useParams();
+    const dispatch = useDispatch();
     const { pid, category } = useParams();
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
+
     const [relatedProducts, setRelatedProducts] = useState(null);
     const [currentImg, setCurrentImg] = useState(null);
     const [update, setUpdate] = useState(false);
+    const { cartItems } = useSelector((state) => state.cart);
 
     // Varriant
     const [varriant, setVarriant] = useState(null);
@@ -139,7 +144,35 @@ const DetailsProduct = () => {
         e.stopPropagation();
         setCurrentImg(el);
     };
-    console.log(currentProduct?.price);
+    // console.log(currentProduct?.price);
+
+    // Add to Card
+    const handleAddCart = () => {
+        const cartRedux = cartItems?.find(
+            (item) => item.product === product?._id
+        );
+        if (
+            cartRedux?.count + quantity <= cartRedux?.quantity ||
+            (!cartRedux && product?.quantity > 0)
+        ) {
+            dispatch(
+                addCart({
+                    cartItem: {
+                        title: product?.title,
+                        count: quantity,
+                        thumb: product?.thumb,
+                        price: product?.price,
+                        product: product?._id,
+                        color: product?.color,
+                        quantity: product?.quantity,
+                    },
+                })
+            );
+            toast.success('Đã thêm vào giỏ hàng');
+        } else {
+            toast.error('Something went wrong');
+        }
+    };
     return (
         <div className="w-full ">
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
@@ -289,7 +322,9 @@ const DetailsProduct = () => {
                                 handleChangeQuantity={handleChangeQuantity}
                             />
                         </div>
-                        <Button fw>Add to Cart</Button>
+                        <Button handleOnclick={handleAddCart} fw>
+                            Add to Cart
+                        </Button>
                     </div>
                 </div>
                 <div className="w-1/5 ">

@@ -10,7 +10,7 @@ const initialState = {
     user: '',
     isPaid: false,
     paidAt: '',
-    isSuccessOrder: false,
+    isSuccessCart: false,
 };
 
 export const cartSlice = createSlice({
@@ -23,13 +23,39 @@ export const cartSlice = createSlice({
                 (item) => item?.product === cartItem.product
             );
             if (itemCart) {
-                // if (itemCart.count <= cartItem.countInstock) {
-                //     itemOrder.amount += orderItem?.amount;
-                //     state.isSuccessOrder = true;
-                // }
-                itemCart.count += cartItem.count;
+                if (itemCart.count <= cartItem.quantity) {
+                    itemCart.count += cartItem?.count;
+                    state.isSuccessCart = true;
+                }
             } else {
                 state.cartItems.push(cartItem);
+            }
+        },
+
+        increase: (state, action) => {
+            const { pid } = action.payload;
+            const itemCart = state?.cartItems?.find(
+                (item) => item?.product === pid
+            );
+            const itemCartSelected = state?.productsSelected?.find(
+                (item) => item?.product === pid
+            );
+            itemCart.count++;
+            if (itemCartSelected) {
+                itemCartSelected.count++;
+            }
+        },
+        decrease: (state, action) => {
+            const { pid } = action.payload;
+            const itemCart = state?.cartItems?.find(
+                (item) => item?.product === pid
+            );
+            const itemCartSelected = state?.productsSelected?.find(
+                (item) => item?.product === pid
+            );
+            itemCart.count--;
+            if (itemCartSelected) {
+                itemCartSelected.amount--;
             }
         },
         removeCart: (state, action) => {
@@ -37,11 +63,34 @@ export const cartSlice = createSlice({
             const itemCart = state?.cartItems?.filter(
                 (item) => item?.product !== pid
             );
-            itemCart.cartItems = itemCart;
-            // const itemOrderSelected = state?.orderItemsSelected?.filter((item) => item?.product !== idProduct);
+            const itemCartSelected = state?.productsSelected?.filter(
+                (item) => item?.product !== pid
+            );
             // console.log(' removeOrderProduct', { idProduct, itemOrder });
-            // state.orderItems = itemOrder;
-            // state.orderItemsSelected = itemOrderSelected;
+            state.cartItems = itemCart;
+            state.productsSelected = itemCartSelected;
+        },
+        removeAllProductCart: (state, action) => {
+            const { listChecked } = action.payload;
+            const itemCarts = state?.cartItems?.filter(
+                (item) => !listChecked.includes(item?.product)
+            );
+            const itemCartsSelected = state?.cartItems?.filter(
+                (item) => !listChecked.includes(item?.product)
+            );
+            // console.log(' removeOrderProduct', { idProduct, itemOrder });
+            state.cartItems = itemCarts;
+            state.productsSelected = itemCartsSelected;
+        },
+        selectedCart: (state, action) => {
+            const { listChecked } = action.payload;
+            const cartSelected = [];
+            state.cartItems.forEach((cart) => {
+                if (listChecked.includes(cart.product)) {
+                    cartSelected.push(cart);
+                }
+            });
+            state.productsSelected = cartSelected;
         },
     },
     // // Code logic sử lí Async Action
@@ -68,6 +117,12 @@ export const cartSlice = createSlice({
     // },
 });
 
-// export const {} = productsSlice.actions
-export const { addCart } = cartSlice.actions;
+export const {
+    addCart,
+    increase,
+    decrease,
+    removeCart,
+    removeAllProductCart,
+    selectedCart,
+} = cartSlice.actions;
 export default cartSlice.reducer;
