@@ -49,17 +49,18 @@ const YourCart = () => {
         }
     };
 
-    const handleChangeCount = (type, pid, limited) => {
+    const handleChangeCount = (type, pid, sku, limited) => {
         if (type === 'increase') {
             if (!limited) {
-                dispatch(increase({ pid }));
+                dispatch(increase({ pid, sku }));
             }
         } else {
             if (!limited) {
-                dispatch(decrease({ pid }));
+                dispatch(decrease({ pid, sku }));
             }
         }
     };
+
     // Delete Cart
     const handleDeleteCart = (pid, sku) => {
         dispatch(removeCart({ pid, sku }));
@@ -184,6 +185,7 @@ const YourCart = () => {
                                                     handleChangeCount(
                                                         'decrease',
                                                         el?.product,
+                                                        el?.sku,
                                                         el?.count === 1
                                                     )
                                                 }
@@ -199,6 +201,7 @@ const YourCart = () => {
                                                     handleChangeCount(
                                                         'increase',
                                                         el?.product,
+                                                        el?.sku,
                                                         el?.count ===
                                                             el?.quantity
                                                     )

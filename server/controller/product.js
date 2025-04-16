@@ -292,10 +292,11 @@ const uploadImages = asyncHandler(async (req, res) => {
 
 const addVarriant = asyncHandler(async (req, res) => {
     const { pid } = req.params;
-    const { title, price, color } = req.body;
+    const { title, price, color, quantity } = req.body;
     const thumb = req?.files?.thumb[0]?.path;
     const images = req?.files?.images?.map((el) => el.path);
-    if (!title || !price || !color) throw new Error('Missing inputs');
+    if (!title || !price || !color || !quantity)
+        throw new Error('Missing inputs');
     // Lấy product để kiểm tra trùng màu
     const product = await Product.findById(pid);
     if (!product) {
@@ -325,6 +326,7 @@ const addVarriant = asyncHandler(async (req, res) => {
                     title,
                     thumb,
                     images,
+                    quantity,
                     sku: makeSKU().toUpperCase(),
                 },
             },

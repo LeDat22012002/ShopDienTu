@@ -164,17 +164,6 @@ const CreateProduct = () => {
         }
     };
 
-    // const handleRemoveImage = (name) => {
-    //     const files = [...watch('images')]
-    //     reset({
-    //         images: files?.filter(el => el.name !== name)
-    //     })
-    //     if (preview.images?.some((el) => el.name === name))
-    //         setPreview((prev) => ({
-    //             ...prev,
-    //             images: prev.images?.filter((el) => el.name !== name),
-    //         }));
-    // };
     return (
         <div className="w-full">
             <h1 className="h-[75px] flex justify-between items-center text-3xl font-bold px-4 border-b border-gray-300">
@@ -234,22 +223,6 @@ const CreateProduct = () => {
                             type="number"
                         />
 
-                        {/* <InputForm
-                            label="Color product"
-                            register={register}
-                            errors={errors}
-                            id="color"
-                            validate={{
-                                required: 'Product color cannot be blank !',
-                                pattern: {
-                                    value: /^[^\s]/,
-                                    message:
-                                        'Product color cannot start with a space !',
-                                },
-                            }}
-                            style="flex-auto "
-                            placeholder="Color of new product..."
-                        /> */}
                         <Select
                             label="Color product"
                             options={colors?.map((el) => ({

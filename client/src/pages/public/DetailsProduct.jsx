@@ -59,18 +59,14 @@ const DetailsProduct = () => {
     };
     const fetchProductData = async () => {
         const response = await apiGetDetailsProduct(pid);
-        // console.log(response);
-        // console.log('Category Title:', response?.productData?.category?.title);
+
         if (response.success) {
             setProduct(response?.productData);
             setCurrentImg(
                 response?.productData?.thumb || response?.productData?.images[0]
             );
         }
-        // console.log(response?.productData?.category?.brand?.title);
     };
-    // const prss= product?.category?._id;
-    // console.log(productsss);
 
     const fetchProducts = async () => {
         const response = await apiGetProduct({ category });
@@ -87,13 +83,14 @@ const DetailsProduct = () => {
             );
             if (selected) {
                 setCurrentProduct({
-                    title: selected.title,
-                    color: selected.color,
-                    price: selected.price,
-                    images: selected.images,
-                    thumb: selected.thumb,
+                    title: selected?.title,
+                    color: selected?.color,
+                    price: selected?.price,
+                    images: selected?.images,
+                    thumb: selected?.thumb,
+                    quantity: selected?.quantity,
                 });
-                setCurrentImg(selected.thumb || selected.images?.[0]); // Cập nhật ảnh chính
+                setCurrentImg(selected?.thumb || selected?.images?.[0]); // Cập nhật ảnh chính
             }
         } else {
             setCurrentProduct({
@@ -102,6 +99,7 @@ const DetailsProduct = () => {
                 price: product?.price,
                 images: product?.images,
                 thumb: product?.thumb,
+                quantity: product?.quantity,
             });
             setCurrentImg(product?.thumb || product?.images?.[0]); // Reset lại ảnh chính
         }
@@ -127,34 +125,35 @@ const DetailsProduct = () => {
 
     const handleQuantity = useCallback(
         (number) => {
-            const maxQuantity = product?.quantity || 0; // Lấy số lượng tồn kho
+            const maxQuantity = currentProduct?.quantity || 0;
+
             if (!Number(number) || Number(number) < 1) {
                 return;
             } else if (Number(number) > maxQuantity) {
-                setQuantity(maxQuantity); // Nếu vượt quá số lượng trong kho, đặt về max
+                setQuantity(maxQuantity);
                 toast.error('Quantity exceeds inventory level!');
             } else {
-                setQuantity(number);
+                setQuantity(Number(number));
             }
         },
-        [quantity, product?.quantity]
+        [currentProduct?.quantity]
     );
 
     const handleChangeQuantity = useCallback(
         (flag) => {
-            const maxQuantity = product?.quantity || 0; // Số lượng tối đa trong kho
+            const maxQuantity = currentProduct?.quantity || 0;
 
             if (flag === 'minus' && quantity === 1) return;
 
             if (flag === 'minus') {
-                setQuantity((prev) => Math.max(1, +prev - 1)); // Không giảm dưới 1
+                setQuantity((prev) => Math.max(1, +prev - 1));
             }
 
             if (flag === 'plus') {
-                setQuantity((prev) => Math.min(maxQuantity, +prev + 1)); // Không tăng quá số lượng trong kho
+                setQuantity((prev) => Math.min(maxQuantity, +prev + 1));
             }
         },
-        [quantity, product?.quantity]
+        [quantity, currentProduct?.quantity]
     );
 
     // const handleClickImage = (e, el) => {
@@ -276,7 +275,7 @@ const DetailsProduct = () => {
                         h-full w-full object-cover cursor-pointer border-2
                         ${
                             selectedImg === el
-                                ? 'border-blue-500'
+                                ? 'border-main'
                                 : 'border-gray-200'
                         }
                         rounded-md transition
@@ -308,8 +307,12 @@ const DetailsProduct = () => {
                     </div>
 
                     <div className="flex items-center text-sm text-gray-600">
-                        <h2 className="text-[20px] font-semibold text-main">{`Đã bán: ${product?.sold}`}</h2>
-                        <span className="ml-2 text-sm italic font-semibold text-main">{`(Kho: ${product?.quantity})`}</span>
+                        <h2 className="text-[20px] font-semibold text-main">{`Đã bán: ${
+                            currentProduct?.sold || product?.sold
+                        }`}</h2>
+                        <span className="ml-2 text-sm italic font-semibold text-main">{`(Kho: ${
+                            currentProduct?.quantity || product?.quantity
+                        })`}</span>
                     </div>
                     <div className="flex items-center text-sm text-gray-600">
                         {product?.shortDescription && (

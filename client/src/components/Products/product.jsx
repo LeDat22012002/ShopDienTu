@@ -15,31 +15,57 @@ import { addCart } from '../../store/cart/cartSlice';
 const { AiOutlineEye, FaCartArrowDown, FaHeart } = icons;
 
 const Product = ({ productData, isNew, normal }) => {
+    // console.log(productData);
     const [isShowOption, setIsShowOption] = useState(false);
     const [numProduct, setNumProduct] = useState(1);
+    // const defaultVariant = productData?.varriants?.[0];
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { cartItems } = useSelector((state) => state.cart);
     const handleClickOptions = (e, flag) => {
         e.stopPropagation();
+
+        const selectedSku = 'default';
+        const price = productData?.price;
+        const thumb = productData?.thumb;
+        const color = productData?.color;
+        const title = productData?.title;
+        const quantityInStock = productData?.quantity || 0;
+
+        const cartRedux = cartItems?.find(
+            (item) =>
+                item.product === productData?._id && item?.sku === selectedSku
+        );
+
         if (flag === 'CART') {
-            dispatch(
-                addCart({
-                    cartItem: {
-                        title: productData?.title,
-                        count: numProduct,
-                        color: productData?.color,
-                        price: productData?.price,
-                        thumb: productData?.thumb,
-                        product: productData?._id,
-                        quantity: productData?.quantity,
-                    },
-                })
-            );
+            if (
+                cartRedux?.count + numProduct <= quantityInStock ||
+                (!cartRedux && numProduct <= quantityInStock)
+            ) {
+                dispatch(
+                    addCart({
+                        cartItem: {
+                            product: productData?._id,
+                            sku: selectedSku,
+                            title,
+                            thumb,
+                            color,
+                            price,
+                            count: numProduct,
+                            quantity: quantityInStock,
+                        },
+                    })
+                );
+                toast.success('Added to cart');
+            } else {
+                toast.error('Quantity exceeds inventory level!');
+            }
         }
+
         if (flag === 'WISHLIST') toast.success('My add wishlist');
-        if (flag === 'QUICK_VIEW') toast.success('Dat ngu');
+        if (flag === 'QUICK_VIEW') toast.success('Quick view clicked');
     };
+
     // console.log(productData);
     return (
         <div className="w-full px-[10px] text-base mb-4">

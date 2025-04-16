@@ -71,6 +71,11 @@ var productSchema = new mongoose.Schema(
                 images: Array,
                 title: String,
                 sku: String,
+                quantity: Number,
+                sold: {
+                    type: Number,
+                    default: 0,
+                },
             },
         ],
     },

@@ -33,6 +33,7 @@ const CustomizeVarriants = ({
             title: customizeVarriants?.title,
             color: customizeVarriants?.color,
             price: customizeVarriants?.price,
+            quantity: customizeVarriants?.quantity,
         });
     }, [customizeVarriants]);
 
@@ -153,7 +154,7 @@ const CustomizeVarriants = ({
             <div className="h-[69px] w-full mt-2"></div>
             <div className="flex flex-col p-4">
                 <form onSubmit={handleSubmit(handleAddVarriant)}>
-                    <div className="w-full gap-4 my-6 ">
+                    <div className="flex w-full gap-4 my-6 ">
                         <InputForm
                             label="Original name"
                             register={register}
@@ -167,29 +168,24 @@ const CustomizeVarriants = ({
                                         'Product name cannot start with a space !',
                                 },
                             }}
-                            placeholder="Name of varriant..."
-                            // readOnly
-                            fullWith
-                            // style="flex-2/4 "
-                        />
-                        {/* <InputForm
-                            label=" Original price"
-                            register={register}
-                            errors={errors}
-                            id="price"
-                            readOnly
-                            fullWith
-                            style="flex-1/4 "
+                            style="flex-auto "
                         />
                         <InputForm
-                            label=" Original color "
+                            label="Quantity varriant"
                             register={register}
                             errors={errors}
-                            id="color"
-                            readOnly
-                            fullWith
-                            style="flex-1/4 "
-                        /> */}
+                            id="quantity"
+                            validate={{
+                                required: 'Quantity cannot be blank !',
+                                pattern: {
+                                    value: /^[^\s]/,
+                                    message:
+                                        'Product price cannot start with a space !',
+                                },
+                            }}
+                            style="flex-auto "
+                            type="number"
+                        />
                     </div>
                     <div className="flex w-full gap-4 my-6">
                         <InputForm
@@ -209,22 +205,7 @@ const CustomizeVarriants = ({
                             placeholder="Price of varriant..."
                             type="number"
                         />
-                        {/* <InputForm
-                            label="Color varriant"
-                            register={register}
-                            errors={errors}
-                            id="color"
-                            validate={{
-                                required: 'Product color cannot be blank !',
-                                pattern: {
-                                    value: /^[^\s]/,
-                                    message:
-                                        'Product color cannot start with a space !',
-                                },
-                            }}
-                            style="flex-auto "
-                            placeholder="Color of varriant..."
-                        /> */}
+
                         <Select
                             label="Color varriant"
                             options={colors?.map((el) => ({
