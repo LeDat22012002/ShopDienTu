@@ -168,7 +168,7 @@ const DetailsProduct = () => {
                     },
                 })
             );
-            toast.success('Đã thêm vào giỏ hàng');
+            toast.success('Added to cart');
         } else {
             toast.error('Something went wrong');
         }

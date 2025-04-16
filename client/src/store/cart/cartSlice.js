@@ -11,6 +11,7 @@ const initialState = {
     isPaid: false,
     paidAt: '',
     isSuccessCart: false,
+    showPreview: false,
 };
 
 export const cartSlice = createSlice({
@@ -29,7 +30,13 @@ export const cartSlice = createSlice({
                 }
             } else {
                 state.cartItems.push(cartItem);
+                state.showPreview = true;
             }
+            state.isSuccessCart = true;
+        },
+
+        hidePreview: (state) => {
+            state.showPreview = false;
         },
 
         increase: (state, action) => {
@@ -124,5 +131,6 @@ export const {
     removeCart,
     removeAllProductCart,
     selectedCart,
+    hidePreview,
 } = cartSlice.actions;
 export default cartSlice.reducer;
