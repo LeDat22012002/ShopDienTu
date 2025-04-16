@@ -21,10 +21,12 @@ export const cartSlice = createSlice({
         addCart: (state, action) => {
             const { cartItem } = action.payload;
             const itemCart = state?.cartItems?.find(
-                (item) => item?.product === cartItem.product
+                (item) =>
+                    item?.product === cartItem.product &&
+                    item?.sku === cartItem.sku
             );
             if (itemCart) {
-                if (itemCart.count <= cartItem.quantity) {
+                if (itemCart.count + cartItem.count <= cartItem.quantity) {
                     itemCart.count += cartItem?.count;
                     state.isSuccessCart = true;
                 }
@@ -40,63 +42,45 @@ export const cartSlice = createSlice({
         },
 
         increase: (state, action) => {
-            const { pid } = action.payload;
-            const itemCart = state?.cartItems?.find(
-                (item) => item?.product === pid
+            const { pid, sku } = action.payload;
+            const itemCart = state.cartItems.find(
+                (item) => item.product === pid && item.sku === sku
             );
-            const itemCartSelected = state?.productsSelected?.find(
-                (item) => item?.product === pid
-            );
-            itemCart.count++;
-            if (itemCartSelected) {
-                itemCartSelected.count++;
-            }
+            if (itemCart && itemCart.count < itemCart.quantity)
+                itemCart.count++;
         },
         decrease: (state, action) => {
-            const { pid } = action.payload;
-            const itemCart = state?.cartItems?.find(
-                (item) => item?.product === pid
+            const { pid, sku } = action.payload;
+            const itemCart = state.cartItems.find(
+                (item) => item.product === pid && item.sku === sku
             );
-            const itemCartSelected = state?.productsSelected?.find(
-                (item) => item?.product === pid
-            );
-            itemCart.count--;
-            if (itemCartSelected) {
-                itemCartSelected.amount--;
-            }
+            if (itemCart && itemCart.count > 1) itemCart.count--;
         },
         removeCart: (state, action) => {
-            const { pid } = action.payload;
-            const itemCart = state?.cartItems?.filter(
-                (item) => item?.product !== pid
+            const { pid, sku } = action.payload;
+            state.cartItems = state.cartItems.filter(
+                (item) => !(item.product === pid && item.sku === sku)
             );
-            const itemCartSelected = state?.productsSelected?.filter(
-                (item) => item?.product !== pid
+            state.productsSelected = state.productsSelected.filter(
+                (item) => !(item.product === pid && item.sku === sku)
             );
-            // console.log(' removeOrderProduct', { idProduct, itemOrder });
-            state.cartItems = itemCart;
-            state.productsSelected = itemCartSelected;
         },
+
         removeAllProductCart: (state, action) => {
             const { listChecked } = action.payload;
-            const itemCarts = state?.cartItems?.filter(
-                (item) => !listChecked.includes(item?.product)
+            state.cartItems = state.cartItems.filter(
+                (item) => !listChecked.includes(`${item.product}_${item.sku}`)
             );
-            const itemCartsSelected = state?.cartItems?.filter(
-                (item) => !listChecked.includes(item?.product)
+            state.productsSelected = state.productsSelected.filter(
+                (item) => !listChecked.includes(`${item.product}_${item.sku}`)
             );
-            // console.log(' removeOrderProduct', { idProduct, itemOrder });
-            state.cartItems = itemCarts;
-            state.productsSelected = itemCartsSelected;
         },
+
         selectedCart: (state, action) => {
             const { listChecked } = action.payload;
-            const cartSelected = [];
-            state.cartItems.forEach((cart) => {
-                if (listChecked.includes(cart.product)) {
-                    cartSelected.push(cart);
-                }
-            });
+            const cartSelected = state.cartItems.filter((cart) =>
+                listChecked.includes(`${cart.product}_${cart.sku}`)
+            );
             state.productsSelected = cartSelected;
         },
     },

@@ -50,6 +50,13 @@ const DetailsProduct = () => {
         price: 0,
         color: '',
     });
+
+    const [selectedImg, setSelectedImg] = useState(currentProduct?.thumb);
+
+    const handleClickImage = (e, img) => {
+        setCurrentImg(img);
+        setSelectedImg(img); // để hiển thị border
+    };
     const fetchProductData = async () => {
         const response = await apiGetDetailsProduct(pid);
         // console.log(response);
@@ -75,20 +82,30 @@ const DetailsProduct = () => {
 
     useEffect(() => {
         if (varriant) {
+            const selected = product?.varriants?.find(
+                (el) => el?.sku === varriant
+            );
+            if (selected) {
+                setCurrentProduct({
+                    title: selected.title,
+                    color: selected.color,
+                    price: selected.price,
+                    images: selected.images,
+                    thumb: selected.thumb,
+                });
+                setCurrentImg(selected.thumb || selected.images?.[0]); // Cập nhật ảnh chính
+            }
+        } else {
             setCurrentProduct({
-                title: product?.varriants?.find((el) => el?.sku === varriant)
-                    ?.title,
-                color: product?.varriants?.find((el) => el?.sku === varriant)
-                    ?.color,
-                price: product?.varriants?.find((el) => el?.sku === varriant)
-                    ?.price,
-                images: product?.varriants?.find((el) => el?.sku === varriant)
-                    ?.images,
-                thumb: product?.varriants?.find((el) => el?.sku === varriant)
-                    ?.thumb,
+                title: product?.title,
+                color: product?.color,
+                price: product?.price,
+                images: product?.images,
+                thumb: product?.thumb,
             });
+            setCurrentImg(product?.thumb || product?.images?.[0]); // Reset lại ảnh chính
         }
-    }, [varriant]);
+    }, [varriant, product]);
 
     useEffect(() => {
         if (pid) {
@@ -140,39 +157,79 @@ const DetailsProduct = () => {
         [quantity, product?.quantity]
     );
 
-    const handleClickImage = (e, el) => {
-        e.stopPropagation();
-        setCurrentImg(el);
-    };
+    // const handleClickImage = (e, el) => {
+    //     e.stopPropagation();
+    //     setCurrentImg(el);
+    // };
     // console.log(currentProduct?.price);
 
     // Add to Card
+    // const handleAddCart = () => {
+    //     const cartRedux = cartItems?.find(
+    //         (item) => item.product === product?._id
+    //     );
+    //     if (
+    //         cartRedux?.count + quantity <= cartRedux?.quantity ||
+    //         (!cartRedux && product?.quantity > 0)
+    //     ) {
+    //         dispatch(
+    //             addCart({
+    //                 cartItem: {
+    //                     title: product?.title,
+    //                     count: quantity,
+    //                     thumb: product?.thumb,
+    //                     price: product?.price,
+    //                     product: product?._id,
+    //                     color: product?.color,
+    //                     quantity: product?.quantity,
+    //                 },
+    //             })
+    //         );
+    //         toast.success('Added to cart');
+    //     } else {
+    //         toast.error('Something went wrong');
+    //     }
+    // };
     const handleAddCart = () => {
+        const selectedSku = varriant || 'default';
+        const selectedVariant =
+            product?.varriants?.find((el) => el?.sku === varriant) || null;
+
+        const price = selectedVariant?.price || product?.price;
+        const thumb = selectedVariant?.thumb || product?.thumb;
+        const color = selectedVariant?.color || product?.color;
+        const title = selectedVariant?.title || product?.title;
+        const quantityInStock =
+            selectedVariant?.quantity || product?.quantity || 0;
+
         const cartRedux = cartItems?.find(
-            (item) => item.product === product?._id
+            (item) => item.product === product?._id && item?.sku === selectedSku
         );
+
         if (
-            cartRedux?.count + quantity <= cartRedux?.quantity ||
-            (!cartRedux && product?.quantity > 0)
+            cartRedux?.count + quantity <= quantityInStock ||
+            (!cartRedux && quantity <= quantityInStock)
         ) {
             dispatch(
                 addCart({
                     cartItem: {
-                        title: product?.title,
-                        count: quantity,
-                        thumb: product?.thumb,
-                        price: product?.price,
                         product: product?._id,
-                        color: product?.color,
-                        quantity: product?.quantity,
+                        sku: selectedSku,
+                        title,
+                        thumb,
+                        color,
+                        price,
+                        count: quantity,
+                        quantity: quantityInStock,
                     },
                 })
             );
             toast.success('Added to cart');
         } else {
-            toast.error('Something went wrong');
+            toast.error('Quantity exceeds inventory level!');
         }
     };
+
     return (
         <div className="w-full ">
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
@@ -187,14 +244,14 @@ const DetailsProduct = () => {
                 </div>
             </div>
             <div className="flex gap-4 m-auto mt-4 w-main">
-                <div className="flex flex-col w-2/5 gap-4">
-                    <div className="h-[458px] w-[450px] border flex items-center justify-center  border-gray-500">
+                <div className="flex flex-col w-[458px] gap-4">
+                    <div className="h-[458px] w-[458px] border flex items-center justify-center border-gray-500">
                         <Zoom>
                             <img
-                                src={currentProduct?.thumb || currentImg}
+                                src={currentImg || currentProduct?.thumb}
                                 alt="product"
-                                className="h-[400px] w-[400px] object-cover  "
-                            ></img>
+                                className="h-[400px] w-[400px] object-cover"
+                            />
                         </Zoom>
                     </div>
 
@@ -203,38 +260,37 @@ const DetailsProduct = () => {
                             className="flex gap-2 imageSlider"
                             {...settings}
                         >
-                            {currentProduct?.images?.length === 0 &&
-                                product?.images?.map((el) => (
-                                    <div className="flex-1" key={el}>
-                                        <img
-                                            onClick={(e) =>
-                                                handleClickImage(e, el)
-                                            }
-                                            src={el}
-                                            alt="itemImg"
-                                            className="h-[143px] w-[143px] object-cover border  border-gray-500 cursor-pointer"
-                                        ></img>
-                                    </div>
-                                ))}
-                            {currentProduct?.images?.length > 0 &&
-                                currentProduct?.images?.map((el, index) => (
-                                    <div className="flex-1" key={index}>
-                                        <img
-                                            onClick={(e) =>
-                                                handleClickImage(e, el)
-                                            }
-                                            src={el}
-                                            alt="itemImg"
-                                            className="h-[143px] w-[143px] object-cover border  border-gray-200 cursor-pointer"
-                                        ></img>
-                                    </div>
-                                ))}
+                            {(currentProduct?.images?.length === 0
+                                ? product?.images
+                                : currentProduct?.images
+                            )?.map((el, index) => (
+                                <div
+                                    key={index}
+                                    className="w-[143px] h-[143px] px-1"
+                                >
+                                    <img
+                                        onClick={(e) => handleClickImage(e, el)}
+                                        src={el}
+                                        alt="itemImg"
+                                        className={`
+                        h-full w-full object-cover cursor-pointer border-2
+                        ${
+                            selectedImg === el
+                                ? 'border-blue-500'
+                                : 'border-gray-200'
+                        }
+                        rounded-md transition
+                    `}
+                                    />
+                                </div>
+                            ))}
                         </Slider>
                     </div>
                 </div>
+
                 <div className="flex flex-col w-2/5 gap-3 ">
-                    <h2 className="text-xl font-semibold text-gray-800">
-                        {product?.title}
+                    <h2 className="text-xl w-[500px] font-semibold text-gray-800 truncate">
+                        {currentProduct?.title || product?.title}
                     </h2>
 
                     <h2 className="text-3xl font-bold text-red-500">

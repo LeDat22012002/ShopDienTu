@@ -10,13 +10,15 @@ import {
     removeCart,
     selectedCart,
 } from '../../store/cart/cartSlice';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import path from '../../ultils/path';
+import { Breadcrumb } from '../../components';
 
 const { ImBin } = icons;
 const YourCart = () => {
     const { cartItems } = useSelector((state) => state.cart);
     const cart = useSelector((state) => state.cart);
+    const location = useLocation();
     // console.log(cart.productsSelected);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -28,22 +30,19 @@ const YourCart = () => {
 
     //Checkbox
     const onChange = (e) => {
-        if (listChecked.includes(e.target.value)) {
-            const newListChecked = listChecked.filter(
-                (item) => item !== e.target.value
-            );
-            setListChecked(newListChecked);
+        const value = e.target.value;
+        if (listChecked.includes(value)) {
+            setListChecked(listChecked.filter((item) => item !== value));
         } else {
-            setListChecked([...listChecked, e.target.value]);
+            setListChecked([...listChecked, value]);
         }
     };
 
     const handleOnchangeCheckAll = (e) => {
         if (e.target.checked) {
-            const newListChecked = [];
-            cartItems?.forEach((item) => {
-                newListChecked.push(item?.product);
-            });
+            const newListChecked = cartItems.map(
+                (item) => `${item.product}_${item.sku}`
+            );
             setListChecked(newListChecked);
         } else {
             setListChecked([]);
@@ -62,8 +61,8 @@ const YourCart = () => {
         }
     };
     // Delete Cart
-    const handleDeleteCart = (pid) => {
-        dispatch(removeCart({ pid }));
+    const handleDeleteCart = (pid, sku) => {
+        dispatch(removeCart({ pid, sku }));
     };
 
     const handleRemoveAllCart = () => {
@@ -86,9 +85,16 @@ const YourCart = () => {
     }, [temporaryPrice]);
 
     return (
-        <div className="py-6 mt-4 w-main">
+        <div className="w-full">
+            <div className="h-[81px] flex justify-center items-center bg-gray-100">
+                <div className="w-main">
+                    <h3 className="font-semibold uppercase">My cart</h3>
+                    <Breadcrumb category={location?.pathname} />
+                </div>
+            </div>
+
             {cartItems.length === 0 ? (
-                <div className="flex flex-col items-center justify-center gap-4 py-10 bg-white shadow rounded-xl">
+                <div className="flex flex-col items-center justify-center gap-4 py-10 mx-auto bg-white w-main ">
                     <img
                         src={noCart}
                         alt="Giỏ hàng trống"
@@ -105,11 +111,11 @@ const YourCart = () => {
                     </div>
                 </div>
             ) : (
-                <div className="grid w-full grid-cols-1 lg:grid-cols-3 bg-gray-50">
+                <div className="flex flex-col items-start gap-2 mx-auto my-8 lg:flex-row w-main bg-gray-50">
                     {/* Danh sách sản phẩm */}
-                    <div className="w-full p-4 bg-white shadow rounded-xl lg:col-span-2">
+                    <div className="w-full p-4 bg-white border border-gray-200 rounded-md shadow lg:w-2/3">
                         {/* Header */}
-                        <div className="flex items-center pb-3 mb-3 border-b">
+                        <div className="flex items-center justify-center pb-3 mb-3 border-b border-gray-200">
                             <input
                                 type="checkbox"
                                 className="w-5 h-5 mr-2"
@@ -137,27 +143,31 @@ const YourCart = () => {
 
                         {/* Sản phẩm */}
                         {cartItems?.length > 0 &&
-                            cartItems.map((el) => (
+                            cartItems.map((el, index) => (
                                 <div
                                     key={el?.product}
-                                    className="flex flex-col items-center gap-4 py-4 border-b md:flex-row"
+                                    className={`flex flex-col items-center justify-center gap-4 py-4 md:flex-row ${
+                                        index !== cartItems.length - 1
+                                            ? 'border-b border-gray-200'
+                                            : ''
+                                    }`}
                                 >
-                                    <div className="flex items-center w-[258px] ">
+                                    <div className="flex items-center justify-center w-[258px] ">
                                         <input
                                             type="checkbox"
                                             className="w-5 h-5 mr-3"
                                             onChange={onChange}
-                                            value={el?.product}
+                                            value={`${el.product}_${el.sku}`}
                                             checked={listChecked.includes(
-                                                el?.product
+                                                `${el.product}_${el.sku}`
                                             )}
                                         />
                                         <img
                                             src={el?.thumb}
                                             alt="thumb"
-                                            className="object-contain mr-3 rounded w-14 h-14"
+                                            className="object-cover mr-3 w-14 h-14"
                                         />
-                                        <div className="font-medium w-[200px] ">
+                                        <div className="flex items-center font-medium w-[200px] ">
                                             {el?.title}
                                         </div>
                                     </div>
@@ -206,7 +216,10 @@ const YourCart = () => {
 
                                         <button
                                             onClick={() =>
-                                                handleDeleteCart(el?.product)
+                                                handleDeleteCart(
+                                                    el?.product,
+                                                    el?.sku
+                                                )
                                             }
                                             className="flex items-center justify-center text-gray-500 hover:text-red-600"
                                         >
@@ -218,11 +231,11 @@ const YourCart = () => {
                     </div>
 
                     {/* Thanh toán */}
-                    <div className="p-4 bg-white shadow rounded-xl">
+                    <div className="w-full p-4 bg-white border border-gray-200 rounded-md shadow lg:w-1/3">
                         <div className="mb-2">
                             <span className="text-gray-600">
                                 Địa chỉ nhận hàng:
-                            </span>{' '}
+                            </span>
                             <span className="font-medium">_</span>
                         </div>
                         <div className="flex justify-between pt-2 mt-2 text-sm border-t">
@@ -246,7 +259,6 @@ const YourCart = () => {
                     </div>
                 </div>
             )}
-            {/* <h2 className="mb-4 text-xl font-semibold">Giỏ Hàng</h2> */}
         </div>
     );
 };

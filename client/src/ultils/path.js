@@ -12,7 +12,7 @@ const path = {
     RESET_PASSWORD: 'reset-password/:token',
     PROFILE: 'profile/:token',
     PROFILE_FB: 'profile_fb/:token',
-    CART: 'your_cart',
+    CART: 'my-cart',
 
     // ADMIN
     ADMIN: 'admin',

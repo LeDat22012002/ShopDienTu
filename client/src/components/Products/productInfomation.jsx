@@ -8,7 +8,7 @@ import { showModal } from '../../store/app/appSlice';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import path from '../../ultils/path';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
 
 const ProductInfomation = ({
     totalRatings,
@@ -19,6 +19,7 @@ const ProductInfomation = ({
 }) => {
     const [activeTab, setActiveTab] = useState(1);
     const dispatch = useDispatch();
+    const location = useLocation();
     const { isLoggedIn } = useSelector((state) => state.user);
 
     const navigate = useNavigate();
@@ -41,7 +42,12 @@ const ProductInfomation = ({
                 showCancelButton: true,
             }).then((rs) => {
                 if (rs.isConfirmed) {
-                    navigate(`/${path.LOGIN}`);
+                    navigate({
+                        pathname: `/${path.LOGIN}`,
+                        search: createSearchParams({
+                            redirect: location?.pathname,
+                        }).toString(),
+                    });
                 }
             });
         } else {

@@ -8,7 +8,7 @@ import {
     apiForgotPassword,
     apiFinalRegister,
 } from '../../apis/user';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import path from '../../ultils/path';
 import Swal from 'sweetalert2';
 import { login } from '../../store/user/userSlice';
@@ -22,6 +22,8 @@ const Login = () => {
     const { FcGoogle, FaFacebook } = icons;
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
+    console.log(searchParams.get('redirect'));
     // const location = useLocation();
     // console.log(location);
     const [payload, setPayload] = useState({
@@ -99,7 +101,9 @@ const Login = () => {
                             userData: rs.userData,
                         })
                     );
-                    navigate(`/${path.HOME}`);
+                    searchParams.get('redirect')
+                        ? navigate(searchParams.get('redirect'))
+                        : navigate(`/${path.HOME}`);
                     toast.success('Login with account successfully !');
                 } else {
                     Swal.fire('Oops!', rs.mess, 'error');
