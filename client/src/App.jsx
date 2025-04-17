@@ -28,6 +28,8 @@ import {
     ManageCategory,
     CreateColor,
     ManageColor,
+    CreatePromotion,
+    ManagePromotion,
 } from './pages/admin';
 import {
     Personal,
@@ -78,6 +80,14 @@ function App() {
                     <Route path={path.ALL} element={<Home />} />
                 </Route>
                 <Route path={path.ADMIN} element={<AdminLayout />}>
+                    <Route
+                        path={path.CREATE_PROMOTION}
+                        element={<CreatePromotion />}
+                    />
+                    <Route
+                        path={path.MANAGE_PROMOTION}
+                        element={<ManagePromotion />}
+                    />
                     <Route path={path.CREATE_COLOR} element={<CreateColor />} />
                     <Route path={path.MANAGE_COLOR} element={<ManageColor />} />
                     <Route path={path.CREATE_BRAND} element={<CreateBrand />} />

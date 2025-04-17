@@ -133,6 +133,22 @@ export const adminSidebar = [
             },
         ],
     },
+    {
+        id: 8,
+        type: 'PARENT',
+        text: 'Promotion',
+        icon: <MdOutlineColorLens size={20} />,
+        submenu: [
+            {
+                text: 'Create promotion',
+                path: `/${path.ADMIN}/${path.CREATE_PROMOTION}`,
+            },
+            {
+                text: 'Manage promotions',
+                path: `/${path.ADMIN}/${path.MANAGE_PROMOTION}`,
+            },
+        ],
+    },
 ];
 
 export const memberSidebar = [

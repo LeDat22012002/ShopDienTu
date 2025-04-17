@@ -13,6 +13,8 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import path from '../../ultils/path';
 import { Breadcrumb } from '../../components';
+import { apiGetAllPromotions, applyPromotionCode } from '../../apis';
+import { toast } from 'react-toastify';
 
 const { ImBin } = icons;
 const YourCart = () => {
@@ -23,6 +25,58 @@ const YourCart = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [listChecked, setListChecked] = useState([]);
+
+    // Promotion
+    const [promotions, setPromotions] = useState([]);
+    const [selectedPromo, setSelectedPromo] = useState(null);
+    const [discountAmount, setDiscountAmount] = useState(0);
+
+    // API Promotions
+    const fetchPromotions = async () => {
+        const rsPromotions = await apiGetAllPromotions();
+        if (rsPromotions.success) {
+            setPromotions(rsPromotions?.promotions);
+        }
+    };
+    useEffect(() => {
+        fetchPromotions();
+    }, []);
+    // Tạm tính
+    const temporaryPrice = useMemo(() => {
+        const result = cart?.productsSelected?.reduce((total, cur) => {
+            return total + cur.price * cur.count;
+        }, 0);
+        return result;
+    }, [cart]);
+
+    useEffect(() => {
+        if (!selectedPromo) {
+            setDiscountAmount(0);
+            return;
+        }
+
+        if (listChecked.length === 0) {
+            toast.warning('Please select a product!');
+            setDiscountAmount(0);
+            return;
+        }
+
+        const applyPromotion = async () => {
+            const res = await applyPromotionCode({
+                code: selectedPromo,
+                orderValue: temporaryPrice,
+            });
+            if (res.success) {
+                toast.success(res.mess);
+                setDiscountAmount(res.discountAmount);
+            } else {
+                toast.error(res.mess);
+                setDiscountAmount(0);
+            }
+        };
+        applyPromotion();
+    }, [selectedPromo, temporaryPrice, listChecked]);
+
     // Lấy danh product đc check
     useEffect(() => {
         dispatch(selectedCart({ listChecked }));
@@ -72,19 +126,10 @@ const YourCart = () => {
         }
     };
 
-    // Tạm tính
-    const temporaryPrice = useMemo(() => {
-        const result = cart?.productsSelected?.reduce((total, cur) => {
-            return total + cur.price * cur.count;
-        }, 0);
-        return result;
-    }, [cart]);
-
     // Tổng
     const totalPrice = useMemo(() => {
-        return Number(temporaryPrice);
-    }, [temporaryPrice]);
-
+        return temporaryPrice - discountAmount;
+    }, [temporaryPrice, discountAmount]);
     return (
         <div className="w-full">
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
@@ -146,7 +191,7 @@ const YourCart = () => {
                         {cartItems?.length > 0 &&
                             cartItems.map((el, index) => (
                                 <div
-                                    key={el?.product}
+                                    key={`${el?.product}_${el?.sku}`}
                                     className={`flex flex-col items-center justify-center gap-4 py-4 md:flex-row ${
                                         index !== cartItems.length - 1
                                             ? 'border-b border-gray-200'
@@ -235,18 +280,49 @@ const YourCart = () => {
 
                     {/* Thanh toán */}
                     <div className="w-full p-4 bg-white border border-gray-200 rounded-md shadow lg:w-1/3">
-                        <div className="mb-2">
+                        {/* <div className="mb-2">
                             <span className="text-gray-600">
                                 Địa chỉ nhận hàng:
                             </span>
                             <span className="font-medium">_</span>
+                        </div> */}
+                        <div className="mt-1">
+                            <label className="text-[16px] font-medium">
+                                Chọn mã khuyến mãi:
+                            </label>
+                            <select
+                                className="w-full p-2 mt-1 border border-gray-300 rounded"
+                                onChange={(e) =>
+                                    setSelectedPromo(e.target.value)
+                                }
+                                value={selectedPromo || ''}
+                            >
+                                <option value="">-- Chọn mã --</option>
+                                {promotions?.map((promo) => (
+                                    <option key={promo._id} value={promo.code}>
+                                        {promo?.description}
+                                        {/* {promo?.discountType === 'fixed'
+                                            ? `${formatMoney(
+                                                  promo?.discountValue
+                                              )} VNĐ`
+                                            : `${promo?.discountValue}%`} */}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
-                        <div className="flex justify-between pt-2 mt-2 text-sm border-t">
+                        <div className="flex justify-between pt-2 mt-2 text-[16px] font-medium ">
                             <span>Tạm tính</span>
                             <span className="font-semibold">
                                 {formatMoney(temporaryPrice)} VNĐ
                             </span>
                         </div>
+                        {/* Hiển thị giá giảm nếu có */}
+                        {discountAmount > 0 && (
+                            <div className="flex justify-between mt-2 text-[16px] text-green-500">
+                                <span>Giảm giá</span>
+                                <span>{formatMoney(discountAmount)} VNĐ</span>
+                            </div>
+                        )}
                         <div className="flex justify-between mt-4 text-lg font-semibold">
                             <span>Tổng tiền</span>
                             <span className="text-red-500">

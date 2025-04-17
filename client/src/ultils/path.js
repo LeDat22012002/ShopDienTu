@@ -27,6 +27,8 @@ const path = {
     MANAGE_CATEGORY: 'manage-category',
     CREATE_COLOR: 'create-color',
     MANAGE_COLOR: 'manage-color',
+    CREATE_PROMOTION: 'create-promotion',
+    MANAGE_PROMOTION: 'manage-promotion',
 
     //MEMBER
     MEMBER: 'member',
