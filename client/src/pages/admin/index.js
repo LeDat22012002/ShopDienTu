@@ -16,3 +16,4 @@ export { default as ManageColor } from './ManageColor';
 export { default as UpdateColor } from './UpdateColor';
 export { default as CreatePromotion } from './CreatePromotion';
 export { default as ManagePromotion } from './ManagePromotion';
+export { default as UpdatePromotion } from './UpdatePromotion';

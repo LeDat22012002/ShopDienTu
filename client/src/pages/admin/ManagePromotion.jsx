@@ -11,8 +11,8 @@ import UseDebouce from '../../hooks/useDebouce';
 import Swal from 'sweetalert2';
 // import { toast } from 'react-toastify';
 import icons from '../../ultils/icons';
-import { apiGetAllPromotions, apiDeleteBrand } from '../../apis';
-import { UpdateBrand } from '.';
+import { apiGetAllPromotions, apiDeletePromotion } from '../../apis';
+import { UpdatePromotion } from '.';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { formatMoney } from '../../ultils/helpers';
@@ -72,8 +72,8 @@ const ManagePromotion = () => {
         fetchPromotions(searchParams);
     }, [params, update]);
 
-    // Delete Product
-    const handleDeleteBrand = (brid) => {
+    // Delete Promotion
+    const handleDeletePromotion = (prid) => {
         Swal.fire({
             title: 'Are you sure...?',
             text: 'Are you sure remove this promotion ? ',
@@ -81,7 +81,7 @@ const ManagePromotion = () => {
             showCancelButton: true,
         }).then(async (rs) => {
             if (rs.isConfirmed) {
-                const responseDelete = await apiDeleteBrand(brid);
+                const responseDelete = await apiDeletePromotion(prid);
                 if (responseDelete.success) {
                     toast.success(responseDelete.mess);
                 } else {
@@ -95,10 +95,10 @@ const ManagePromotion = () => {
         <div className="relative flex flex-col w-full">
             {editPromotion && (
                 <div className="absolute inset-0 z-50 min-h-screen bg-gray-100">
-                    <UpdateBrand
-                        editBrand={editPromotion}
+                    <UpdatePromotion
+                        editPromotion={editPromotion}
                         render={render}
-                        setEditBrand={setEditPromotion}
+                        setEditPromotion={setEditPromotion}
                     />
                 </div>
             )}
@@ -196,7 +196,7 @@ const ManagePromotion = () => {
 
                                         <span
                                             onClick={() =>
-                                                handleDeleteBrand(el?._id)
+                                                handleDeletePromotion(el?._id)
                                             }
                                             className="text-red-500 cursor-pointer hover:underline hover:text-red-900 "
                                         >

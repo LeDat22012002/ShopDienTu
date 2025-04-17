@@ -14,6 +14,7 @@ import {
     Profile,
     ProfileFb,
     YourCart,
+    Payment,
 } from './pages/public';
 import {
     AdminLayout,
@@ -76,6 +77,7 @@ function App() {
                     <Route path={path.OUR_SERVICES} element={<Services />} />
                     <Route path={path.PRODUCTS} element={<Products />} />
                     <Route path={path.CART} element={<YourCart />} />
+                    <Route path={path.PAYMENT} element={<Payment />} />
                     <Route path={path.FAQ} element={<FAQs />} />
                     <Route path={path.ALL} element={<Home />} />
                 </Route>

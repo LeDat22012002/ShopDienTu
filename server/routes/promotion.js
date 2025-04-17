@@ -8,7 +8,7 @@ router.post(
     PromoCtrl.createPromotion
 );
 router.put(
-    '/updatePromotion/prid:',
+    '/updatePromotion/:prid',
     [verifyAccessToken, isAdmin],
     PromoCtrl.updatePromotion
 );
@@ -22,6 +22,6 @@ router.get('/allPromotion', PromoCtrl.getAllPromotions);
 router.get('/code/:code', PromoCtrl.getPromotionByCode);
 
 // API dành cho khách hàng dùng mã giảm giá
-router.post('/applyPromotion', verifyAccessToken, PromoCtrl.applyPromotion);
+router.post('/applyPromotion', PromoCtrl.applyPromotion);
 
 module.exports = router;

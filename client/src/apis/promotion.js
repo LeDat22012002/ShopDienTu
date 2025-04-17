@@ -20,3 +20,15 @@ export const applyPromotionCode = (data) =>
         method: 'post',
         data,
     });
+export const apiDeletePromotion = (prid) =>
+    axios({
+        url: '/promotion/deletePromotion/' + prid,
+        method: 'delete',
+    });
+
+export const apiUpdatePromotion = (data, prid) =>
+    axios({
+        url: '/promotion/updatePromotion/' + prid,
+        method: 'put',
+        data,
+    });

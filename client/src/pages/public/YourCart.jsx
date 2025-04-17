@@ -10,16 +10,17 @@ import {
     removeCart,
     selectedCart,
 } from '../../store/cart/cartSlice';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import path from '../../ultils/path';
 import { Breadcrumb } from '../../components';
 import { apiGetAllPromotions, applyPromotionCode } from '../../apis';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const { ImBin } = icons;
 const YourCart = () => {
-    const { cartItems } = useSelector((state) => state.cart);
-    const cart = useSelector((state) => state.cart);
+    const { cartItems, productsSelected } = useSelector((state) => state.cart);
+    const { isLoggedIn } = useSelector((state) => state.user);
     const location = useLocation();
     // console.log(cart.productsSelected);
     const dispatch = useDispatch();
@@ -41,14 +42,15 @@ const YourCart = () => {
     useEffect(() => {
         fetchPromotions();
     }, []);
-    // Tạm tính
     const temporaryPrice = useMemo(() => {
-        const result = cart?.productsSelected?.reduce((total, cur) => {
-            return total + cur.price * cur.count;
+        return cartItems.reduce((total, item) => {
+            const key = `${item.product}_${item.sku}`;
+            if (listChecked.includes(key)) {
+                return total + item.price * item.count;
+            }
+            return total;
         }, 0);
-        return result;
-    }, [cart]);
-
+    }, [cartItems, listChecked]);
     useEffect(() => {
         if (!selectedPromo) {
             setDiscountAmount(0);
@@ -130,6 +132,40 @@ const YourCart = () => {
     const totalPrice = useMemo(() => {
         return temporaryPrice - discountAmount;
     }, [temporaryPrice, discountAmount]);
+
+    // handle qua trang thanh toán
+    const handleCheckout = () => {
+        // Chưa chọn sản phẩm
+        if (!productsSelected?.length) {
+            toast.error('Vui lòng chọn sản phẩm!');
+            return;
+        }
+
+        // Chưa đăng nhập
+        if (!isLoggedIn) {
+            Swal.fire({
+                title: 'Oops!',
+                text: 'Bạn cần đăng nhập để thanh toán',
+                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Đăng nhập',
+                showCancelButton: true,
+            }).then((rs) => {
+                if (rs.isConfirmed) {
+                    navigate({
+                        pathname: `/${path.LOGIN}`,
+                        search: createSearchParams({
+                            redirect: location?.pathname,
+                        }).toString(),
+                    });
+                }
+            });
+            return;
+        }
+
+        // Điều kiện hợp lệ, điều hướng đến thanh toán
+        navigate(`/${path.PAYMENT}`);
+    };
+
     return (
         <div className="w-full">
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
@@ -147,13 +183,13 @@ const YourCart = () => {
                         className="w-[100px] h-[80px] object-cover"
                     />
                     <span className="text-gray-600">
-                        Chưa có sản phẩm nào trong giỏ hàng
+                        There are no products in the cart yet
                     </span>
                     <div
                         onClick={() => navigate(`/${path.PRODUCTS}`)}
                         className="px-4 py-2 text-white transition rounded bg-main hover:bg-red-600"
                     >
-                        Mua sắm ngay
+                        Shop now
                     </div>
                 </div>
             ) : (
@@ -171,18 +207,18 @@ const YourCart = () => {
                                 }
                             />
                             <span className="font-medium">
-                                Tất cả ({cartItems?.length} sản phẩm)
+                                All ({cartItems?.length} product)
                             </span>
                             <div className="hidden md:grid grid-cols-5 gap-4 ml-auto w-[65%] text-sm font-semibold text-center text-gray-600">
                                 <span>Color</span>
-                                <span>Đơn giá</span>
-                                <span>Số lượng</span>
-                                <span>Thành tiền</span>
+                                <span>Unit price</span>
+                                <span>Quantity</span>
+                                <span> Money</span>
                                 <span
                                     className="hover:cursor-pointer hover:text-main"
                                     onClick={handleRemoveAllCart}
                                 >
-                                    Xóa
+                                    Remove
                                 </span>
                             </div>
                         </div>
@@ -288,7 +324,7 @@ const YourCart = () => {
                         </div> */}
                         <div className="mt-1">
                             <label className="text-[16px] font-medium">
-                                Chọn mã khuyến mãi:
+                                Chose code promotion:
                             </label>
                             <select
                                 className="w-full p-2 mt-1 border border-gray-300 rounded"
@@ -297,7 +333,7 @@ const YourCart = () => {
                                 }
                                 value={selectedPromo || ''}
                             >
-                                <option value="">-- Chọn mã --</option>
+                                <option value="">-- Chose code --</option>
                                 {promotions?.map((promo) => (
                                     <option key={promo._id} value={promo.code}>
                                         {promo?.description}
@@ -311,7 +347,7 @@ const YourCart = () => {
                             </select>
                         </div>
                         <div className="flex justify-between pt-2 mt-2 text-[16px] font-medium ">
-                            <span>Tạm tính</span>
+                            <span>Temporary price</span>
                             <span className="font-semibold">
                                 {formatMoney(temporaryPrice)} VNĐ
                             </span>
@@ -319,21 +355,24 @@ const YourCart = () => {
                         {/* Hiển thị giá giảm nếu có */}
                         {discountAmount > 0 && (
                             <div className="flex justify-between mt-2 text-[16px] text-green-500">
-                                <span>Giảm giá</span>
+                                <span>Promotion</span>
                                 <span>{formatMoney(discountAmount)} VNĐ</span>
                             </div>
                         )}
                         <div className="flex justify-between mt-4 text-lg font-semibold">
-                            <span>Tổng tiền</span>
+                            <span>Total price</span>
                             <span className="text-red-500">
                                 {formatMoney(totalPrice)} VNĐ
                             </span>
                         </div>
                         <p className="mt-1 text-sm text-gray-500">
-                            (Đã bao gồm VAT nếu có)
+                            (VAT included if applicable)
                         </p>
-                        <button className="w-full py-2 mt-4 text-white transition bg-red-500 rounded-lg hover:bg-red-600">
-                            Mua hàng
+                        <button
+                            onClick={handleCheckout}
+                            className="w-full py-2 mt-4 text-white transition bg-red-500 rounded-lg hover:bg-red-600"
+                        >
+                            Checkout
                         </button>
                     </div>
                 </div>

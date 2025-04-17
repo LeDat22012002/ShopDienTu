@@ -13,6 +13,7 @@ const path = {
     PROFILE: 'profile/:token',
     PROFILE_FB: 'profile_fb/:token',
     CART: 'my-cart',
+    PAYMENT: 'payment',
 
     // ADMIN
     ADMIN: 'admin',

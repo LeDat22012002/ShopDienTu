@@ -107,6 +107,16 @@ const getPromotionByCode = asyncHandler(async (req, res) => {
 
 const updatePromotion = asyncHandler(async (req, res) => {
     const { prid } = req.params;
+    const { code, discountType, discountValue, startDate, endDate } = req.body;
+    if (!code || !discountType || !discountValue || !startDate || !endDate)
+        throw new Error('Missing required fields');
+    // Kiểm tra mã code đã tồn tại ở một promotion khác chưa
+    const existingPromo = await Promotion.findOne({ code, _id: { $ne: prid } });
+    if (existingPromo) {
+        return res
+            .status(400)
+            .json({ success: false, mess: 'Code already exists!' });
+    }
     const updated = await Promotion.findByIdAndUpdate(prid, req.body, {
         new: true,
     });
