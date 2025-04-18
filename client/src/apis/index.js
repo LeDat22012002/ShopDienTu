@@ -4,3 +4,5 @@ export * from './user';
 export * from './brand';
 export * from './color';
 export * from './promotion';
+export * from './order';
+export * from './payment';

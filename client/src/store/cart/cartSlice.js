@@ -3,13 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     cartItems: [],
     productsSelected: [],
-    userReceives: {},
-    paymentMethod: '',
-    itemsPrice: 0,
-    total: 0,
-    user: '',
-    isPaid: false,
-    paidAt: '',
+    // userReceives: {},
+    // paymentMethod: '',
+    // itemsPrice: 0,
+    // total: 0,
+    // user: '',
+    // isPaid: false,
+    // paidAt: '',
     isSuccessCart: false,
     showPreview: false,
 };
@@ -83,6 +83,9 @@ export const cartSlice = createSlice({
             );
             state.productsSelected = cartSelected;
         },
+        resetCart: (state) => {
+            return { ...initialState };
+        },
     },
     // // Code logic sử lí Async Action
     // extraReducers: (builder) => {
@@ -116,5 +119,6 @@ export const {
     removeAllProductCart,
     selectedCart,
     hidePreview,
+    resetCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -15,6 +15,7 @@ import {
     ProfileFb,
     YourCart,
     Payment,
+    PaymentSuccess,
 } from './pages/public';
 import {
     AdminLayout,
@@ -78,6 +79,10 @@ function App() {
                     <Route path={path.PRODUCTS} element={<Products />} />
                     <Route path={path.CART} element={<YourCart />} />
                     <Route path={path.PAYMENT} element={<Payment />} />
+                    <Route
+                        path={path.PAYMENT_SUCCESS}
+                        element={<PaymentSuccess />}
+                    />
                     <Route path={path.FAQ} element={<FAQs />} />
                     <Route path={path.ALL} element={<Home />} />
                 </Route>
