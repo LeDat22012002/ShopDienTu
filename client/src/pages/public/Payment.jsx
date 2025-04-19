@@ -9,10 +9,16 @@ import {
     applyPromotionCode,
     apiCreateOrder,
     apiCreateMomoPayment,
+    apiCreateVNpayPayment,
 } from '../../apis';
 import { toast } from 'react-toastify';
 import dataGoogleMap from '../../data/data.json';
 import { resetCart } from '../../store/cart/cartSlice';
+import momo from '../../assets/momo.png';
+import vnpay from '../../assets/vnpay.png';
+import paypal from '../../assets/paypal.png';
+import cod from '../../assets/cod.png';
+import zalopay from '../../assets/zalopay.png';
 import path from '../../ultils/path';
 
 const Payment = () => {
@@ -139,14 +145,31 @@ const Payment = () => {
             paymentMethod: data.paymentMethod,
         };
 
+        // Momo Payment
         if (data.paymentMethod === 'momo') {
             const res = await apiCreateMomoPayment(orderData);
+
+            if (res?.success && res?.payUrl) {
+                window.location.href = res.payUrl;
+            } else {
+                toast.error(res?.message || 'Tạo thanh toán Momo thất bại');
+            }
+            return;
+        }
+
+        // Handle VNPay
+        // Thanh toán VNPay
+        if (data.paymentMethod === 'vnpay') {
+            const res = await apiCreateVNpayPayment({
+                ...orderData,
+                paymentMethod: 'vnpay', // đảm bảo phương thức có trong dữ liệu gửi
+            });
+
             if (res?.payUrl) {
                 window.location.href = res.payUrl;
             } else {
-                toast.error('Tạo thanh toán Momo thất bại');
+                toast.error(res?.mess || 'Tạo thanh toán VNPay thất bại');
             }
-
             return;
         }
 
@@ -157,7 +180,7 @@ const Payment = () => {
 
             reset();
             dispatch(resetCart());
-            navigate(`${path.PAYMENT_SUCCESS}`);
+            // navigate(`${path.PAYMENT_SUCCESS}`);
         } else {
             toast.error(response.mess);
         }
@@ -402,6 +425,11 @@ const Payment = () => {
                                         'Vui lòng chọn phương thức thanh toán',
                                 })}
                             />
+                            <img
+                                src={cod}
+                                alt="Cod"
+                                className="object-contain w-6 h-6"
+                            />
                             <span>Thanh toán khi nhận hàng (COD)</span>
                         </label>
 
@@ -410,6 +438,11 @@ const Payment = () => {
                                 type="radio"
                                 value="momo"
                                 {...register('paymentMethod')}
+                            />
+                            <img
+                                src={momo}
+                                alt="Momo"
+                                className="object-contain w-6 h-6"
                             />
                             <span>Thanh toán qua Momo</span>
                         </label>
@@ -420,7 +453,40 @@ const Payment = () => {
                                 value="vnpay"
                                 {...register('paymentMethod')}
                             />
+                            <img
+                                src={vnpay}
+                                alt="VNpay"
+                                className="object-contain w-6 h-6"
+                            />
                             <span>Thanh toán qua VN Pay</span>
+                        </label>
+
+                        <label className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                value="paypal"
+                                {...register('paymentMethod')}
+                            />
+                            <img
+                                src={paypal}
+                                alt="Paypal"
+                                className="object-contain w-6 h-6"
+                            />
+                            <span>Thanh toán qua PayPal</span>
+                        </label>
+
+                        <label className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                value="zalopay"
+                                {...register('paymentMethod')}
+                            />
+                            <img
+                                src={zalopay}
+                                alt="zalopay"
+                                className="object-contain w-6 h-6"
+                            />
+                            <span>Thanh toán qua Zalo Pay</span>
                         </label>
 
                         {errors.paymentMethod && (

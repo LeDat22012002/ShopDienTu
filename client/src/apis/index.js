@@ -6,3 +6,4 @@ export * from './color';
 export * from './promotion';
 export * from './order';
 export * from './payment';
+export * from './vnpay';
