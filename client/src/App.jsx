@@ -16,6 +16,7 @@ import {
     YourCart,
     Payment,
     PaymentSuccess,
+    OrderSuccess,
 } from './pages/public';
 import {
     AdminLayout,
@@ -82,6 +83,10 @@ function App() {
                     <Route
                         path={path.PAYMENT_SUCCESS}
                         element={<PaymentSuccess />}
+                    />
+                    <Route
+                        path={path.ORDER_SUCCESS}
+                        element={<OrderSuccess />}
                     />
                     <Route path={path.FAQ} element={<FAQs />} />
                     <Route path={path.ALL} element={<Home />} />

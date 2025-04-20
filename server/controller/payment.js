@@ -67,7 +67,7 @@ const createMomo = asyncHandler(async (req, res) => {
             await Order.deleteOne({ paymentOrderId: tempOrderId });
             // console.log(`Đơn hàng ${tempOrderId} quá thời gian, đã xóa.`);
         }
-    }, 60 * 1000); // 1 phút
+    }, 60 * 2000); // 2 phút
 
     return res.status(200).json({
         success: true,

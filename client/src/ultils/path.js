@@ -15,6 +15,7 @@ const path = {
     CART: 'my-cart',
     PAYMENT: 'payment',
     PAYMENT_SUCCESS: 'payment-success',
+    ORDER_SUCCESS: 'order-success',
 
     // ADMIN
     ADMIN: 'admin',

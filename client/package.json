@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@paypal/react-paypal-js": "^8.8.3",
     "@reduxjs/toolkit": "^2.6.1",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/vite": "^4.0.14",
     "@tinymce/tinymce-react": "^6.1.0",
     "axios": "^1.8.3",
+    "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
     "dompurify": "^3.2.5",
     "dotenv": "^16.4.7",

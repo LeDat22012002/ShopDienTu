@@ -29,6 +29,19 @@ const createOrder = asyncHandler(async (req, res) => {
             mess: 'Thiếu thông tin người nhận hàng',
         });
     }
+    // Thiết lập các trường theo phương thức thanh toán
+    const isPaypal = paymentMethod === 'paypal';
+    const isPaid = isPaypal;
+    const paidAt = isPaypal ? new Date() : null;
+    const status = isPaypal ? 'CONFIRMED' : 'PENDING';
+    const statusHistory = isPaypal
+        ? [
+              {
+                  status: 'CONFIRMED',
+                  note: 'Thanh toán thành công qua PayPal',
+              },
+          ]
+        : [];
 
     const newOrder = await Order.create({
         products: products.map((item) => ({
@@ -49,6 +62,9 @@ const createOrder = asyncHandler(async (req, res) => {
         discountAmount: discountAmount || 0,
         promotionCode: promotionCode || null,
         orderby: userId,
+        isPaid,
+        status,
+        statusHistory,
     });
 
     return res.status(200).json({

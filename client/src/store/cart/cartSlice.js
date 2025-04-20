@@ -46,15 +46,28 @@ export const cartSlice = createSlice({
             const itemCart = state.cartItems.find(
                 (item) => item.product === pid && item.sku === sku
             );
-            if (itemCart && itemCart.count < itemCart.quantity)
+            if (itemCart && itemCart.count < itemCart.quantity) {
                 itemCart.count++;
+                // Update the productsSelected if needed
+                const selectedItem = state.productsSelected.find(
+                    (item) => item.product === pid && item.sku === sku
+                );
+                if (selectedItem) selectedItem.count++;
+            }
         },
         decrease: (state, action) => {
             const { pid, sku } = action.payload;
             const itemCart = state.cartItems.find(
                 (item) => item.product === pid && item.sku === sku
             );
-            if (itemCart && itemCart.count > 1) itemCart.count--;
+            if (itemCart && itemCart.count > 1) {
+                itemCart.count--;
+                // Update the productsSelected if needed
+                const selectedItem = state.productsSelected.find(
+                    (item) => item.product === pid && item.sku === sku
+                );
+                if (selectedItem) selectedItem.count--;
+            }
         },
         removeCart: (state, action) => {
             const { pid, sku } = action.payload;
@@ -81,8 +94,12 @@ export const cartSlice = createSlice({
             const cartSelected = state.cartItems.filter((cart) =>
                 listChecked.includes(`${cart.product}_${cart.sku}`)
             );
-            state.productsSelected = cartSelected;
+            state.productsSelected = cartSelected.map((item) => ({
+                ...item,
+                count: item.count, // Ensure count is updated
+            }));
         },
+
         resetCart: (state) => {
             return { ...initialState };
         },

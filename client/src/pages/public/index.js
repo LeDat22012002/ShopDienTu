@@ -13,3 +13,4 @@ export { default as ProfileFb } from './ProfileFb';
 export { default as YourCart } from './YourCart';
 export { default as Payment } from './Payment';
 export { default as PaymentSuccess } from './PaymentSuccess';
+export { default as OrderSuccess } from './OrderSuccess';

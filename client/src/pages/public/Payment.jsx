@@ -20,6 +20,7 @@ import paypal from '../../assets/paypal.png';
 import cod from '../../assets/cod.png';
 import zalopay from '../../assets/zalopay.png';
 import path from '../../ultils/path';
+import { PayPalButtons } from '@paypal/react-paypal-js';
 
 const Payment = () => {
     const {
@@ -172,6 +173,19 @@ const Payment = () => {
             }
             return;
         }
+        if (data.paymentMethod === 'paypal') {
+            const response = await apiCreateOrder(orderData);
+            if (response.success) {
+                toast.success(response.mess);
+
+                reset();
+                dispatch(resetCart());
+                navigate(`/${path.ORDER_SUCCESS}`);
+            } else {
+                toast.error(response.mess);
+            }
+            return;
+        }
 
         // COD hoặc khác
         const response = await apiCreateOrder(orderData);
@@ -180,7 +194,7 @@ const Payment = () => {
 
             reset();
             dispatch(resetCart());
-            // navigate(`${path.PAYMENT_SUCCESS}`);
+            navigate(`/${path.ORDER_SUCCESS}`);
         } else {
             toast.error(response.mess);
         }
@@ -496,12 +510,50 @@ const Payment = () => {
                         )}
                     </div>
 
-                    <button
-                        type="submit"
-                        className="w-full py-2 mt-4 text-white transition bg-red-500 rounded-lg hover:bg-red-600"
-                    >
-                        Checkout
-                    </button>
+                    {/* Nút Checkout hoặc PayPal */}
+                    {watch('paymentMethod') === 'paypal' ? (
+                        <PayPalButtons
+                            style={{ layout: 'vertical' }}
+                            createOrder={(data, actions) => {
+                                const VND_TO_USD_RATE = 24000;
+                                const usdPrice = (
+                                    totalPrice / VND_TO_USD_RATE
+                                ).toFixed(2);
+
+                                return actions.order.create({
+                                    purchase_units: [
+                                        {
+                                            amount: {
+                                                currency_code: 'USD',
+                                                value: usdPrice,
+                                            },
+                                        },
+                                    ],
+                                });
+                            }}
+                            onApprove={(data, actions) => {
+                                return actions.order.capture().then(() => {
+                                    handleCheckout(
+                                        {
+                                            ...watch(),
+                                            paymentMethod: 'paypal',
+                                        },
+                                        true
+                                    );
+                                });
+                            }}
+                            onError={(err) => {
+                                toast.error(err);
+                            }}
+                        />
+                    ) : (
+                        <button
+                            type="submit"
+                            className="w-full py-2 mt-4 text-white transition bg-red-500 rounded-lg hover:bg-red-600"
+                        >
+                            Checkout
+                        </button>
+                    )}
                 </div>
             </form>
         </div>
