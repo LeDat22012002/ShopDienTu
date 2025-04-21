@@ -10,6 +10,7 @@ const colorRouter = require('./color');
 const promotionRouter = require('./promotion');
 const paymentRouter = require('./payment');
 const paymentVNpayRouter = require('./paymentVNpay');
+const paymentZalopayRouter = require('./paymentZalopay');
 
 const { notFound, errHandle } = require('../middlewares/errorHandler');
 
@@ -26,6 +27,8 @@ const initRoutes = (app) => {
     app.use('/api/promotion', promotionRouter);
     app.use('/api/payment', paymentRouter);
     app.use('/api/paymentVNpay', paymentVNpayRouter);
+    app.use('/api/paymentVNpay', paymentVNpayRouter);
+    app.use('/api/paymentZalopay', paymentZalopayRouter);
 
     app.use(notFound);
     app.use(errHandle);

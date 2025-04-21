@@ -133,9 +133,9 @@ const Login = () => {
         window.open('http://localhost:5000/api/user/facebook', '_self');
     };
     return (
-        <div className="relative flex items-center justify-center min-h-screen overflow-hidden bg-gray-900">
+        <div className="relative flex items-center justify-center min-h-screen overflow-hidden bg-yellow-200">
             <img
-                className="absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-10"
+                className="absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-80"
                 src={trongdong}
                 alt="trongdong"
             ></img>

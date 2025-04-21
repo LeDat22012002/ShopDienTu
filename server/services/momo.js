@@ -7,7 +7,7 @@ const MOMO_CONFIG = {
     secretKey: 'K951B6PE1waDMi640xX08PD3vg6EkVlz',
     requestType: 'captureWallet',
     redirectUrl: 'http://localhost:5173/payment-success',
-    ipnUrl: 'https://e85e-2405-4802-90f1-ff0-55d6-bb0a-60f0-c5cc.ngrok-free.app/api/payment/momo-ipn',
+    ipnUrl: 'https://e6c4-2405-4802-90f1-ff0-1d3e-fa22-cd76-aea7.ngrok-free.app/api/payment/momo-ipn',
 };
 
 exports.createMomoPayment = async ({ amount, orderId, orderInfo }) => {

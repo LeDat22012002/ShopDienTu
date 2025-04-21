@@ -77,7 +77,7 @@ const createMomo = asyncHandler(async (req, res) => {
 
 const handleMomoIPN = asyncHandler(async (req, res) => {
     const { orderId, resultCode } = req.body;
-    // console.log('dat', orderId, resultCode);
+    console.log('dat', orderId, resultCode);
     if (resultCode === 0) {
         await Order.findOneAndUpdate(
             { paymentOrderId: orderId },

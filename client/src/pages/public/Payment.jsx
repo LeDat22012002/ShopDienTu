@@ -10,6 +10,7 @@ import {
     apiCreateOrder,
     apiCreateMomoPayment,
     apiCreateVNpayPayment,
+    apiCreateZaloPayment,
 } from '../../apis';
 import { toast } from 'react-toastify';
 import dataGoogleMap from '../../data/data.json';
@@ -144,6 +145,7 @@ const Payment = () => {
             discountAmount,
             totalAmount: totalPrice,
             paymentMethod: data.paymentMethod,
+            userId: current._id,
         };
 
         // Momo Payment
@@ -186,7 +188,23 @@ const Payment = () => {
             }
             return;
         }
+        if (data.paymentMethod === 'zalopay') {
+            // Add userReceives as a copy of shippingAddress for ZaloPay
+            orderData.userReceives = { ...orderData.shippingAddress };
 
+            // Now remove shippingAddress to avoid conflicts
+            delete orderData.shippingAddress;
+
+            const res = await apiCreateZaloPayment(orderData);
+
+            if (res?.payUrl) {
+                // Redirect the user to the ZaloPay payment page
+                window.location.href = res.payUrl;
+            } else {
+                toast.error(res?.mess || 'Tạo thanh toán ZaloPay thất bại');
+            }
+            return;
+        }
         // COD hoặc khác
         const response = await apiCreateOrder(orderData);
         if (response.success) {

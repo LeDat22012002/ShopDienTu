@@ -7,3 +7,4 @@ export * from './promotion';
 export * from './order';
 export * from './payment';
 export * from './vnpay';
+export * from './zalopay';
