@@ -77,7 +77,10 @@ function App() {
                         element={<DetailsProduct />}
                     />
                     <Route path={path.OUR_SERVICES} element={<Services />} />
-                    <Route path={path.PRODUCTS} element={<Products />} />
+                    <Route
+                        path={path.PRODUCTS__CATEGORY}
+                        element={<Products />}
+                    />
                     <Route path={path.CART} element={<YourCart />} />
                     <Route path={path.PAYMENT} element={<Payment />} />
                     <Route

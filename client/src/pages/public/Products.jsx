@@ -24,22 +24,6 @@ const breakpointColumnsObj = {
 };
 
 const Products = () => {
-    const slugToTitleMap = {
-        'bo-mach-chu': 'Bo mạch chủ',
-        'tai-nghe': 'Tai nghe',
-        laptop: 'Laptop',
-        'pc-gaming': 'PC Gaming',
-        'ban-phim': 'Bàn phím',
-        chuot: 'Chuột',
-        'man-hinh': 'Màn hình',
-        'card-man-hinh': 'Card màn hình',
-        'vo-may-tinh': 'Vỏ máy tính',
-        ram: 'Ram',
-    };
-
-    const convertSlugToTitle = (slug) => {
-        return slugToTitleMap[slug] || slug;
-    };
     const navigate = useNavigate();
     const { category } = useParams();
     // console.log(category);
@@ -50,12 +34,10 @@ const Products = () => {
     // console.log(params);
 
     const fetchProductsByCategory = async (queries) => {
-        const convertedCategory = convertSlugToTitle(category);
+        if (category && category !== 'products') queries.category = category;
+
         // console.log(convertedCategory);
-        const response = await apiGetProduct({
-            ...queries,
-            category: convertedCategory,
-        });
+        const response = await apiGetProduct(queries);
 
         if (response.success) {
             setProducts(response);

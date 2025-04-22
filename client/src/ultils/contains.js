@@ -170,3 +170,26 @@ export const blockStatus = [
         value: 'Active',
     },
 ];
+
+export const statusOrders = [
+    {
+        label: 'PENDING',
+        value: 'PENDING',
+    },
+    {
+        label: 'CONFIRMED',
+        value: 'CONFIRMED',
+    },
+    {
+        label: 'SHIPPING',
+        value: 'SHIPPING',
+    },
+    {
+        label: 'COMPLETED',
+        value: 'COMPLETED',
+    },
+    {
+        label: 'CANCELLED',
+        value: 'CANCELLED',
+    },
+];

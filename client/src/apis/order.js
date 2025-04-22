@@ -6,3 +6,17 @@ export const apiCreateOrder = (data) =>
         method: 'post',
         data,
     });
+
+export const apiGetOrders = (params) =>
+    axios({
+        url: '/order/getAllOrder',
+        method: 'get',
+        params,
+    });
+
+export const apiGetOrderByUser = (params) =>
+    axios({
+        url: '/order/getUserOrder',
+        method: 'get',
+        params,
+    });
