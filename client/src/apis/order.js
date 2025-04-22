@@ -20,3 +20,16 @@ export const apiGetOrderByUser = (params) =>
         method: 'get',
         params,
     });
+
+export const apiCancelOrderByUser = (oid) =>
+    axios({
+        url: '/order/cancelOrder/' + oid,
+        method: 'put',
+    });
+
+export const apiUpdateStatusOrder = (data, oid) =>
+    axios({
+        url: '/order/updateStatus/' + oid,
+        method: 'put',
+        data,
+    });

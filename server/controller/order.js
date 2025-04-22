@@ -1,6 +1,6 @@
 const Order = require('../models/order');
-
 const asyncHandler = require('express-async-handler');
+const Product = require('../models/product');
 
 const createOrder = asyncHandler(async (req, res) => {
     const {
@@ -76,36 +76,129 @@ const createOrder = asyncHandler(async (req, res) => {
     });
 });
 
-const updateStatusOrder = asyncHandler(async (req, res) => {
-    const { oid } = req.params;
-    const { status } = req.body;
-    if (!status) throw new Error('Missing input');
-    const response = await Order.findByIdAndUpdate(
-        oid,
-        { status },
-        { new: true }
-    );
-    return res.status(200).json({
-        success: response ? true : false,
-        updatedOrder: response ? response : ' Can not Update Status Order !',
-    });
-});
-// const getOrders = asyncHandler(async (req, res) => {
-//     const response = await Order.find();
+// const updateStatusOrder = asyncHandler(async (req, res) => {
+//     const { oid } = req.params;
+//     const { status } = req.body;
+//     if (!status) throw new Error('Missing input');
+//     const response = await Order.findByIdAndUpdate(
+//         oid,
+//         { status },
+//         { new: true }
+//     );
 //     return res.status(200).json({
 //         success: response ? true : false,
-//         dataOrder: response ? response : 'Can not get All Order !',
+//         updatedOrder: response ? response : ' Can not Update Status Order !',
 //     });
 // });
 
-// const getUserOrder = asyncHandler(async (req, res) => {
-//     const { _id } = req.user;
-//     const response = await Order.find({ orderby: _id });
-//     return res.status(200).json({
-//         success: response ? true : false,
-//         dataOrder: response ? response : 'Can not get All Order !',
-//     });
-// });
+const updateStatusOrder = asyncHandler(async (req, res) => {
+    const { oid } = req.params;
+    const { status, note } = req.body;
+
+    if (!status) {
+        return res
+            .status(400)
+            .json({ success: false, message: 'Missing status' });
+    }
+
+    const order = await Order.findById(oid);
+    if (!order) {
+        return res
+            .status(404)
+            .json({ success: false, mess: 'Đơn hàng không tồn tại' });
+    }
+
+    const updates = {
+        status,
+        statusHistory: [
+            ...order.statusHistory,
+            {
+                status,
+                updatedAt: new Date(),
+                note: note || '',
+            },
+        ],
+    };
+
+    switch (status) {
+        case 'CONFIRMED':
+            // Giảm kho, tăng sold cho từng sản phẩm/variant
+            await Promise.all(
+                order.products.map(async (item) => {
+                    const prod = await Product.findById(item.product);
+                    if (!prod) return;
+
+                    if (prod.variants && prod.variants.length > 0) {
+                        const variantIndex = prod.variants.findIndex(
+                            (v) => v.color === item.color && v.sku === item.sku
+                        );
+                        if (variantIndex !== -1) {
+                            prod.variants[variantIndex].quantity -= item.count;
+                            prod.variants[variantIndex].sold += item.count;
+                        }
+                    } else {
+                        prod.quantity -= item.count;
+                        prod.sold += item.count;
+                    }
+
+                    await prod.save();
+                })
+            );
+            break;
+
+        case 'COMPLETED':
+            updates.isDelivered = true;
+            updates.deliveredAt = new Date();
+            updates.isPaid = true;
+            updates.paidAt = new Date();
+            break;
+
+        case 'SHIPPING':
+            updates.isDelivered = false;
+            break;
+
+        case 'CANCELLED':
+            // Hoàn kho nếu đơn đã CONFIRMED hoặc SHIPPING
+            if (['CONFIRMED', 'SHIPPING'].includes(order.status)) {
+                await Promise.all(
+                    order.products.map(async (item) => {
+                        const prod = await Product.findById(item.product);
+                        if (!prod) return;
+
+                        if (prod.variants && prod.variants.length > 0) {
+                            const variantIndex = prod.variants.findIndex(
+                                (v) =>
+                                    v.color === item.color && v.sku === item.sku
+                            );
+                            if (variantIndex !== -1) {
+                                prod.variants[variantIndex].quantity +=
+                                    item.count;
+                                prod.variants[variantIndex].sold -= item.count;
+                            }
+                        } else {
+                            prod.quantity += item.count;
+                            prod.sold -= item.count;
+                        }
+
+                        await prod.save();
+                    })
+                );
+            }
+            updates.isDelivered = false;
+            break;
+    }
+
+    const updatedOrder = await Order.findByIdAndUpdate(oid, updates, {
+        new: true,
+    });
+
+    return res.status(200).json({
+        success: true,
+        mess: 'Cập nhật trạng thái đơn hàng thành công',
+        updatedOrder,
+    });
+});
+
 const getUserOrder = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     const queries = { ...req.query };
@@ -191,49 +284,31 @@ const getOrders = asyncHandler(async (req, res) => {
         (macthedEl) => `$${macthedEl}`
     );
     const formatedQueries = JSON.parse(queryString);
-    // let colorQueryObject = {};
 
-    // // Filtering
-    // if (queries?.title)
-    //     formatedQueries.title = { $regex: queries.title, $options: 'i' };
-    // if (queries?.category)
-    //     formatedQueries.category = { $regex: queries.category, $options: 'i' };
-    // if (queries?.color) {
-    //     delete formatedQueries.color;
-    //     const colorArray = queries.color?.split(',');
-    //     const colorQuery = colorArray.map((el) => ({
-    //         color: { $regex: el, $options: 'i' },
-    //     }));
-    //     colorQueryObject = { $or: colorQuery };
-    // }
-    // let queryObject = {};
-    // if (queries?.q) {
-    //     delete formatedQueries.q;
+    let queryObject = {}; //  Lọc theo user hiện tại
+    if (queries?.q) {
+        delete formatedQueries.q;
 
-    //     queryObject = {
-    //         $or: [
-    //             {
-    //                 color: { $regex: queries.q, $options: 'i' },
-    //             },
-    //             {
-    //                 title: { $regex: queries.q, $options: 'i' },
-    //             },
-    //             {
-    //                 category: { $regex: queries.q, $options: 'i' },
-    //             },
-    //             {
-    //                 brand: { $regex: queries.q, $options: 'i' },
-    //             },
-    //         ],
-    //     };
-    // }
-    const qr = { formatedQueries };
+        queryObject = {
+            $or: [
+                {
+                    status: { $regex: queries.q, $options: 'i' },
+                },
+                {
+                    paymentMethod: { $regex: queries.q, $options: 'i' },
+                },
+            ],
+        };
+    }
+    const qr = { ...formatedQueries, ...queryObject };
     let queryCommand = Order.find(qr);
 
     // Sorting
     if (req.query.sort) {
         const sortBy = req.query.sort.split(',').join(' ');
         queryCommand = queryCommand.sort(sortBy);
+    } else {
+        queryCommand = queryCommand.sort('-createdAt');
     }
 
     // Fields limiting
@@ -245,7 +320,7 @@ const getOrders = asyncHandler(async (req, res) => {
     // Pagination
     // limit : số oject lấy về 1 lần gọi API
     const page = +req.query.page || 1;
-    const limit = +req.query.limit || process.env.LIMIT_PRODUCT;
+    const limit = +req.query.limit || null;
     const skip = (page - 1) * limit;
     queryCommand.skip(skip).limit(limit);
     // Số lượng sp thõa mãn điều kiện !== số lượng sp trả về 1 lần gọi API
@@ -255,15 +330,57 @@ const getOrders = asyncHandler(async (req, res) => {
 
         return res.status(200).json({
             success: response ? true : false,
-            orders: response || 'Cannot get all order !',
+            dataOrder: response || 'Cannot get order of user !',
             counts,
         });
     } catch (err) {
         return res.status(500).json({
             success: false,
-            message: err.message,
+            mess: err.message,
         });
     }
+});
+
+const canCelOrder = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { oid } = req.params;
+    // console.log('dat', _id, oid);
+    if (!_id || !oid) throw new Error('Missing inputs');
+    const order = await Order.findById(oid);
+    if (!order) {
+        return res.status(400).json({
+            success: false,
+            mess: 'order not found',
+        });
+    }
+    if (order.orderby.toString() !== _id) {
+        return res.status(400).json({
+            success: false,
+            mess: 'User does not have the right to cancel this order',
+        });
+    }
+    if (order.status !== 'PENDING' && order.status !== 'COMPLETED') {
+        return res.status(400).json({
+            success: false,
+            mess: 'Something went wrong!',
+        });
+    }
+    const updates = {
+        status: 'CANCELLED',
+        statusHistory: [
+            ...order.statusHistory,
+            {
+                status: 'CANCELLED',
+                updatedAt: new Date(),
+                note: 'Đơn hàng đã bị hủy bởi người mua',
+            },
+        ],
+    };
+    const response = await Order.findByIdAndUpdate(oid, updates, { new: true });
+    return res.status(200).json({
+        success: response ? true : false,
+        mess: response ? 'Order canceled successfully' : 'Something went wrong',
+    });
 });
 
 module.exports = {
@@ -271,4 +388,5 @@ module.exports = {
     updateStatusOrder,
     getOrders,
     getUserOrder,
+    canCelOrder,
 };

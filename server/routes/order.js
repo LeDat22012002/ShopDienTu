@@ -10,5 +10,6 @@ router.put(
 );
 router.get('/getAllOrder', [verifyAccessToken, isAdmin], Order.getOrders);
 router.get('/getUserOrder', [verifyAccessToken], Order.getUserOrder);
+router.put('/cancelOrder/:oid', [verifyAccessToken], Order.canCelOrder);
 
 module.exports = router;
