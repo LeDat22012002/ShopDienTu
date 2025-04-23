@@ -109,7 +109,10 @@ const loginUser = asyncHandeler(async (req, res) => {
 
 const getDetailsUser = asyncHandeler(async (req, res) => {
     const { _id } = req.user;
-    const user = await User.findById(_id).select('-refreshToken -password ');
+    const user = await User.findById(_id)
+        .select('-refreshToken -password ')
+        .populate('wishlist');
+
     return res.status(200).json({
         success: user ? true : false,
         rs: user ? user : 'User does not exist!',
@@ -231,17 +234,6 @@ const getUsers = asyncHandeler(async (req, res) => {
     // Filtering
     if (queries?.name)
         formatedQueries.name = { $regex: queries.name, $options: 'i' };
-    // const query = {};
-    // if (req.query.q) {
-    //     query = {
-    //         $or: [
-    //             {
-    //                 name: { $regex: req.query.q, $options: 'i' },
-    //             },
-    //             { email: { $regex: req.query.q, $options: 'i' } },
-    //         ],
-    //     };
-    // }
 
     if (req.query.q) {
         delete formatedQueries.q;
@@ -418,6 +410,40 @@ const removeProuctInCart = asyncHandeler(async (req, res) => {
     });
 });
 
+const updateWishlist = asyncHandeler(async (req, res) => {
+    const { pid } = req.params;
+    const { _id } = req.user;
+    const user = await User.findById(_id);
+    const alreadyInWishList = user.wishlist?.find(
+        (el) => el.toString() === pid
+    );
+    if (alreadyInWishList) {
+        const response = await User.findByIdAndUpdate(
+            _id,
+            { $pull: { wishlist: pid } },
+            { new: true }
+        );
+        return res.status(200).json({
+            success: response ? true : false,
+            mess: response
+                ? 'Updated your wishlist'
+                : 'Failed to updatewishlist',
+        });
+    } else {
+        const response = await User.findByIdAndUpdate(
+            _id,
+            { $push: { wishlist: pid } },
+            { new: true }
+        );
+        return res.status(200).json({
+            success: response ? true : false,
+            mess: response
+                ? 'Updated your wishlist'
+                : 'Failed to updatewishlist',
+        });
+    }
+});
+
 module.exports = {
     register,
     loginUser,
@@ -434,4 +460,5 @@ module.exports = {
     addCart,
     finalRegister,
     removeProuctInCart,
+    updateWishlist,
 };

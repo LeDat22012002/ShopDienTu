@@ -149,6 +149,22 @@ export const adminSidebar = [
             },
         ],
     },
+    {
+        id: 9,
+        type: 'PARENT',
+        text: 'FlashSale',
+        icon: <MdOutlineColorLens size={20} />,
+        submenu: [
+            {
+                text: 'Create flashSale',
+                path: `/${path.ADMIN}/${path.CREATE_FLASHSALE}`,
+            },
+            {
+                text: 'Manage flashSales',
+                path: `/${path.ADMIN}/${path.MANAGE_FLASHSALE}`,
+            },
+        ],
+    },
 ];
 
 export const memberSidebar = [

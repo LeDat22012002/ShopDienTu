@@ -33,6 +33,8 @@ const path = {
     MANAGE_COLOR: 'manage-color',
     CREATE_PROMOTION: 'create-promotion',
     MANAGE_PROMOTION: 'manage-promotion',
+    CREATE_FLASHSALE: 'create-flashsale',
+    MANAGE_FLASHSALE: 'manage-flashsale',
 
     //MEMBER
     MEMBER: 'member',

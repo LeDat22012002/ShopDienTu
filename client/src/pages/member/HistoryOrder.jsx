@@ -48,7 +48,7 @@ const HistoryOrder = () => {
             ...params,
             limit: import.meta.env.VITE_LIMIT,
         });
-        console.log(response);
+        // console.log(response);
         if (response.success) {
             setCounts(response.counts);
             setOrders(response.dataOrder);
@@ -121,7 +121,7 @@ const HistoryOrder = () => {
                     <thead className="text-sm text-white uppercase bg-gray-700">
                         <tr>
                             <th className="px-4 py-2 text-center">#</th>
-                            <th className="px-4 py-2 text-center ">OrderId</th>
+                            {/* <th className="px-4 py-2 text-center ">OrderId</th> */}
                             <th className="px-4 py-2 text-center">Product</th>
                             <th className="px-4 py-2 text-center">Total</th>
                             <th className="px-4 py-2 text-center">Status</th>
@@ -144,11 +144,41 @@ const HistoryOrder = () => {
                                         index +
                                         1}
                                 </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
+                                {/* <td className="px-4 py-3 text-center w-[200px]">
                                     <span>{el?._id}</span>
-                                </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
-                                    <span>{el?.products?.length}</span>
+                                </td> */}
+                                <td className="py-3 text-center max-w-[400px] ">
+                                    <span className="flex flex-col gap-4">
+                                        {el?.products?.map((item) => (
+                                            <span
+                                                key={item?._id}
+                                                className="flex items-center col-span-1 gap-2"
+                                            >
+                                                <img
+                                                    src={item?.thumb}
+                                                    alt="thumb"
+                                                    className="object-cover w-8 h-8 rounded-md"
+                                                ></img>
+                                                <span className="flex flex-col">
+                                                    <span className="text-sm text-main ">
+                                                        {item?.title}
+                                                    </span>
+                                                    <span className="flex items-center gap-2 text-xs">
+                                                        <span>Quantity:</span>
+                                                        <span className="text-main">
+                                                            {item?.count}
+                                                        </span>
+                                                    </span>
+                                                    <span className="flex items-center gap-2 text-xs">
+                                                        <span>Color:</span>
+                                                        <span className="text-main">
+                                                            {item?.color}
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        ))}
+                                    </span>
                                 </td>
                                 <td className="px-4 py-3 text-center w-[200px]">
                                     <span>{formatMoney(el?.total)} VNĐ</span>

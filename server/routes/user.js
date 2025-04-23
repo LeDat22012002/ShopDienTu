@@ -32,6 +32,7 @@ router.put(
 router.put('/updateAddressUser', [verifyAccessToken], User.updateAddressUser);
 router.put('/addCart', [verifyAccessToken], User.addCart);
 router.delete('/removeCart/:pid', [verifyAccessToken], User.removeProuctInCart);
+router.put('/wishlist/:pid', [verifyAccessToken], User.updateWishlist);
 
 // Đăng nhập với Google
 router.get(

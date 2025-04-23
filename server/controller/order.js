@@ -76,21 +76,6 @@ const createOrder = asyncHandler(async (req, res) => {
     });
 });
 
-// const updateStatusOrder = asyncHandler(async (req, res) => {
-//     const { oid } = req.params;
-//     const { status } = req.body;
-//     if (!status) throw new Error('Missing input');
-//     const response = await Order.findByIdAndUpdate(
-//         oid,
-//         { status },
-//         { new: true }
-//     );
-//     return res.status(200).json({
-//         success: response ? true : false,
-//         updatedOrder: response ? response : ' Can not Update Status Order !',
-//     });
-// });
-
 const updateStatusOrder = asyncHandler(async (req, res) => {
     const { oid } = req.params;
     const { status, note } = req.body;

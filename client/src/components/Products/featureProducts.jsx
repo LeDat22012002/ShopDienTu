@@ -20,18 +20,20 @@ const FeatureProducts = () => {
         fetchProducts();
     }, []);
     return (
-        <div className="w-main">
+        <div className="w-full">
             <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                 FEATURED PRODUCTS
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-[15px] mb-[15px]">
                 {products?.map((el) => (
                     <ProductCard
-                        key={el._id}
-                        image={el.images[0]}
-                        title={el.title}
-                        totalRatings={el.totalRatings}
-                        price={el.price}
+                        key={el?._id}
+                        pid={el?._id}
+                        image={el?.thumb}
+                        title={el?.title}
+                        totalRatings={el?.totalRatings}
+                        price={el?.price}
+                        category={el?.category}
                         style
                     />
                 ))}

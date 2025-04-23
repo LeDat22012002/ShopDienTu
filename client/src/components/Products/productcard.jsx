@@ -2,10 +2,23 @@ import React, { memo } from 'react';
 import { renderStar } from '../../ultils/renderStar';
 import { formatMoney } from '../../ultils/helpers';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 
-const ProductCard = ({ price, totalRatings, title, image, style }) => {
+const ProductCard = ({
+    price,
+    totalRatings,
+    title,
+    image,
+    style,
+    pid,
+    category,
+}) => {
+    const navigate = useNavigate();
     return (
-        <div className={clsx(' border w-full')}>
+        <div
+            onClick={() => navigate(`/${category}/${pid}/${title}`)}
+            className={clsx(' border w-full cursor-pointer')}
+        >
             <div className={clsx('flex w-full ')}>
                 <img
                     src={image}

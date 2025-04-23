@@ -8,6 +8,7 @@ const couponRouter = require('./coupon');
 const orderRouter = require('./order');
 const colorRouter = require('./color');
 const promotionRouter = require('./promotion');
+const flashSaleRouter = require('./flashSale');
 const paymentRouter = require('./payment');
 const paymentVNpayRouter = require('./paymentVNpay');
 const paymentZalopayRouter = require('./paymentZalopay');
@@ -25,6 +26,7 @@ const initRoutes = (app) => {
     app.use('/api/order', orderRouter);
     app.use('/api/color', colorRouter);
     app.use('/api/promotion', promotionRouter);
+    app.use('/api/flashsale', flashSaleRouter);
     app.use('/api/payment', paymentRouter);
     app.use('/api/paymentVNpay', paymentVNpayRouter);
     app.use('/api/paymentVNpay', paymentVNpayRouter);

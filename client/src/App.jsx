@@ -33,6 +33,8 @@ import {
     ManageColor,
     CreatePromotion,
     ManagePromotion,
+    CreateFlashSale,
+    ManageFlashSale,
 } from './pages/admin';
 import {
     Personal,
@@ -102,6 +104,14 @@ function App() {
                     <Route
                         path={path.MANAGE_PROMOTION}
                         element={<ManagePromotion />}
+                    />
+                    <Route
+                        path={path.CREATE_FLASHSALE}
+                        element={<CreateFlashSale />}
+                    />
+                    <Route
+                        path={path.MANAGE_FLASHSALE}
+                        element={<ManageFlashSale />}
                     />
                     <Route path={path.CREATE_COLOR} element={<CreateColor />} />
                     <Route path={path.MANAGE_COLOR} element={<ManageColor />} />

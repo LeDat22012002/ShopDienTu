@@ -17,3 +17,5 @@ export { default as UpdateColor } from './UpdateColor';
 export { default as CreatePromotion } from './CreatePromotion';
 export { default as ManagePromotion } from './ManagePromotion';
 export { default as UpdatePromotion } from './UpdatePromotion';
+export { default as CreateFlashSale } from './CreateFlashSale';
+export { default as ManageFlashSale } from './ManageFlashSale';

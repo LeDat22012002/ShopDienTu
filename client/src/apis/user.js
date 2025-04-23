@@ -79,3 +79,9 @@ export const apiDeleteCart = (pid) =>
         url: `/user/removeCart/` + pid,
         method: 'delete',
     });
+
+export const apiUpdateWishlist = (pid) =>
+    axios({
+        url: `/user/wishlist/` + pid,
+        method: 'put',
+    });

@@ -9,12 +9,15 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCart } from '../../store/cart/cartSlice';
+import { apiUpdateWishlist } from '../../apis';
+import { getCurent } from '../../store/user/asyncActions';
+import clsx from 'clsx';
 
 // import path from '../ultils/path';
 
 const { AiOutlineEye, FaCartArrowDown, FaHeart } = icons;
 
-const Product = ({ productData, isNew, normal }) => {
+const Product = ({ productData, isNew, normal, pid, className }) => {
     // console.log(productData);
     const [isShowOption, setIsShowOption] = useState(false);
     const [numProduct, setNumProduct] = useState(1);
@@ -22,7 +25,8 @@ const Product = ({ productData, isNew, normal }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { cartItems } = useSelector((state) => state.cart);
-    const handleClickOptions = (e, flag) => {
+    const { current } = useSelector((state) => state.user);
+    const handleClickOptions = async (e, flag) => {
         e.stopPropagation();
 
         const selectedSku = 'default';
@@ -62,13 +66,21 @@ const Product = ({ productData, isNew, normal }) => {
             }
         }
 
-        if (flag === 'WISHLIST') toast.success('My add wishlist');
+        if (flag === 'WISHLIST') {
+            const response = await apiUpdateWishlist(pid);
+            if (response.success) {
+                dispatch(getCurent());
+                toast.success(response.mess);
+            } else {
+                toast.error(response.mess);
+            }
+        }
         if (flag === 'QUICK_VIEW') toast.success('Quick view clicked');
     };
 
     // console.log(productData);
     return (
-        <div className="w-full px-[10px] text-base mb-4">
+        <div className={clsx('w-full px-[10px] text-base mb-4', className)}>
             <div
                 className="w-full border border-gray-400 p-[15px] flex flex-col items-center"
                 onClick={() =>
@@ -121,7 +133,19 @@ const Product = ({ productData, isNew, normal }) => {
                                     handleClickOptions(e, 'WISHLIST')
                                 }
                             >
-                                <SelectOptions icon={<FaHeart />} />
+                                <SelectOptions
+                                    icon={
+                                        <FaHeart
+                                            color={
+                                                current?.wishlist?.some(
+                                                    (i) => i?._id === pid
+                                                )
+                                                    ? 'red'
+                                                    : 'black'
+                                            }
+                                        />
+                                    }
+                                />
                             </span>
                         </div>
                     )}
