@@ -1,20 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { InputForm, Button, Loading, InputCheckbox } from '../../components';
 import { useForm } from 'react-hook-form';
-
 import { toast } from 'react-toastify';
-import { apiCreateFlashSale, apiGetProduct } from '../../apis';
+import { apiGetProduct, apiUpdateFlashSales } from '../../apis';
+import moment from 'moment';
 
-const CreateFlashSale = () => {
+const UpdateFlashSale = ({ editFlashSale, render, setEditFlashSales }) => {
     const {
         register,
         formState: { errors },
         reset,
         handleSubmit,
     } = useForm();
-
+    // console.log(editFlashSale);
     const [products, setProducts] = useState([]);
-    const [selectedProducts, setSelectedProducts] = useState({}); // {productId: {salePrice, quantity}}
+    const [selectedProducts, setSelectedProducts] = useState({});
+    useEffect(() => {
+        reset({
+            title: editFlashSale?.title || '',
+            startTime: editFlashSale?.startTime
+                ? moment(editFlashSale.startTime).format('YYYY-MM-DDTHH:mm')
+                : '',
+            endTime: editFlashSale?.endTime
+                ? moment(editFlashSale.endTime).format('YYYY-MM-DDTHH:mm')
+                : '',
+        });
+
+        const selected = {};
+        if (editFlashSale?.products?.length > 0) {
+            editFlashSale.products.forEach((item) => {
+                const id = item.product._id || item.product;
+                selected[id] = {
+                    salePrice: item.salePrice,
+                    quantity: item.quantity,
+                };
+            });
+        }
+        setSelectedProducts(selected);
+    }, [editFlashSale, reset]);
 
     const fetchProducts = async () => {
         const rsproducts = await apiGetProduct();
@@ -50,34 +73,28 @@ const CreateFlashSale = () => {
         }));
     };
 
-    const handleCreateFlashSale = async (data) => {
-        const productList = Object.entries(selectedProducts).map(
-            ([productId, { salePrice, quantity }]) => ({
+    const handleUpdateFlashSale = async (data) => {
+        const updatedProducts = Object.entries(selectedProducts).map(
+            ([productId, info]) => ({
                 product: productId,
-                salePrice: Number(salePrice),
-                quantity: Number(quantity),
+                salePrice: Number(info.salePrice),
+                quantity: Number(info.quantity),
             })
         );
-
-        if (productList.length === 0) {
-            toast.error(
-                'Please select at least one product with valid sale info!'
-            );
-            return;
-        }
 
         const payload = {
             title: data.title,
             startTime: data.startTime,
             endTime: data.endTime,
-            products: productList,
+            products: updatedProducts,
         };
 
-        const response = await apiCreateFlashSale(payload);
+        const response = await apiUpdateFlashSales(payload, editFlashSale._id);
+
         if (response.success) {
             toast.success(response.mess);
-            reset();
-            setSelectedProducts({});
+            render(); // reload lại danh sách
+            setEditFlashSales(null); // tắt form edit
         } else {
             toast.error(response.mess);
         }
@@ -85,12 +102,18 @@ const CreateFlashSale = () => {
 
     return (
         <div className="relative flex flex-col w-full">
-            <div className="h-[75px] flex items-center px-4 border-b border-gray-300 fixed right-0 left-[327px] top-0 bg-gray-100">
-                <h1 className="text-3xl font-bold">Create FlashSale</h1>
+            <div className="h-[75px]  flex justify-between items-center px-4 border-b border-gray-300 fixed right-0 left-[327px] top-0 bg-gray-100">
+                <h1 className="text-3xl font-bold">Update FlashSale</h1>
+                <span
+                    onClick={() => setEditFlashSales(null)}
+                    className="text-[17px] cursor-pointer text-main hover:underline"
+                >
+                    Cancel
+                </span>
             </div>
             <div className="h-[69px] w-full mt-2"></div>
             <div className="flex flex-col p-4">
-                <form onSubmit={handleSubmit(handleCreateFlashSale)}>
+                <form onSubmit={handleSubmit(handleUpdateFlashSale)}>
                     <InputForm
                         label="Title"
                         register={register}
@@ -196,7 +219,7 @@ const CreateFlashSale = () => {
                     </div>
 
                     <div className="my-6">
-                        <Button type="submit">Create new flashSale</Button>
+                        <Button type="submit">Update new flashSale</Button>
                     </div>
                 </form>
             </div>
@@ -204,4 +227,4 @@ const CreateFlashSale = () => {
     );
 };
 
-export default CreateFlashSale;
+export default memo(UpdateFlashSale);

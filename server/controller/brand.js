@@ -23,14 +23,6 @@ const createBrand = AsyncHandler(async (req, res) => {
     });
 });
 
-const getBrands = AsyncHandler(async (req, res) => {
-    const response = await Brand.find();
-    return res.status(200).json({
-        success: response ? true : false,
-        brands: response ? response : ' Cannot get All Brand !',
-    });
-});
-
 const getAllBrands = AsyncHandler(async (req, res) => {
     const queries = { ...req.query };
     // Tách các trường đặc biệt ra khỏi query
@@ -136,7 +128,7 @@ const deleteBrand = AsyncHandler(async (req, res) => {
 
 module.exports = {
     createBrand,
-    getBrands,
+    // getBrands,
     updateBrand,
     deleteBrand,
     getAllBrands,

@@ -19,3 +19,4 @@ export { default as ManagePromotion } from './ManagePromotion';
 export { default as UpdatePromotion } from './UpdatePromotion';
 export { default as CreateFlashSale } from './CreateFlashSale';
 export { default as ManageFlashSale } from './ManageFlashSale';
+export { default as UpdateFlashSale } from './UpdateFlashSale';

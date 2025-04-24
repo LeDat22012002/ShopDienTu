@@ -3,7 +3,7 @@ const { verifyAccessToken, isAdmin } = require('../middlewares/verifyToken');
 const router = require('express').Router();
 
 router.post('/createBrand', [verifyAccessToken, isAdmin], Brand.createBrand);
-router.get('/getAllBrand', Brand.getBrands);
+// router.get('/getAllBrand', Brand.getBrands);
 router.get('/getBrands', Brand.getAllBrands);
 router.put(
     '/updateBrand/:brid',

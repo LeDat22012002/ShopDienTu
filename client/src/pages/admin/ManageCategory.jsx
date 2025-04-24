@@ -14,12 +14,10 @@ import icons from '../../ultils/icons';
 import { apiGetAllCategories, apiDeleteCategories } from '../../apis';
 import { UpdateCategory } from '.';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
 
 const { ImBin, FaRegEdit } = icons;
 
 const ManageCategory = () => {
-    const { categories } = useSelector((state) => state.app);
     const {
         register,
         formState: { errors },

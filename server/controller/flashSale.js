@@ -1,3 +1,4 @@
+const flashSale = require('../models/flashSale');
 const FlashSale = require('../models/flashSale');
 const AsyncHandler = require('express-async-handler');
 
@@ -21,42 +22,68 @@ const createFlashSale = AsyncHandler(async (req, res) => {
 // Lấy tất cả flash sale (có filter, sort, paging)
 const getAllFlashSales = AsyncHandler(async (req, res) => {
     const queries = { ...req.query };
+    // Tách các trường đặc biệt ra khỏi query
     const excludeFields = ['limit', 'sort', 'page', 'fields'];
     excludeFields.forEach((el) => delete queries[el]);
 
+    // Format lại các operators cho đúng cú pháp mongdb
     let queryString = JSON.stringify(queries);
-    queryString = queryString.replace(/\b(gte|gt|lt|lte)\b/g, (m) => `$${m}`);
+    queryString = queryString.replace(
+        /\b(gte|gt|lt|lte)\b/g,
+        (macthedEl) => `$${macthedEl}`
+    );
     const formatedQueries = JSON.parse(queryString);
+    // let colorQueryObject = {};
 
-    let queryCommand =
-        FlashSale.find(formatedQueries).populate('products.product');
+    let queryObject = {};
+    if (queries?.q) {
+        delete formatedQueries.q;
 
-    // Sort
+        queryObject = {
+            $or: [
+                {
+                    title: { $regex: queries.q, $options: 'i' },
+                },
+            ],
+        };
+    }
+    const qr = { ...formatedQueries, ...queryObject };
+    let queryCommand = FlashSale.find(qr);
+
+    // Sorting
     if (req.query.sort) {
         const sortBy = req.query.sort.split(',').join(' ');
         queryCommand = queryCommand.sort(sortBy);
     }
 
-    // Fields
+    // Fields limiting
     if (req.query.fields) {
         const fields = req.query.fields.split(',').join(' ');
         queryCommand = queryCommand.select(fields);
     }
 
-    // Paging
+    // Pagination
+    // limit : số oject lấy về 1 lần gọi API
     const page = +req.query.page || 1;
     const limit = +req.query.limit || null;
     const skip = (page - 1) * limit;
     queryCommand.skip(skip).limit(limit);
+    // Số lượng sp thõa mãn điều kiện !== số lượng sp trả về 1 lần gọi API
+    try {
+        const response = await queryCommand.exec(); // Loại bỏ callback
+        const counts = await FlashSale.find(qr).countDocuments();
 
-    const response = await queryCommand.exec();
-    const counts = await FlashSale.find(formatedQueries).countDocuments();
-
-    return res.status(200).json({
-        success: true,
-        flashSales: response,
-        counts,
-    });
+        return res.status(200).json({
+            success: response ? true : false,
+            flashSales: response || 'Cannot get FlashSales !',
+            counts,
+        });
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            mess: err.message,
+        });
+    }
 });
 
 // Cập nhật chương trình flash sale
