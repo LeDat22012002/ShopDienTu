@@ -79,8 +79,14 @@ const Product = ({ productData, isNew, normal, pid, className }) => {
     };
 
     // console.log(productData);
+
     return (
-        <div className={clsx('w-full px-[10px] text-base mb-4', className)}>
+        <div
+            className={clsx(
+                'w-full px-[10px] text-base mb-4 bg-white',
+                className
+            )}
+        >
             <div
                 className="w-full border border-gray-400 p-[15px] flex flex-col items-center"
                 onClick={() =>
@@ -149,11 +155,17 @@ const Product = ({ productData, isNew, normal, pid, className }) => {
                             </span>
                         </div>
                     )}
-                    <img
-                        src={productData?.thumb || productData?.images[0] || ''}
-                        alt="ảnh Product"
-                        className="object-cover w-[274px] h-[274px] "
-                    ></img>
+                    <div className="flex items-center justify-center w-full h-[200px]">
+                        <img
+                            src={
+                                productData?.thumb ||
+                                productData?.images[0] ||
+                                ''
+                            }
+                            alt="ảnh Product"
+                            className="object-contain w-[180px] h-[180px]"
+                        />
+                    </div>
 
                     {!normal &&
                         (isNew ? (
@@ -172,7 +184,7 @@ const Product = ({ productData, isNew, normal, pid, className }) => {
                             </>
                         ))}
                 </div>
-                <div className="flex flex-col gap-1 mt-[15px] items-start w-full ">
+                <div className="flex flex-col gap-1 mt-[15px] items-start w-full">
                     <span className="flex h-4">
                         {renderStar(productData?.totalRatings)?.map(
                             (el, index) => (
@@ -181,8 +193,23 @@ const Product = ({ productData, isNew, normal, pid, className }) => {
                         )}
                     </span>
                     <span className="line-clamp-1">{productData?.title}</span>
-
-                    <span>{`${formatMoney(productData.price)} VNĐ`}</span>
+                    <div className="flex items-center gap-2">
+                        {/* Check if there's a sale price */}
+                        {productData?.salePrice ? (
+                            <>
+                                <span className="font-semibold text-red-500">
+                                    {formatMoney(productData.salePrice)} VNĐ
+                                </span>
+                                <span className="text-sm text-gray-500 line-through">
+                                    {formatMoney(productData.price)} VNĐ
+                                </span>
+                            </>
+                        ) : (
+                            <span className="font-semibold">
+                                {formatMoney(productData.price)} VNĐ
+                            </span>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

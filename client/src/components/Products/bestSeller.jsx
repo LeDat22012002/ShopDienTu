@@ -2,8 +2,7 @@ import React, { memo } from 'react';
 import { useState, useEffect } from 'react';
 import { apiGetProduct } from '../../apis/product';
 import { Product, CustomSlider } from '..';
-import banner2 from '../../assets/banner2.png';
-import banner3 from '../../assets/banner3.png';
+
 import { getNewProduct } from '../../store/products/asyncActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -55,18 +54,6 @@ const BestSeller = () => {
             </div>
             <div className="mt-4 mx-[-10px] border-t-2 border-main pt-4">
                 <CustomSlider products={products} activeTab={activeTab} />
-            </div>
-            <div className="flex w-full gap-4 mt-4">
-                <img
-                    src={banner2}
-                    alt="banner2"
-                    className="flex-1 object-contain"
-                ></img>
-                <img
-                    src={banner3}
-                    alt="banner3"
-                    className="flex-1 object-contain"
-                ></img>
             </div>
         </div>
     );

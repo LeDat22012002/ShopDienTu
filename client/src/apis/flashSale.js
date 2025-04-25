@@ -26,3 +26,9 @@ export const apiUpdateFlashSales = (data, fsid) =>
         method: 'put',
         data,
     });
+
+export const apiGetActiveFlashSales = () =>
+    axios({
+        url: '/flashsale/getActiveFlashSales',
+        method: 'get',
+    });

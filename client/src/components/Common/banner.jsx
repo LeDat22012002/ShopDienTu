@@ -17,11 +17,11 @@ const Banner = () => {
     }, []);
 
     return (
-        <div className="relative w-full">
+        <div className="relative w-[720px]">
             <img
                 src={images[index]}
                 alt="banner"
-                className="h-[400px] w-full object-cover transition-all duration-500 rounded-lg"
+                className="h-[360px] w-full object-cover transition-all duration-500 rounded-lg"
             />
         </div>
     );

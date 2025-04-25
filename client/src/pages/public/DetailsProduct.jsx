@@ -156,39 +156,6 @@ const DetailsProduct = () => {
         [quantity, currentProduct?.quantity]
     );
 
-    // const handleClickImage = (e, el) => {
-    //     e.stopPropagation();
-    //     setCurrentImg(el);
-    // };
-    // console.log(currentProduct?.price);
-
-    // Add to Card
-    // const handleAddCart = () => {
-    //     const cartRedux = cartItems?.find(
-    //         (item) => item.product === product?._id
-    //     );
-    //     if (
-    //         cartRedux?.count + quantity <= cartRedux?.quantity ||
-    //         (!cartRedux && product?.quantity > 0)
-    //     ) {
-    //         dispatch(
-    //             addCart({
-    //                 cartItem: {
-    //                     title: product?.title,
-    //                     count: quantity,
-    //                     thumb: product?.thumb,
-    //                     price: product?.price,
-    //                     product: product?._id,
-    //                     color: product?.color,
-    //                     quantity: product?.quantity,
-    //                 },
-    //             })
-    //         );
-    //         toast.success('Added to cart');
-    //     } else {
-    //         toast.error('Something went wrong');
-    //     }
-    // };
     const handleAddCart = () => {
         const selectedSku = varriant || 'default';
         const selectedVariant =

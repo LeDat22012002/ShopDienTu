@@ -65,7 +65,7 @@ const getDetailsPr = asyncHandler(async (req, res) => {
         path: 'ratings',
         populate: {
             path: 'postedBy',
-            select: 'firstname lastname avatar',
+            select: 'name avatar',
         },
     });
 

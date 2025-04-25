@@ -17,6 +17,7 @@ const ProductInfomation = ({
     pid,
     rerender,
 }) => {
+    console.log(ratings);
     const [activeTab, setActiveTab] = useState(1);
     const dispatch = useDispatch();
     const location = useLocation();
@@ -124,7 +125,7 @@ const ProductInfomation = ({
                             star={el?.star}
                             updatedAt={el?.updatedAt}
                             comment={el?.comment}
-                            name={`${el.postedBy?.lastname} ${el.postedBy?.firstname}`}
+                            name={`${el.postedBy?.name}`}
                         />
                     ))}
                 </div>
