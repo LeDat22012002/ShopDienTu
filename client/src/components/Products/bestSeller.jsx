@@ -24,7 +24,7 @@ const BestSeller = () => {
         const response = await apiGetProduct({ sort: '-sold' });
         if (response?.success) {
             setBestSeller(response?.products);
-            // setProducts(response?.products);
+            setProducts(response?.products);
         }
     };
 
@@ -39,7 +39,7 @@ const BestSeller = () => {
     }, [activeTab]);
     return (
         <div>
-            <div className="flex text-[20px] ml-[-32px]">
+            {/* <div className="flex text-[20px] ml-[-32px]">
                 {tabs.map((el) => (
                     <span
                         key={el.id}
@@ -51,8 +51,8 @@ const BestSeller = () => {
                         {el.name}
                     </span>
                 ))}
-            </div>
-            <div className="mt-4 mx-[-10px]  pt-4">
+            </div> */}
+            <div className=" mx-[-10px] pt-4">
                 <CustomSlider products={products} activeTab={activeTab} />
             </div>
         </div>

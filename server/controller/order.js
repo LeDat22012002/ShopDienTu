@@ -1,6 +1,7 @@
 const Order = require('../models/order');
 const asyncHandler = require('express-async-handler');
 const Product = require('../models/product');
+const Promotion = require('../models/promotion');
 
 const createOrder = asyncHandler(async (req, res) => {
     const {
@@ -64,8 +65,42 @@ const createOrder = asyncHandler(async (req, res) => {
         orderby: userId,
         isPaid,
         status,
+        paidAt,
         statusHistory,
     });
+    // Nếu có mã khuyến mãi và thanh toán thành công => cập nhật usedCount
+    if (newOrder && promotionCode && isPaid) {
+        await Promotion.findOneAndUpdate(
+            { code: promotionCode },
+            { $inc: { usedCount: 1 } },
+            { new: true }
+        );
+    }
+
+    if (newOrder && isPaid) {
+        await Promise.all(
+            newOrder.products.map(async (item) => {
+                const prod = await Product.findById(item.product);
+                if (!prod) return;
+
+                if (prod.varriants && prod.varriants.length > 0) {
+                    const variantIndex = prod.varriants.findIndex(
+                        (v) => v.color === item.color && v.sku === item.sku
+                    );
+                    if (variantIndex !== -1) {
+                        prod.varriants[variantIndex].quantity -= item.count;
+                        prod.varriants[variantIndex].sold += item.count;
+                        prod.markModified('varriants');
+                    }
+                } else {
+                    prod.quantity -= item.count;
+                    prod.sold += item.count;
+                }
+
+                await prod.save();
+            })
+        );
+    }
 
     return res.status(200).json({
         success: newOrder ? true : false,
@@ -113,13 +148,13 @@ const updateStatusOrder = asyncHandler(async (req, res) => {
                     const prod = await Product.findById(item.product);
                     if (!prod) return;
 
-                    if (prod.variants && prod.variants.length > 0) {
-                        const variantIndex = prod.variants.findIndex(
+                    if (prod.varriants && prod.varriants.length > 0) {
+                        const variantIndex = prod.varriants.findIndex(
                             (v) => v.color === item.color && v.sku === item.sku
                         );
                         if (variantIndex !== -1) {
-                            prod.variants[variantIndex].quantity -= item.count;
-                            prod.variants[variantIndex].sold += item.count;
+                            prod.varriants[variantIndex].quantity -= item.count;
+                            prod.varriants[variantIndex].sold += item.count;
                         }
                     } else {
                         prod.quantity -= item.count;

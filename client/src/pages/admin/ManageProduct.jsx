@@ -144,8 +144,8 @@ const ManageProduct = () => {
                             <th className="px-4 py-2 text-center ">Price</th>
                             <th className="px-4 py-2 text-center ">Quantity</th>
                             <th className="px-4 py-2 text-center ">Sold</th>
-                            <th className="px-4 py-2 text-center">Color</th>
-                            <th className="px-4 py-2 text-center">Rating</th>
+                            {/* <th className="px-4 py-2 text-center">Color</th> */}
+                            {/* <th className="px-4 py-2 text-center">Rating</th> */}
                             <th className="px-4 py-2 text-center ">
                                 Varriants
                             </th>
@@ -191,12 +191,12 @@ const ManageProduct = () => {
                                 <td className="px-4 py-3 text-center ">
                                     <span>{el?.sold}</span>
                                 </td>
-                                <td className="px-4 py-3 text-center ">
+                                {/* <td className="px-4 py-3 text-center ">
                                     <span>{el?.color}</span>
                                 </td>
                                 <td className="px-4 py-3 text-center ">
                                     <span>{el?.totalRatings}</span>
-                                </td>
+                                </td> */}
                                 <td className="px-4 py-3 text-center ">
                                     <span>{el?.varriants?.length || 0}</span>
                                 </td>

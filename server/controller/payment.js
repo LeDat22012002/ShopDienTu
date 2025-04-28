@@ -2,6 +2,8 @@ const asyncHandler = require('express-async-handler');
 const { createMomoPayment } = require('../services/momo');
 const Order = require('../models/order');
 const { v4: uuidv4 } = require('uuid');
+const Promotion = require('../models/promotion');
+const Product = require('../models/product');
 
 const createMomo = asyncHandler(async (req, res) => {
     const {
@@ -57,6 +59,13 @@ const createMomo = asyncHandler(async (req, res) => {
             },
         ],
     });
+    if (order && promotionCode) {
+        await Promotion.findOneAndUpdate(
+            { code: promotionCode },
+            { $inc: { usedCount: 1 } },
+            { new: true }
+        );
+    }
     //  Tự động xóa nếu không thanh toán sau 1 phút
     setTimeout(async () => {
         const stillPending = await Order.findOne({
@@ -77,7 +86,12 @@ const createMomo = asyncHandler(async (req, res) => {
 
 const handleMomoIPN = asyncHandler(async (req, res) => {
     const { orderId, resultCode } = req.body;
-    console.log('dat', orderId, resultCode);
+    const order = await Order.findOne({ paymentOrderId: orderId });
+
+    if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+    }
+    // console.log('dat', orderId, resultCode);
     if (resultCode === 0) {
         await Order.findOneAndUpdate(
             { paymentOrderId: orderId },
@@ -92,6 +106,34 @@ const handleMomoIPN = asyncHandler(async (req, res) => {
                     },
                 },
             }
+        );
+        await Promise.all(
+            order.products.map(async (item) => {
+                const prod = await Product.findById(item.product);
+                if (!prod) return;
+
+                if (prod.varriants?.length > 0) {
+                    const variantIndex = prod.varriants.findIndex(
+                        (v) => v.color === item.color && v.sku === item.sku
+                    );
+                    if (variantIndex !== -1) {
+                        const variant = prod.varriants[variantIndex];
+                        variant.quantity = Math.max(
+                            0,
+                            variant.quantity - item.count
+                        );
+                        variant.sold += item.count;
+                        await prod.save();
+                        prod.markModified('varriants');
+                        return; //  Sau khi cập nhật variant thì return luôn
+                    }
+                }
+
+                // Nếu không có variant hoặc không tìm thấy variant phù hợp
+                prod.quantity = Math.max(0, prod.quantity - item.count);
+                prod.sold += item.count;
+                await prod.save();
+            })
         );
     } else {
         await Order.deleteOne({ paymentOrderId: orderId });

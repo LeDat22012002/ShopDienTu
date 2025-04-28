@@ -90,6 +90,7 @@ const DetailsProduct = () => {
                     images: selected?.images,
                     thumb: selected?.thumb,
                     quantity: selected?.quantity,
+                    sold: selected?.sold,
                 });
                 setCurrentImg(selected?.thumb || selected?.images?.[0]); // Cập nhật ảnh chính
             }
@@ -101,6 +102,7 @@ const DetailsProduct = () => {
                 images: product?.images,
                 thumb: product?.thumb,
                 quantity: product?.quantity,
+                sold: product?.sold,
             });
             setCurrentImg(product?.thumb || product?.images?.[0]); // Reset lại ảnh chính
         }

@@ -41,7 +41,7 @@ const createZaloPayOrder = async ({
         userId,
         redirecturl: 'http://localhost:5173/',
         callback_url:
-            'https://e6c4-2405-4802-90f1-ff0-1d3e-fa22-cd76-aea7.ngrok-free.app/api/paymentZalopay/zalopay-callback',
+            'https://6911-2405-4802-90fc-6530-189a-3fcb-cddc-90de.ngrok-free.app/api/paymentZalopay/zalopay-callback',
     };
 
     const items = products.map((p) => ({
@@ -66,7 +66,7 @@ const createZaloPayOrder = async ({
         description: `Shop - Payment for order #${transID}`,
         bank_code: '',
         callback_url:
-            'https://e6c4-2405-4802-90f1-ff0-1d3e-fa22-cd76-aea7.ngrok-free.app/api/paymentZalopay/zalopay-callback',
+            'https://6911-2405-4802-90fc-6530-189a-3fcb-cddc-90de.ngrok-free.app/api/paymentZalopay/zalopay-callback',
     };
 
     //  Tạo MAC theo chuẩn ZaloPay

@@ -202,6 +202,9 @@ const Home = () => {
             )}
 
             <div className="m-auto mt-4 w-main">
+                <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
+                    BEST SELLERS
+                </h3>
                 <BestSeller />
             </div>
 
