@@ -34,6 +34,7 @@ const DetailsProduct = () => {
     const dispatch = useDispatch();
     const { pid, category } = useParams();
     const [product, setProduct] = useState(null);
+
     const [quantity, setQuantity] = useState(1);
 
     const [relatedProducts, setRelatedProducts] = useState(null);
@@ -310,9 +311,6 @@ const DetailsProduct = () => {
                                 ></img>
                                 <span className="flex flex-col">
                                     <span>{product?.color}</span>
-                                    <span className="text-sm">
-                                        {product?.price}
-                                    </span>
                                 </span>
                             </div>
                             {product?.varriants?.map((el) => (
@@ -325,15 +323,12 @@ const DetailsProduct = () => {
                                     onClick={() => setVarriant(el?.sku)}
                                 >
                                     <img
-                                        src={el?.thumb}
+                                        src={el?.thumb || el?.images[0]}
                                         alt="thumb"
                                         className="w-[30px] h-[30px]  object-cover"
                                     ></img>
                                     <span className="flex flex-col">
                                         <span>{el?.color}</span>
-                                        <span className="text-sm">
-                                            {el?.price}
-                                        </span>
                                     </span>
                                 </div>
                             ))}
@@ -369,12 +364,13 @@ const DetailsProduct = () => {
                     totalRatings={product?.totalRatings}
                     ratings={product?.ratings}
                     nameProduct={product?.title}
+                    description={product?.description}
                     pid={product?._id}
                     rerender={rerender}
                 />
             </div>
             <div className="m-auto mt-8 w-main">
-                <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
+                <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main mb-5">
                     PRODUCTS OF THE SAME TYPE
                 </h3>
                 <CustomSlider normal={true} products={relatedProducts} />

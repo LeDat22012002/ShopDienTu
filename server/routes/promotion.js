@@ -19,6 +19,11 @@ router.delete(
 );
 
 router.get('/allPromotion', PromoCtrl.getAllPromotions);
+router.get(
+    '/getPromotionByAdmin',
+    [verifyAccessToken, isAdmin],
+    PromoCtrl.getPromotionsByAdmin
+);
 router.get('/code/:code', PromoCtrl.getPromotionByCode);
 
 // API dành cho khách hàng dùng mã giảm giá

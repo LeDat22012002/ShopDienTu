@@ -122,12 +122,12 @@ const HistoryOrder = () => {
                         <tr>
                             <th className="px-4 py-2 text-center">#</th>
                             {/* <th className="px-4 py-2 text-center ">OrderId</th> */}
-                            <th className="px-4 py-2 text-center">Product</th>
-                            <th className="px-4 py-2 text-center">Total</th>
-                            <th className="px-4 py-2 text-center">Status</th>
-                            <th className="px-4 py-2 text-center">Method</th>
-                            <th className="px-4 py-2 text-center">CreateAt</th>
-                            <th className="px-4 py-2 text-center">Actions</th>
+                            <th className="px-2 py-2 text-center">Product</th>
+                            <th className="px-2 py-2 text-center">Total</th>
+                            <th className="px-2 py-2 text-center">Status</th>
+                            <th className="px-2 py-2 text-center">Method</th>
+                            <th className="px-2 py-2 text-center">CreateAt</th>
+                            <th className="px-2 py-2 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-300">
@@ -183,13 +183,13 @@ const HistoryOrder = () => {
                                 <td className="px-4 py-3 text-center w-[200px]">
                                     <span>{formatMoney(el?.total)} VNĐ</span>
                                 </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
+                                <td className="px-4 py-3 text-center w-[130px]">
                                     <span>{el?.status}</span>
                                 </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
+                                <td className="px-4 py-3 text-center w-[130px]">
                                     <span>{el?.paymentMethod}</span>
                                 </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
+                                <td className="px-4 py-3 text-center w-[130px]">
                                     <span>
                                         {moment(el?.createdAt).format(
                                             'DD/MM/YYYY'

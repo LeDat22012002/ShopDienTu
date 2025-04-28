@@ -89,7 +89,7 @@ const CreateFlashSale = () => {
                 <h1 className="text-3xl font-bold">Create FlashSale</h1>
             </div>
             <div className="h-[69px] w-full mt-2"></div>
-            <div className="flex flex-col p-4">
+            <div className="flex flex-col p-4 ">
                 <form onSubmit={handleSubmit(handleCreateFlashSale)}>
                     <InputForm
                         label="Title"

@@ -1,5 +1,6 @@
-import React, { memo, useState } from 'react';
-import { productInfoTabs } from '../../ultils/contains';
+import React, { memo } from 'react';
+// import { productInfoTabs } from '../../ultils/contains';
+import DOMPurify from 'dompurify';
 import { Votebar, Button, VoteOptions, Comment } from '..';
 import { renderStar } from '../../ultils/renderStar';
 import { apiRatings } from '../../apis';
@@ -15,10 +16,11 @@ const ProductInfomation = ({
     ratings,
     nameProduct,
     pid,
+    description,
     rerender,
 }) => {
-    console.log(ratings);
-    const [activeTab, setActiveTab] = useState(1);
+    // console.log(ratings);
+    // const [activeTab, setActiveTab] = useState(1);
     const dispatch = useDispatch();
     const location = useLocation();
     const { isLoggedIn } = useSelector((state) => state.user);
@@ -68,7 +70,7 @@ const ProductInfomation = ({
     return (
         <div>
             <div className="flex items-center gap-2 relative bottom-[-1px]">
-                {productInfoTabs?.map((el) => (
+                {/* {productInfoTabs?.map((el) => (
                     <span
                         className={`p-2 px-4 bg-gray-200 cursor-pointer ${
                             activeTab === el.id &&
@@ -79,11 +81,24 @@ const ProductInfomation = ({
                     >
                         {el.name}
                     </span>
-                ))}
+                ))} */}
+                <span
+                    className="p-2 px-4 bg-gray-200 cursor-pointer"
+                    // onClick={() => setActiveTab(el.id)}
+                    // key={el.id}
+                >
+                    DESCRIPTION
+                </span>
             </div>
             <div className="w-full p-3 border border-gray-200">
-                {productInfoTabs.some((el) => el.id === activeTab) &&
-                    productInfoTabs.find((el) => el.id === activeTab)?.content}
+                {description && (
+                    <div
+                        className="text-sm"
+                        dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(description),
+                        }}
+                    ></div>
+                )}
             </div>
 
             <div className="flex flex-col py-8 w-main">

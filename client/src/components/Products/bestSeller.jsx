@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const tabs = [
     { id: 1, name: 'best sellers' },
-    { id: 2, name: 'new arrivals' },
+    // { id: 2, name: 'new arrivals' },
 ];
 
 const BestSeller = () => {
@@ -24,7 +24,7 @@ const BestSeller = () => {
         const response = await apiGetProduct({ sort: '-sold' });
         if (response?.success) {
             setBestSeller(response?.products);
-            setProducts(response?.products);
+            // setProducts(response?.products);
         }
     };
 
@@ -35,7 +35,7 @@ const BestSeller = () => {
 
     useEffect(() => {
         if (activeTab === 1) setProducts(bestSeller);
-        if (activeTab === 2) setProducts(newProducts);
+        // if (activeTab === 2) setProducts(newProducts);
     }, [activeTab]);
     return (
         <div>
@@ -52,7 +52,7 @@ const BestSeller = () => {
                     </span>
                 ))}
             </div>
-            <div className="mt-4 mx-[-10px] border-t-2 border-main pt-4">
+            <div className="mt-4 mx-[-10px]  pt-4">
                 <CustomSlider products={products} activeTab={activeTab} />
             </div>
         </div>

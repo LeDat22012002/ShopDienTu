@@ -1,20 +1,38 @@
-const flashSale = require('../models/flashSale');
 const FlashSale = require('../models/flashSale');
 const AsyncHandler = require('express-async-handler');
 
 // Tạo mới chương trình flash sale
 const createFlashSale = AsyncHandler(async (req, res) => {
-    const { products, startTime, endTime } = req.body;
-    if (!products || !startTime || !endTime) {
+    const { products, startTime, endTime, title } = req.body;
+
+    // Kiểm tra các trường bắt buộc
+    if (!products || !startTime || !endTime || !title) {
         throw new Error('Missing required fields!');
     }
 
+    // Chuyển startTime và endTime sang kiểu Date
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+
+    // Kiểm tra thời gian kết thúc không nhỏ hơn thời gian bắt đầu
+    if (end <= start) {
+        throw new Error('End time must be after start time!');
+    }
+
+    // Kiểm tra trùng title với các chương trình Flash Sale khác
+    const existingFlashSale = await FlashSale.findOne({ title });
+    if (existingFlashSale) {
+        throw new Error('A FlashSale with this title already exists!');
+    }
+
+    // Tạo flash sale mới
     const response = await FlashSale.create(req.body);
+
     return res.status(201).json({
         success: response ? true : false,
-        flashSale: response || 'Cannot create flash sale!',
+        flashSale: response || 'Cannot create FlashSale!',
         mess: response
-            ? 'Created flash sale successfully!'
+            ? 'Created FlashSale successfully!'
             : 'Something went wrong',
     });
 });
@@ -89,9 +107,57 @@ const getAllFlashSales = AsyncHandler(async (req, res) => {
 // Cập nhật chương trình flash sale
 const updateFlashSale = AsyncHandler(async (req, res) => {
     const { fsid } = req.params;
+    const { products, startTime, endTime, title } = req.body;
+
+    // Kiểm tra các trường bắt buộc
+    if (!products || !startTime || !endTime || !title) {
+        throw new Error('Missing required fields!');
+    }
+
+    // Chuyển startTime và endTime sang kiểu Date
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+    const currentTime = new Date();
+
+    // // Kiểm tra thời gian bắt đầu không nhỏ hơn hiện tại
+    // if (start < currentTime) {
+    //     throw new Error('Start time cannot be in the past!');
+    // }
+
+    // Kiểm tra thời gian kết thúc không nhỏ hơn thời gian bắt đầu
+    if (end <= start) {
+        throw new Error('End time must be after start time!');
+    }
+
+    // Kiểm tra trùng title với các chương trình Flash Sale khác
+    const existingFlashSaleWithTitle = await FlashSale.findOne({
+        title,
+        _id: { $ne: fsid }, // Loại trừ chương trình Flash Sale hiện tại
+    });
+    if (existingFlashSaleWithTitle) {
+        throw new Error('A flash sale with this title already exists!');
+    }
+    // Kiểm tra nếu Flash Sale đã hết hạn, cập nhật trạng thái isActive về false
+    if (end < currentTime) {
+        req.body.isActive = false; // Nếu hết hạn, đổi trạng thái thành false
+    }
+
+    // // Kiểm tra trùng thời gian với các chương trình Flash Sale khác
+    // const existingFlashSaleWithTime = await FlashSale.findOne({
+    //     _id: { $ne: fsid }, // Loại trừ chương trình Flash Sale hiện tại
+    //     $or: [
+    //         { startTime: { $lt: end }, endTime: { $gt: start } }, // Kiểm tra có chương trình nào trùng lặp với thời gian mới
+    //     ]
+    // });
+    // if (existingFlashSaleWithTime) {
+    //     throw new Error('A flash sale already exists in this time range!');
+    // }
+
+    // Cập nhật Flash Sale mới
     const response = await FlashSale.findByIdAndUpdate(fsid, req.body, {
         new: true,
     });
+
     return res.status(200).json({
         success: response ? true : false,
         updatedFlashSale: response || 'Cannot update flash sale!',

@@ -15,6 +15,10 @@ const promotionSchema = new mongoose.Schema(
         endDate: { type: Date, required: true },
         usageLimit: { type: Number, default: 0 }, // 0 = không giới hạn
         usedCount: { type: Number, default: 0 },
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
     },
     { timestamps: true }
 );

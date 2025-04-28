@@ -120,14 +120,6 @@ const ManageUser = () => {
         });
     };
 
-    // useEffect(() => {
-    //     if (editElm)
-    //         reset({
-    //             role: editElm.role,
-    //             isBlocked: editElm.isBlocked,
-    //         });
-    // }, [editElm]);
-
     const handleBack = () => {
         setEditElm(null);
         reset();
@@ -151,180 +143,195 @@ const ManageUser = () => {
                 </div>
                 <form onSubmit={handleSubmit(handleUpdateUser)}>
                     {editElm && <Button type="submit">Update</Button>}
-                    <table className="w-full overflow-hidden text-left border-collapse rounded-lg shadow-md">
-                        <thead className="text-sm text-white uppercase bg-gray-700">
-                            <tr>
-                                <th className="px-4 py-2">#</th>
-                                <th className="px-4 py-2">Email</th>
-                                <th className="px-4 py-2">Name</th>
-                                <th className="px-4 py-2">Phone</th>
-                                <th className="px-4 py-2">Type login</th>
-                                <th className="px-4 py-2">Role</th>
-                                <th className="px-4 py-2">Status</th>
-                                <th className="px-4 py-2">Created At</th>
-                                <th className="px-4 py-2">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-300">
-                            {allUser?.users?.map((el, index) => (
-                                <tr
-                                    key={el._id}
-                                    className="transition hover:bg-gray-100"
-                                >
-                                    <td className="px-4 py-3 ">
-                                        {(+params.get('page') > 1
-                                            ? +params.get('page') - 1
-                                            : 0) *
-                                            import.meta.env.VITE_LIMIT +
-                                            index +
-                                            1}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        {editElm?._id === el._id ? (
-                                            <InputForm
-                                                register={register}
-                                                fullWith
-                                                defaultValue={editElm?.email}
-                                                errors={errors}
-                                                id="email"
-                                                validate={{
-                                                    required: 'Required fill',
-                                                    pattern: {
-                                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                                        message:
-                                                            'invalid email address',
-                                                    },
-                                                }}
-                                            />
-                                        ) : (
-                                            <span>{el?.email}</span>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        {editElm?._id === el._id ? (
-                                            <InputForm
-                                                register={register}
-                                                fullWit
-                                                defaultValue={
-                                                    editElm?.name || 'Anonymous'
-                                                }
-                                                errors={errors}
-                                                id="name"
-                                                validate={{
-                                                    required: 'Required fill',
-                                                    pattern: {
-                                                        value: /^[^\s]/,
-                                                        message:
-                                                            'Name cannot start with a space',
-                                                    },
-                                                }}
-                                            />
-                                        ) : (
-                                            <span>
-                                                {el?.name || 'Anonymous'}
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        {editElm?._id === el._id ? (
-                                            <InputForm
-                                                register={register}
-                                                fullWith
-                                                defaultValue={
-                                                    editElm?.phone || 'Null'
-                                                }
-                                                errors={errors}
-                                                id="phone"
-                                                validate={{
-                                                    required: 'Required fill',
-                                                    pattern: {
-                                                        value: /^(0|\+84)[0-9]{9}$/,
-                                                        message:
-                                                            'Invalid phone number',
-                                                    },
-                                                }}
-                                            />
-                                        ) : (
-                                            <span> {el?.phone || 'Null'}</span>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3 ">
-                                        {el?.loginType}
-                                    </td>
-                                    <td className="px-4 py-3 ">
-                                        {editElm?._id === el._id ? (
-                                            <Select
-                                                register={register}
-                                                fullWith
-                                                defaultValue={editElm?.role}
-                                                errors={errors}
-                                                id="role"
-                                                validate={{
-                                                    required: 'Required fill',
-                                                }}
-                                                options={roles}
-                                            />
-                                        ) : (
-                                            <span>{el?.role}</span>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        {editElm?._id === el._id ? (
-                                            <Select
-                                                register={register}
-                                                fullWith
-                                                defaultValue={
-                                                    editElm?.isBlocked
-                                                }
-                                                errors={errors}
-                                                id="isBlocked"
-                                                validate={{
-                                                    required: 'Required fill',
-                                                }}
-                                                options={blockStatus}
-                                            />
-                                        ) : (
-                                            <span>
-                                                {el?.isBlocked
-                                                    ? 'Blocked'
-                                                    : 'Active'}
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3 ">
-                                        {moment(el?.createdAt).format(
-                                            'DD/MM/YYYY'
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3 space-x-2 ">
-                                        {editElm?._id === el._id ? (
-                                            <span
-                                                onClick={handleBack}
-                                                className="text-blue-500 cursor-pointer hover:underline"
-                                            >
-                                                Back
-                                            </span>
-                                        ) : (
-                                            <span
-                                                onClick={() => setEditElm(el)}
-                                                className="text-blue-500 cursor-pointer hover:underline"
-                                            >
-                                                Edit
-                                            </span>
-                                        )}
-                                        <span
-                                            onClick={() =>
-                                                handleDeleteUser(el._id)
-                                            }
-                                            className="text-red-500 cursor-pointer hover:underline"
-                                        >
-                                            Delete
-                                        </span>
-                                    </td>
+                    <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+                        <table className="w-full overflow-hidden text-left border-collapse rounded-lg shadow-md">
+                            <thead className="text-sm text-white uppercase bg-gray-700">
+                                <tr>
+                                    <th className="px-4 py-2">#</th>
+                                    <th className="px-4 py-2">Email</th>
+                                    <th className="px-4 py-2">Name</th>
+                                    <th className="px-4 py-2">Phone</th>
+                                    <th className="px-4 py-2">Type login</th>
+                                    <th className="px-4 py-2">Role</th>
+                                    <th className="px-4 py-2">Status</th>
+                                    <th className="px-4 py-2">Created At</th>
+                                    <th className="px-4 py-2">Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-300">
+                                {allUser?.users?.map((el, index) => (
+                                    <tr
+                                        key={el._id}
+                                        className="transition hover:bg-gray-100"
+                                    >
+                                        <td className="px-4 py-3 ">
+                                            {(+params.get('page') > 1
+                                                ? +params.get('page') - 1
+                                                : 0) *
+                                                import.meta.env.VITE_LIMIT +
+                                                index +
+                                                1}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {editElm?._id === el._id ? (
+                                                <InputForm
+                                                    register={register}
+                                                    fullWith
+                                                    defaultValue={
+                                                        editElm?.email
+                                                    }
+                                                    errors={errors}
+                                                    id="email"
+                                                    validate={{
+                                                        required:
+                                                            'Required fill',
+                                                        pattern: {
+                                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                            message:
+                                                                'invalid email address',
+                                                        },
+                                                    }}
+                                                />
+                                            ) : (
+                                                <span>{el?.email}</span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {editElm?._id === el._id ? (
+                                                <InputForm
+                                                    register={register}
+                                                    fullWit
+                                                    defaultValue={
+                                                        editElm?.name ||
+                                                        'Anonymous'
+                                                    }
+                                                    errors={errors}
+                                                    id="name"
+                                                    validate={{
+                                                        required:
+                                                            'Required fill',
+                                                        pattern: {
+                                                            value: /^[^\s]/,
+                                                            message:
+                                                                'Name cannot start with a space',
+                                                        },
+                                                    }}
+                                                />
+                                            ) : (
+                                                <span>
+                                                    {el?.name || 'Anonymous'}
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {editElm?._id === el._id ? (
+                                                <InputForm
+                                                    register={register}
+                                                    fullWith
+                                                    defaultValue={
+                                                        editElm?.phone || 'Null'
+                                                    }
+                                                    errors={errors}
+                                                    id="phone"
+                                                    validate={{
+                                                        required:
+                                                            'Required fill',
+                                                        pattern: {
+                                                            value: /^(0|\+84)[0-9]{9}$/,
+                                                            message:
+                                                                'Invalid phone number',
+                                                        },
+                                                    }}
+                                                />
+                                            ) : (
+                                                <span>
+                                                    {' '}
+                                                    {el?.phone || 'Null'}
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3 ">
+                                            {el?.loginType}
+                                        </td>
+                                        <td className="px-4 py-3 ">
+                                            {editElm?._id === el._id ? (
+                                                <Select
+                                                    register={register}
+                                                    fullWith
+                                                    defaultValue={editElm?.role}
+                                                    errors={errors}
+                                                    id="role"
+                                                    validate={{
+                                                        required:
+                                                            'Required fill',
+                                                    }}
+                                                    options={roles}
+                                                />
+                                            ) : (
+                                                <span>{el?.role}</span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {editElm?._id === el._id ? (
+                                                <Select
+                                                    register={register}
+                                                    fullWith
+                                                    defaultValue={
+                                                        editElm?.isBlocked
+                                                    }
+                                                    errors={errors}
+                                                    id="isBlocked"
+                                                    validate={{
+                                                        required:
+                                                            'Required fill',
+                                                    }}
+                                                    options={blockStatus}
+                                                />
+                                            ) : (
+                                                <span>
+                                                    {el?.isBlocked
+                                                        ? 'Blocked'
+                                                        : 'Active'}
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3 ">
+                                            {moment(el?.createdAt).format(
+                                                'DD/MM/YYYY'
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3 space-x-2 ">
+                                            {editElm?._id === el._id ? (
+                                                <span
+                                                    onClick={handleBack}
+                                                    className="text-blue-500 cursor-pointer hover:underline"
+                                                >
+                                                    Back
+                                                </span>
+                                            ) : (
+                                                <span
+                                                    onClick={() =>
+                                                        setEditElm(el)
+                                                    }
+                                                    className="text-blue-500 cursor-pointer hover:underline"
+                                                >
+                                                    Edit
+                                                </span>
+                                            )}
+                                            <span
+                                                onClick={() =>
+                                                    handleDeleteUser(el._id)
+                                                }
+                                                className="text-red-500 cursor-pointer hover:underline"
+                                            >
+                                                Delete
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </form>
 
                 <div className="w-full mt-8 ">

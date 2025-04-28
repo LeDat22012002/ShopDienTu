@@ -13,7 +13,7 @@ const MemberLayout = () => {
                 <MemberSidebar />
             </div>
             <div className="w-[250px]"></div>
-            <div className="flex-auto">
+            <div className="flex-auto w-[1000px]">
                 <Outlet />
             </div>
         </div>

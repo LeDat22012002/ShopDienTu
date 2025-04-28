@@ -173,7 +173,7 @@ const Header = () => {
                             {isShowOption && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
-                                    className="absolute z-50 w-56 mt-2 bg-white border border-gray-200 shadow-lg top-full left-4 rounded-xl"
+                                    className="absolute z-50 w-[170px] mt-2 bg-white border border-gray-200 shadow-lg top-full left-4 rounded-xl"
                                 >
                                     <Link
                                         to={`/${path.MEMBER}/${path.PERSONAL}`}

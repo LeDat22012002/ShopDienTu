@@ -11,7 +11,7 @@ import UseDebouce from '../../hooks/useDebouce';
 import Swal from 'sweetalert2';
 // import { toast } from 'react-toastify';
 import icons from '../../ultils/icons';
-import { apiGetAllPromotions, apiDeletePromotion } from '../../apis';
+import { apiGetPromotionsByAdmin, apiDeletePromotion } from '../../apis';
 import { UpdatePromotion } from '.';
 import { toast } from 'react-toastify';
 import moment from 'moment';
@@ -43,7 +43,7 @@ const ManagePromotion = () => {
     const queriesDebounce = UseDebouce(watch('q'), 800);
     // Api lấy ds sản phẩm
     const fetchPromotions = async (params) => {
-        const response = await apiGetAllPromotions({
+        const response = await apiGetPromotionsByAdmin({
             ...params,
             limit: import.meta.env.VITE_LIMIT,
         });
@@ -118,17 +118,22 @@ const ManagePromotion = () => {
                         />
                     </form>
                 </div>
-                <table className="w-full overflow-hidden text-left border-collapse rounded-lg shadow-md">
+                <table className="w-full overflow-hidden text-left border-collapse rounded-lg shadow-md ">
                     <thead className="text-sm text-white uppercase bg-gray-700">
                         <tr>
                             <th className="px-4 py-2 text-center">#</th>
-                            <th className="px-4 py-2 ">Code</th>
-                            <th className="px-4 py-2 ">typeDiscount</th>
-                            <th className="px-4 py-2 ">discountValue</th>
-                            <th className="px-4 py-2 ">minOrderValue</th>
-                            <th className="px-4 py-2 ">startDate</th>
-                            <th className="px-4 py-2 ">endDate</th>
-                            <th className="px-4 py-2 ">usedCount</th>
+                            <th className="px-4 py-2 text-center ">Code</th>
+                            {/* <th className="px-4 py-2 text-center">
+                                typeDiscount
+                            </th> */}
+                            <th className="px-4 py-2 text-center">
+                                discountValue
+                            </th>
+                            <th className="px-4 py-2 text-center">
+                                minOrderValue
+                            </th>
+                            <th className="px-4 py-2 text-center">startDate</th>
+                            <th className="px-4 py-2 text-center">endDate</th>
 
                             <th className="px-4 py-2 text-center">Actions</th>
                         </tr>
@@ -147,13 +152,13 @@ const ManagePromotion = () => {
                                         index +
                                         1}
                                 </td>
-                                <td className="px-4 py-3 w-[200px]">
+                                <td className="px-4 py-3 text-center w-[100px]">
                                     <span>{el?.code}</span>
                                 </td>
-                                <td className="px-4 py-3 w-[100px]">
+                                {/* <td className="px-4 py-3 text-center w-[50px]">
                                     <span>{el?.discountType}</span>
-                                </td>
-                                <td className="px-4 py-3 w-[100px]">
+                                </td> */}
+                                <td className="px-4 py-3 text-center w-[100px]">
                                     <span>
                                         {el?.discountType === 'fixed'
                                             ? `${formatMoney(
@@ -162,27 +167,24 @@ const ManagePromotion = () => {
                                             : `${el?.discountValue}%`}
                                     </span>
                                 </td>
-                                <td className="px-4 py-3 w-[150px]">
+                                <td className="px-4 py-3 text-center w-[150px]">
                                     <span>
                                         {formatMoney(el?.minOrderValue) + 'VNĐ'}
                                     </span>
                                 </td>
-                                <td className="px-4 py-3 w-[150px]">
+                                <td className="px-4 py-3 text-center w-[150px]">
                                     <span>
                                         {moment(el?.startDate).format(
                                             'DD/MM/YYYY'
                                         )}
                                     </span>
                                 </td>
-                                <td className="px-4 py-3 w-[150px]">
+                                <td className="px-4 py-3 text-center w-[150px]">
                                     <span>
                                         {moment(el?.endDate).format(
                                             'DD/MM/YYYY'
                                         )}
                                     </span>
-                                </td>
-                                <td className="px-4 py-3 w-[100px]">
-                                    <span>{el?.usedCount}</span>
                                 </td>
 
                                 <td className="px-4 py-3 space-x-2 text-center ">

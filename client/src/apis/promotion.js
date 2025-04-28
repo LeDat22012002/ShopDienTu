@@ -14,6 +14,13 @@ export const apiGetAllPromotions = (params) =>
         params: params,
     });
 
+export const apiGetPromotionsByAdmin = (params) =>
+    axios({
+        url: '/promotion/getPromotionByAdmin',
+        method: 'get',
+        params: params,
+    });
+
 export const applyPromotionCode = (data) =>
     axios({
         url: '/promotion/applyPromotion',
