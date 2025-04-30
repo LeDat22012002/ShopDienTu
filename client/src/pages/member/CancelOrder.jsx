@@ -4,18 +4,66 @@ import { formatMoney } from '../../ultils/helpers';
 
 import { apiCancelOrderByUser } from '../../apis';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+import momo from '../../assets/momo.png';
+import vnpay from '../../assets/vnpay.png';
+import paypal from '../../assets/paypal.png';
+import cod from '../../assets/cod.png';
+import zalopay from '../../assets/zalopay.png';
+
+const getPaymentMethodIcon = (method) => {
+    switch (method) {
+        case 'cod':
+            return cod;
+        case 'momo':
+            return momo;
+        case 'vnpay':
+            return vnpay;
+        case 'zalopay':
+            return zalopay;
+        case 'paypal':
+            return paypal;
+        default:
+            return null; // Hoặc có thể trả về một icon mặc định nếu không có phương thức phù hợp
+    }
+};
+
+const getStatusClass = (status) => {
+    switch (status) {
+        case 'PENDING':
+            return 'bg-yellow-100 text-yellow-800';
+        case 'CONFIRMED':
+            return 'bg-blue-100 text-blue-800';
+        case 'SHIPPING':
+            return 'bg-purple-100 text-purple-800';
+        case 'COMPLETED':
+            return 'bg-green-100 text-green-800';
+        case 'CANCELLED':
+            return 'bg-red-100 text-red-800';
+        default:
+            return 'bg-gray-100 text-gray-800';
+    }
+};
 
 const CancelOrder = ({ editStatus, render, setEditStatus }) => {
-    console.log(editStatus);
+    // console.log(editStatus);
     const handleCancelOrder = async () => {
-        const response = await apiCancelOrderByUser(editStatus?._id);
-        if (response.success) {
-            toast.success(response.mess);
-            render();
-            setEditStatus(null);
-        } else {
-            toast.error(response.mess);
-        }
+        Swal.fire({
+            title: 'Are you sure...?',
+            text: 'Are you sure cancel this  ? ',
+            showCancelButton: true,
+        }).then(async (rs) => {
+            if (rs.isConfirmed) {
+                const response = await apiCancelOrderByUser(editStatus?._id);
+                if (response.success) {
+                    toast.success(response.mess);
+                    render();
+                    setEditStatus(null);
+                } else {
+                    toast.error(response.mess);
+                }
+            }
+        });
     };
     return (
         <div className="relative flex flex-col w-full min-h-screen p-4 bg-gray-100">
@@ -39,7 +87,23 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
                     <h3 className="mb-2 font-semibold text-gray-700">
                         Trạng thái đơn hàng
                     </h3>
-                    <span className="inline-block px-3 py-1 text-sm font-medium text-red-600 rounded">
+                    <span
+                        className={`inline-block px-3 py-1 text-sm font-medium rounded-full 
+                            ${
+                                editStatus?.status === 'PENDING'
+                                    ? 'bg-yellow-100 text-yellow-800'
+                                    : editStatus?.status === 'CONFIRMED'
+                                    ? 'bg-blue-100 text-blue-800'
+                                    : editStatus?.status === 'SHIPPING'
+                                    ? 'bg-purple-100 text-purple-800'
+                                    : editStatus?.status === 'COMPLETED'
+                                    ? 'bg-green-100 text-green-800'
+                                    : editStatus?.status === 'CANCELLED'
+                                    ? 'bg-red-100 text-red-800'
+                                    : ''
+                            }
+                        `}
+                    >
                         {editStatus?.status}
                     </span>
                 </div>
@@ -60,10 +124,10 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
                     <p>
                         <span className="mr-2 font-medium">Địa chỉ:</span>
                         <span>
-                            {editStatus?.userReceives?.city},
-                            {editStatus?.userReceives?.district},
-                            {editStatus?.userReceives?.ward},
                             {editStatus?.userReceives?.detail},
+                            {editStatus?.userReceives?.ward},
+                            {editStatus?.userReceives?.district},
+                            {editStatus?.userReceives?.city},
                         </span>
                     </p>
                 </div>
@@ -73,9 +137,18 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
                     <h3 className="mb-2 font-semibold text-gray-700">
                         Thanh toán
                     </h3>
-                    <p>
-                        <span className="mr-2 font-medium">Phương thức:</span>
-                        <span>{editStatus?.paymentMethod}</span>
+                    <p className="flex items-center gap-2">
+                        <span className="font-medium ">Phương thức:</span>
+                        <span className="flex items-center gap-2">
+                            <img
+                                src={getPaymentMethodIcon(
+                                    editStatus?.paymentMethod
+                                )}
+                                alt={editStatus?.paymentMethod}
+                                className="object-contain w-10 h-10"
+                            />
+                            {editStatus?.paymentMethod}
+                        </span>
                     </p>
                     <p>
                         <span className="font-medium">Trạng thái:</span>
@@ -179,9 +252,14 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
                                         key={item?._id}
                                         className="pl-4 border-l-4 border-blue-500"
                                     >
-                                        <p className="text-sm font-medium text-blue-600">
+                                        <span
+                                            className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${getStatusClass(
+                                                item.status
+                                            )}`}
+                                        >
                                             {item.status}
-                                        </p>
+                                        </span>
+
                                         <p className="text-gray-600">
                                             {item.note}
                                         </p>

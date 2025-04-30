@@ -235,25 +235,6 @@ const applyPromotion = asyncHandler(async (req, res) => {
         mess: 'Promotion applied',
     });
 });
-const autoDeactivateExpiredPromotions = async () => {
-    try {
-        const now = new Date();
-
-        const expiredPromotions = await Promotion.updateMany(
-            {
-                endDate: { $lt: now },
-                isActive: true,
-            },
-            {
-                $set: { isActive: false },
-            }
-        );
-
-        // console.log(`Auto-deactivated ${expiredPromotions.modifiedCount} expired promotions.`);
-    } catch (error) {
-        // console.error('Failed to auto deactivate promotions:', error);
-    }
-};
 
 module.exports = {
     createPromotion,
@@ -263,5 +244,4 @@ module.exports = {
     updatePromotion,
     deletePromotion,
     applyPromotion,
-    autoDeactivateExpiredPromotions,
 };

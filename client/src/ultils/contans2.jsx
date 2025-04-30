@@ -13,6 +13,7 @@ const {
     MdOutlineColorLens,
     MdOutlineCategory,
     IoReturnDownBackSharp,
+    FaHeart,
 } = icons;
 export const productExtraInfomation = [
     {
@@ -175,23 +176,16 @@ export const memberSidebar = [
         path: `/${path.MEMBER}/${path.PERSONAL}`,
         icon: <MdDashboardCustomize size={20} />,
     },
+
     {
         id: 2,
         type: 'SINGLE',
-        text: 'My cart',
-        path: `/${path.MEMBER}/${path.MY_CART}`,
-        icon: <FaCartArrowDown size={20} />,
-    },
-
-    {
-        id: 3,
-        type: 'SINGLE',
         text: 'Wishlist',
         path: `/${path.MEMBER}/${path.WISHLIST}`,
-        icon: <FaCartArrowDown size={20} />,
+        icon: <FaHeart size={20} />,
     },
     {
-        id: 4,
+        id: 3,
         type: 'SINGLE',
         text: 'History order',
         path: `/${path.MEMBER}/${path.HISTORY_ORDER}`,
@@ -199,7 +193,7 @@ export const memberSidebar = [
     },
 
     {
-        id: 5,
+        id: 4,
         type: 'SINGLE',
         text: 'back home',
         path: `/`,

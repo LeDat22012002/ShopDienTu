@@ -196,27 +196,27 @@ export const statusOrders = [
 
 export const ORDER_STATUS = {
     PENDING: {
-        label: 'Chờ xác nhận',
+        label: 'PENDING',
         bg: 'bg-yellow-500',
         nextStatus: ['CONFIRMED', 'CANCELLED'],
     },
     CONFIRMED: {
-        label: 'Đã xác nhận',
+        label: 'CONFIRMED',
         bg: 'bg-blue-500',
         nextStatus: ['SHIPPING', 'CANCELLED'],
     },
     SHIPPING: {
-        label: 'Đang giao',
+        label: 'SHIPPING',
         bg: 'bg-purple-500',
         nextStatus: ['COMPLETED', 'CANCELLED'],
     },
     COMPLETED: {
-        label: 'Hoàn tất',
+        label: 'COMPLETED',
         bg: 'bg-green-600',
         nextStatus: [],
     },
     CANCELLED: {
-        label: 'Đã hủy',
+        label: 'CANCELLED',
         bg: 'bg-red-600',
         nextStatus: [],
     },

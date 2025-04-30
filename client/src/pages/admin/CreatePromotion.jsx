@@ -15,6 +15,16 @@ const TypeDiscountArr = [
         label: 'Giảm theo số tiền cố định (VNĐ)',
     },
 ];
+const ActiveArr = [
+    {
+        value: 'true',
+        label: 'Hoạt động',
+    },
+    {
+        value: 'false',
+        label: 'Đã khóa',
+    },
+];
 
 const CreatePromotion = () => {
     const {
@@ -62,20 +72,36 @@ const CreatePromotion = () => {
                             style="flex-auto "
                             placeholder="Code of new promotion..."
                         />
-                        <Select
-                            label="Color product"
-                            options={TypeDiscountArr?.map((el) => ({
-                                code: el?.value,
-                                value: el?.value,
-                            }))}
-                            register={register}
-                            id="discountType"
-                            validate={{
-                                required: 'Please select a discountType !',
-                            }}
-                            style="flex-auto "
-                            errors={errors}
-                        />
+                        <div className="flex gap-2">
+                            <Select
+                                label="Type Discount"
+                                options={TypeDiscountArr?.map((el) => ({
+                                    code: el?.value,
+                                    value: el?.label,
+                                }))}
+                                register={register}
+                                id="discountType"
+                                validate={{
+                                    required: 'Please select a discountType !',
+                                }}
+                                style="flex-auto "
+                                errors={errors}
+                            />
+                            <Select
+                                label="Active"
+                                options={ActiveArr?.map((el) => ({
+                                    code: el?.value,
+                                    value: el?.label,
+                                }))}
+                                register={register}
+                                id="isActive"
+                                validate={{
+                                    required: 'Please select!',
+                                }}
+                                style="flex-auto "
+                                errors={errors}
+                            />
+                        </div>
                     </div>
                     <div className="flex gap-2 mt-3 ">
                         <InputForm

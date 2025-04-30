@@ -36,13 +36,7 @@ import {
     CreateFlashSale,
     ManageFlashSale,
 } from './pages/admin';
-import {
-    Personal,
-    MemberLayout,
-    Wishlist,
-    HistoryOrder,
-    MyCart,
-} from './pages/member';
+import { Personal, MemberLayout, Wishlist, HistoryOrder } from './pages/member';
 import path from './ultils/path';
 import { getCategories } from './store/app/asyncAction';
 import { useDispatch, useSelector } from 'react-redux';
@@ -139,7 +133,7 @@ function App() {
                 </Route>
                 <Route path={path.MEMBER} element={<MemberLayout />}>
                     <Route path={path.PERSONAL} element={<Personal />} />
-                    <Route path={path.MY_CART} element={<MyCart />} />
+
                     <Route path={path.WISHLIST} element={<Wishlist />} />
                     <Route
                         path={path.HISTORY_ORDER}

@@ -165,16 +165,13 @@ const updateStatusOrder = asyncHandler(async (req, res) => {
                 })
             );
             break;
-
-        case 'COMPLETED':
-            updates.isDelivered = true;
-            updates.deliveredAt = new Date();
-            updates.isPaid = true;
-            updates.paidAt = new Date();
-            break;
-
         case 'SHIPPING':
-            updates.isDelivered = false;
+            break;
+        case 'COMPLETED':
+            if (order.paymentMethod === 'cod') {
+                updates.isPaid = true;
+                updates.paidAt = new Date();
+            }
             break;
 
         case 'CANCELLED':
@@ -185,15 +182,15 @@ const updateStatusOrder = asyncHandler(async (req, res) => {
                         const prod = await Product.findById(item.product);
                         if (!prod) return;
 
-                        if (prod.variants && prod.variants.length > 0) {
-                            const variantIndex = prod.variants.findIndex(
+                        if (prod.varriants && prod.varriants.length > 0) {
+                            const variantIndex = prod.varriants.findIndex(
                                 (v) =>
                                     v.color === item.color && v.sku === item.sku
                             );
                             if (variantIndex !== -1) {
-                                prod.variants[variantIndex].quantity +=
+                                prod.varriants[variantIndex].quantity +=
                                     item.count;
-                                prod.variants[variantIndex].sold -= item.count;
+                                prod.varriants[variantIndex].sold -= item.count;
                             }
                         } else {
                             prod.quantity += item.count;
@@ -204,7 +201,7 @@ const updateStatusOrder = asyncHandler(async (req, res) => {
                     })
                 );
             }
-            updates.isDelivered = false;
+
             break;
     }
 
@@ -384,6 +381,29 @@ const canCelOrder = asyncHandler(async (req, res) => {
             success: false,
             mess: 'Something went wrong!',
         });
+    }
+    if (order.status === 'COMPLETED') {
+        await Promise.all(
+            order.products.map(async (item) => {
+                const prod = await Product.findById(item.product);
+                if (!prod) return;
+
+                if (prod.varriants && prod.varriants.length > 0) {
+                    const variantIndex = prod.varriants.findIndex(
+                        (v) => v.color === item.color && v.sku === item.sku
+                    );
+                    if (variantIndex !== -1) {
+                        prod.varriants[variantIndex].quantity += item.count;
+                        prod.varriants[variantIndex].sold -= item.count;
+                    }
+                } else {
+                    prod.quantity += item.count;
+                    prod.sold -= item.count;
+                }
+
+                await prod.save();
+            })
+        );
     }
     const updates = {
         status: 'CANCELLED',

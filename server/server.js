@@ -7,8 +7,6 @@ const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 require('./Passport');
-const cron = require('node-cron');
-const { autoDeactivateExpiredPromotions } = require('./controller/promotion');
 
 const app = express();
 app.use(
@@ -34,12 +32,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 dbConnect();
 initRoutes(app);
-cron.schedule('0 0 * * *', () => {
-    console.log(
-        'Running scheduled task: auto deactivate expired promotions...'
-    );
-    autoDeactivateExpiredPromotions();
-});
 
 // app.use('/' , (req , res) =>  {res.send('SERVER ON')})
 

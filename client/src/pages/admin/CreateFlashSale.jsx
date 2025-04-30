@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { InputForm, Button, Loading, InputCheckbox } from '../../components';
+import { InputForm, Button, Select } from '../../components';
 import { useForm } from 'react-hook-form';
-
 import { toast } from 'react-toastify';
 import { apiCreateFlashSale, apiGetProduct } from '../../apis';
+const ActiveArr = [
+    {
+        value: 'true',
+        label: 'Hoạt động',
+    },
+    {
+        value: 'false',
+        label: 'Đã khóa',
+    },
+];
 
 const CreateFlashSale = () => {
     const {
@@ -192,6 +201,20 @@ const CreateFlashSale = () => {
                             }}
                             style="flex-auto"
                             type="datetime-local"
+                        />
+                        <Select
+                            label="Active"
+                            options={ActiveArr?.map((el) => ({
+                                code: el?.value,
+                                value: el?.label,
+                            }))}
+                            register={register}
+                            id="isActive"
+                            validate={{
+                                required: 'Please select!',
+                            }}
+                            style="flex-auto "
+                            errors={errors}
                         />
                     </div>
 

@@ -39,7 +39,6 @@ const path = {
     //MEMBER
     MEMBER: 'member',
     PERSONAL: 'personal',
-    MY_CART: 'my-cart',
     WISHLIST: 'wishlist',
     HISTORY_ORDER: 'history-order',
 };

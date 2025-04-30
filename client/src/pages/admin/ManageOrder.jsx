@@ -15,6 +15,28 @@ import { CustomSelect, InputForm, Pagination } from '../../components';
 import { statusOrders } from '../../ultils/contains';
 import { toast } from 'react-toastify';
 import { ORDER_STATUS } from '../../ultils/contains';
+import momo from '../../assets/momo.png';
+import vnpay from '../../assets/vnpay.png';
+import paypal from '../../assets/paypal.png';
+import cod from '../../assets/cod.png';
+import zalopay from '../../assets/zalopay.png';
+
+const getPaymentMethodIcon = (method) => {
+    switch (method) {
+        case 'cod':
+            return cod;
+        case 'momo':
+            return momo;
+        case 'vnpay':
+            return vnpay;
+        case 'zalopay':
+            return zalopay;
+        case 'paypal':
+            return paypal;
+        default:
+            return null; // Hoặc có thể trả về một icon mặc định nếu không có phương thức phù hợp
+    }
+};
 
 const { FaRegEdit } = icons;
 
@@ -113,7 +135,7 @@ const ManageOrder = () => {
                             Cập nhật trạng thái đơn hàng
                         </h2>
                         <p className="mb-3">
-                            Trạng thái hiện tại:{' '}
+                            Trạng thái hiện tại:
                             <span
                                 className={`px-2 py-1 rounded text-white text-sm ${
                                     ORDER_STATUS[selectedOrder.status]?.bg
@@ -199,14 +221,27 @@ const ManageOrder = () => {
                 <table className="w-full overflow-hidden text-left border-collapse rounded-lg shadow-md">
                     <thead className="text-sm text-white uppercase bg-gray-700">
                         <tr>
-                            <th className="px-4 py-2 text-center">#</th>
-                            <th className="px-4 py-2 text-center ">OrderId</th>
-                            <th className="px-4 py-2 text-center">Product</th>
-                            <th className="px-4 py-2 text-center">Total</th>
-                            <th className="px-4 py-2 text-center">Status</th>
-                            <th className="px-4 py-2 text-center">Method</th>
-                            <th className="px-4 py-2 text-center">CreateAt</th>
-                            <th className="px-4 py-2 text-center">Actions</th>
+                            <th className="px-4 py-2 text-center w-[50px]">
+                                #
+                            </th>
+                            <th className="px-4 py-2 text-center w-[300px]">
+                                Product
+                            </th>
+                            <th className="px-4 py-2 text-center w-[150px]">
+                                Total
+                            </th>
+                            <th className="px-4 py-2 text-center w-[180px]">
+                                Status
+                            </th>
+                            <th className="px-4 py-2 text-center w-[140px]">
+                                Method
+                            </th>
+                            <th className="px-4 py-2 text-center w-[140px]">
+                                CreateAt
+                            </th>
+                            <th className="px-4 py-2 text-center w-[100px]">
+                                Actions
+                            </th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-300">
@@ -215,7 +250,7 @@ const ManageOrder = () => {
                                 key={el?._id}
                                 className="transition hover:bg-gray-100"
                             >
-                                <td className="px-4 py-3 text-center ">
+                                <td className="px-4 py-3 text-center">
                                     {(+params.get('page') > 1
                                         ? +params.get('page') - 1
                                         : 0) *
@@ -223,16 +258,45 @@ const ManageOrder = () => {
                                         index +
                                         1}
                                 </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
-                                    <span>{el?._id}</span>
+
+                                <td className="py-3 text-center max-w-[300px]">
+                                    <span className="flex flex-col gap-2 max-w-[300px] mx-auto">
+                                        {el?.products?.map((item) => (
+                                            <span
+                                                key={item?._id}
+                                                className="flex items-center gap-2"
+                                            >
+                                                <img
+                                                    src={item?.thumb}
+                                                    alt="thumb"
+                                                    className="object-cover w-8 h-8 rounded-md"
+                                                />
+                                                <span className="flex flex-col text-left">
+                                                    <span className="block text-sm truncate w-[200px] text-main">
+                                                        {item?.title}
+                                                    </span>
+                                                    <span className="flex items-center gap-2 text-xs">
+                                                        <span>Quantity:</span>
+                                                        <span className="text-main">
+                                                            {item?.count}
+                                                        </span>
+                                                    </span>
+                                                    <span className="flex items-center gap-2 text-xs">
+                                                        <span>Color:</span>
+                                                        <span className="text-main">
+                                                            {item?.color}
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        ))}
+                                    </span>
                                 </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
-                                    <span>{el?.products?.length}</span>
-                                </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
+
+                                <td className="px-4 py-3 text-center">
                                     <span>{formatMoney(el?.total)} VNĐ</span>
                                 </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
+                                <td className="px-4 py-3 text-center">
                                     <span
                                         className={`px-2 py-1 rounded text-white text-sm ${
                                             ORDER_STATUS[el.status]?.bg
@@ -241,18 +305,26 @@ const ManageOrder = () => {
                                         {ORDER_STATUS[el.status]?.label}
                                     </span>
                                 </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
-                                    <span>{el?.paymentMethod}</span>
+                                <td className="px-4 py-3 text-center">
+                                    <div className="flex items-center justify-center gap-2">
+                                        <img
+                                            src={getPaymentMethodIcon(
+                                                el?.paymentMethod
+                                            )}
+                                            alt={el?.paymentMethod}
+                                            className="object-contain w-6 h-6"
+                                        />
+                                        <span>{el?.paymentMethod}</span>
+                                    </div>
                                 </td>
-                                <td className="px-4 py-3 text-center w-[200px]">
+                                <td className="px-4 py-3 text-center">
                                     <span>
                                         {moment(el?.createdAt).format(
                                             'DD/MM/YYYY'
                                         )}
                                     </span>
                                 </td>
-
-                                <td className="px-4 py-3 space-x-2 text-center ">
+                                <td className="px-4 py-3 text-center">
                                     <div className="flex items-center justify-center gap-2">
                                         <span
                                             onClick={() => {
@@ -269,6 +341,7 @@ const ManageOrder = () => {
                         ))}
                     </tbody>
                 </table>
+
                 <div className="w-full mt-8 ">
                     <Pagination totalCount={counts} />
                 </div>

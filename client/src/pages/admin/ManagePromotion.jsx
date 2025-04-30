@@ -134,7 +134,7 @@ const ManagePromotion = () => {
                             </th>
                             <th className="px-4 py-2 text-center">startDate</th>
                             <th className="px-4 py-2 text-center">endDate</th>
-
+                            <th className="px-4 py-2 text-center">Active</th>
                             <th className="px-4 py-2 text-center">Actions</th>
                         </tr>
                     </thead>
@@ -184,6 +184,17 @@ const ManagePromotion = () => {
                                         {moment(el?.endDate).format(
                                             'DD/MM/YYYY'
                                         )}
+                                    </span>
+                                </td>
+                                <td className="px-4 py-3 text-center w-[200px]">
+                                    <span
+                                        className={
+                                            el?.isActive
+                                                ? 'text-green-600 font-semibold'
+                                                : 'text-red-600 font-semibold'
+                                        }
+                                    >
+                                        {el?.isActive ? 'Hoạt động' : 'Đã khóa'}
                                     </span>
                                 </td>
 

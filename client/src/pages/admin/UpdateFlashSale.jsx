@@ -1,9 +1,20 @@
 import React, { memo, useEffect, useState } from 'react';
-import { InputForm, Button, Loading, InputCheckbox } from '../../components';
+import { InputForm, Button, Select } from '../../components';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { apiGetProduct, apiUpdateFlashSales } from '../../apis';
 import moment from 'moment';
+
+const ActiveArr = [
+    {
+        value: 'true',
+        label: 'Hoạt động',
+    },
+    {
+        value: 'false',
+        label: 'Đã khóa',
+    },
+];
 
 const UpdateFlashSale = ({ editFlashSale, render, setEditFlashSales }) => {
     const {
@@ -18,6 +29,7 @@ const UpdateFlashSale = ({ editFlashSale, render, setEditFlashSales }) => {
     useEffect(() => {
         reset({
             title: editFlashSale?.title || '',
+            isActive: String(editFlashSale?.isActive ?? ''),
             startTime: editFlashSale?.startTime
                 ? moment(editFlashSale.startTime).format('YYYY-MM-DDTHH:mm')
                 : '',
@@ -84,6 +96,7 @@ const UpdateFlashSale = ({ editFlashSale, render, setEditFlashSales }) => {
 
         const payload = {
             title: data.title,
+            isActive: data.isActive,
             startTime: data.startTime,
             endTime: data.endTime,
             products: updatedProducts,
@@ -215,6 +228,20 @@ const UpdateFlashSale = ({ editFlashSale, render, setEditFlashSales }) => {
                             }}
                             style="flex-auto"
                             type="datetime-local"
+                        />
+                        <Select
+                            label="Active"
+                            options={ActiveArr?.map((el) => ({
+                                code: el?.value,
+                                value: el?.label,
+                            }))}
+                            register={register}
+                            id="isActive"
+                            validate={{
+                                required: 'Please select!',
+                            }}
+                            style="flex-auto "
+                            errors={errors}
                         />
                     </div>
 
