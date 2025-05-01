@@ -221,6 +221,20 @@ const dislikeBlog = AsyncHandler(async (req, res) => {
 
 const getDetailsBlog = AsyncHandler(async (req, res) => {
     const { bid } = req.params;
+
+    // Bước 1: Lấy blog trước để kiểm tra giá trị numberViews
+    let blogDoc = await Blog.findById(bid);
+    if (!blogDoc) {
+        return res.status(404).json({ success: false, mess: 'Blog not found' });
+    }
+
+    // Bước 2: Nếu numberViews không phải số, gán lại là 0
+    if (typeof blogDoc.numberViews !== 'number') {
+        blogDoc.numberViews = 0;
+        await blogDoc.save(); // Lưu lại giá trị mới
+    }
+
+    // Bước 3: Tăng numberViews lên 1 và populate các mối quan hệ
     const blog = await Blog.findByIdAndUpdate(
         bid,
         { $inc: { numberViews: 1 } },
@@ -228,8 +242,9 @@ const getDetailsBlog = AsyncHandler(async (req, res) => {
     )
         .populate('likes', 'name')
         .populate('dislikes', 'name');
+
     return res.status(200).json({
-        success: blog ? true : false,
+        success: !!blog,
         rs: blog,
     });
 });

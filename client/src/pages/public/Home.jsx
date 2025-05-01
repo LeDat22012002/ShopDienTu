@@ -10,7 +10,7 @@ import {
 import { useSelector } from 'react-redux';
 import icons from '../../ultils/icons';
 import { createSearchParams, useNavigate } from 'react-router-dom';
-import { apiGetActiveFlashSales } from '../../apis';
+import { apiGetActiveFlashSales, apiGetBlogs } from '../../apis';
 import Countdown from 'react-countdown';
 const Home = () => {
     const { IoIosArrowForward } = icons;
@@ -18,11 +18,23 @@ const Home = () => {
     const { newProducts } = useSelector((state) => state.products);
     const { categories } = useSelector((state) => state.app);
     const [flashSales, setFlashSales] = useState(null);
+    const [BLOGS, setBLOGS] = useState(null);
+
+    const fetchApiBlogs = async () => {
+        const response = await apiGetBlogs();
+        if (response.success) {
+            setBLOGS(response?.blogs);
+        }
+    };
+    useEffect(() => {
+        fetchApiBlogs();
+    }, []);
+    // console.log(BLOGS);
     // console.log(categories);
 
     const fetchFlashSale = async () => {
         const response = await apiGetActiveFlashSales();
-        console.log(response);
+        // console.log(response);
         if (response.success) {
             setFlashSales(response?.flashSales);
         }
@@ -220,6 +232,9 @@ const Home = () => {
                 <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                     BLOGS
                 </h3>
+                <div className="mt-4 mx-[-10px]">
+                    <CustomSlider blogs={BLOGS} />
+                </div>
             </div>
         </div>
     );

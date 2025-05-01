@@ -292,22 +292,7 @@ const UpdateProduct = ({ editProduct, render, setEditProduct }) => {
                             placeholder="Quantity of new product..."
                             type="number"
                         />
-                        {/* <InputForm
-                            label="Color product"
-                            register={register}
-                            errors={errors}
-                            id="color"
-                            validate={{
-                                required: 'Product color cannot be blank !',
-                                pattern: {
-                                    value: /^[^\s]/,
-                                    message:
-                                        'Product color cannot start with a space !',
-                                },
-                            }}
-                            style="flex-auto "
-                            placeholder="Color of new product..."
-                        /> */}
+
                         <Select
                             label="Color product"
                             options={colors?.map((el) => ({

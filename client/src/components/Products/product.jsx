@@ -4,7 +4,6 @@ import { formatMoney } from '../../ultils/helpers';
 import { renderStar } from '../../ultils/renderStar';
 import { SelectOptions } from '..';
 import icons from '../../ultils/icons';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';

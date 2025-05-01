@@ -8,6 +8,7 @@ const path = {
     OUR_SERVICES: 'services',
     FAQ: 'faqs',
     DETAIL_PRODUCT__CATEGORY__PID__TITLE: ':category/:pid/:title',
+    DETAIL_BLOG__TITLE__BID: ':title/:bid',
     FINAL_REGISTER: 'finalregister/:status',
     RESET_PASSWORD: 'reset-password/:token',
     PROFILE: 'profile/:token',

@@ -31,6 +31,8 @@ import {
     FaSortDown,
     FaCaretRight,
     FaRegEdit,
+    FaUserEdit,
+    FaSearch,
 } from 'react-icons/fa';
 import { ImBin } from 'react-icons/im';
 import { RiLogoutCircleRLine, RiProductHuntLine } from 'react-icons/ri';
@@ -72,6 +74,8 @@ const icons = {
     MdOutlineCategory,
     IoReturnDownBackSharp,
     MdClose,
+    FaUserEdit,
+    FaSearch,
 };
 
 export default icons;

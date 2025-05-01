@@ -25,3 +25,9 @@ export const apiDeleteBlog = (bid) =>
         url: '/blog/deleteBlog/' + bid,
         method: 'delete',
     });
+
+export const apiGetDetailsBlog = (bid) =>
+    axios({
+        url: '/blog/getDetailsBlog/' + bid,
+        method: 'get',
+    });
