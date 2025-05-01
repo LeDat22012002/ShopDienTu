@@ -35,6 +35,8 @@ import {
     ManagePromotion,
     CreateFlashSale,
     ManageFlashSale,
+    CreateBlogs,
+    ManageBlogs,
 } from './pages/admin';
 import { Personal, MemberLayout, Wishlist, HistoryOrder } from './pages/member';
 import path from './ultils/path';
@@ -91,6 +93,8 @@ function App() {
                     <Route path={path.ALL} element={<Home />} />
                 </Route>
                 <Route path={path.ADMIN} element={<AdminLayout />}>
+                    <Route path={path.CREATE_BLOGS} element={<CreateBlogs />} />
+                    <Route path={path.MANAGE_BLOGS} element={<ManageBlogs />} />
                     <Route
                         path={path.CREATE_PROMOTION}
                         element={<CreatePromotion />}

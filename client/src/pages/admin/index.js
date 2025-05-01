@@ -20,3 +20,6 @@ export { default as UpdatePromotion } from './UpdatePromotion';
 export { default as CreateFlashSale } from './CreateFlashSale';
 export { default as ManageFlashSale } from './ManageFlashSale';
 export { default as UpdateFlashSale } from './UpdateFlashSale';
+export { default as CreateBlogs } from './Blogs/CreateBlogs';
+export { default as ManageBlogs } from './Blogs/ManageBlogs';
+export { default as UpdateBlogs } from './Blogs/UpdateBlogs';

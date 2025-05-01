@@ -166,6 +166,22 @@ export const adminSidebar = [
             },
         ],
     },
+    {
+        id: 10,
+        type: 'PARENT',
+        text: 'Blogs',
+        icon: <MdOutlineColorLens size={20} />,
+        submenu: [
+            {
+                text: 'Create Blogs',
+                path: `/${path.ADMIN}/${path.CREATE_BLOGS}`,
+            },
+            {
+                text: 'Manage Blogs',
+                path: `/${path.ADMIN}/${path.MANAGE_BLOGS}`,
+            },
+        ],
+    },
 ];
 
 export const memberSidebar = [

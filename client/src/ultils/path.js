@@ -35,6 +35,8 @@ const path = {
     MANAGE_PROMOTION: 'manage-promotion',
     CREATE_FLASHSALE: 'create-flashsale',
     MANAGE_FLASHSALE: 'manage-flashsale',
+    CREATE_BLOGS: 'create-blogs',
+    MANAGE_BLOGS: 'manage-blogs',
 
     //MEMBER
     MEMBER: 'member',
