@@ -63,7 +63,7 @@ const Products = () => {
 
         delete queries.from;
         delete queries.to;
-        const q = { ...priceQuery, ...queries };
+        const q = { ...priceQuery, ...queries, limit: 8 };
         // console.log(q);
         fetchProductsByCategory(q);
         window.scrollTo(0, 0);
@@ -133,7 +133,7 @@ const Products = () => {
                     </div>
                 </div>
             </div>
-            <div className="m-auto my-8 w-main ">
+            <div className="m-auto my-4 w-main ">
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
                     className="flex my-masonry-grid mx-[-10px] mb-[-10px]"
@@ -145,15 +145,15 @@ const Products = () => {
                             pid={el._id}
                             productData={el}
                             normal={true}
+                            style="px-[10px] mb-4"
                         ></Product>
                     ))}
                 </Masonry>
             </div>
 
             <div className="flex justify-center m-auto my-4 w-main">
-                <Pagination totalCount={products?.counts} />
+                <Pagination totalCount={products?.counts} limit={8} />
             </div>
-            <div className="h-[300px]"></div>
         </div>
     );
 };

@@ -17,13 +17,16 @@ const CustomSlider = ({ products, activeTab, normal, blogs }) => {
             {products && (
                 <Slider className="customSlider" {...settings}>
                     {products?.map((el) => (
-                        <Product
-                            key={el._id}
-                            pid={el._id}
-                            productData={el}
-                            isNew={activeTab === 1 ? false : true}
-                            normal={normal}
-                        />
+                        <div key={el._id} className="px-[10px] ">
+                            <Product
+                                key={el._id}
+                                pid={el._id}
+                                productData={el}
+                                isNew={activeTab === 1 ? false : true}
+                                normal={normal}
+                                className="bg-white rounded-md" // giữ lại nếu bạn muốn Product vẫn có khung trắng bên trong
+                            />
+                        </div>
                     ))}
                 </Slider>
             )}

@@ -29,12 +29,10 @@ const Home = () => {
     useEffect(() => {
         fetchApiBlogs();
     }, []);
-    // console.log(BLOGS);
-    // console.log(categories);
 
     const fetchFlashSale = async () => {
         const response = await apiGetActiveFlashSales();
-        // console.log(response);
+
         if (response.success) {
             setFlashSales(response?.flashSales);
         }
@@ -42,7 +40,7 @@ const Home = () => {
     const flashSaleProducts =
         flashSales?.[0]?.products?.map((item) => ({
             ...item.product,
-            salePrice: item.salePrice, // <-- gán giá khuyến mãi vào salePrice
+            salePrice: item.salePrice,
             quantity: item.quantity,
             sold: item.sold,
         })) || [];
@@ -58,17 +56,16 @@ const Home = () => {
         } else {
             return (
                 <div className="flex items-center gap-2">
-                    {/* Hour */}
                     <div className="flex items-center justify-center w-10 h-10 text-lg font-semibold bg-gray-200 rounded-md text-main">
                         {String(hours).padStart(2, '0')}
                     </div>
                     <span className="text-xl font-bol text-main">:</span>
-                    {/* Minute */}
+
                     <div className="flex items-center justify-center w-10 h-10 text-lg font-semibold bg-gray-200 rounded-md text-main">
                         {String(minutes).padStart(2, '0')}
                     </div>
                     <span className="text-xl font-bold text-main">:</span>
-                    {/* Second */}
+
                     <div className="flex items-center justify-center w-10 h-10 text-lg font-semibold bg-gray-200 rounded-md text-main">
                         {String(seconds).padStart(2, '0')}
                     </div>
@@ -78,21 +75,18 @@ const Home = () => {
     };
 
     return (
-        <div className="w-full">
+        <div className="w-full bg-gray-50">
             <div className="flex m-auto mt-4 w-main">
                 <div className="flex flex-col gap-5 w-[20%] flex-auto ">
                     <Sidebar />
                     {/* <DealDaily /> */}
                 </div>
                 <div className="w-[80%] pl-5 flex flex-col gap-2">
-                    {/* Hàng đầu gồm Banner + vài box */}
                     <div className="flex gap-2">
-                        {/* Banner chiếm khoảng 60% */}
                         <div className="w-[80%]">
                             <Banner />
                         </div>
 
-                        {/* Một vài box đầu tiên (vd: 2 hoặc 3 cái) */}
                         <div className="w-[25%] flex flex-col gap-2">
                             {categories
                                 ?.filter((el) => el.brand.length > 0)
@@ -100,7 +94,7 @@ const Home = () => {
                                 .map((el) => (
                                     <div
                                         key={el._id}
-                                        className="transition-all duration-300 bg-white border shadow-md rounded-xl hover:shadow-lg"
+                                        className="transition-all duration-300 bg-white border-gray-100 rounded-md shadow-md hover:shadow-lg"
                                     >
                                         <div className="flex items-center p-3">
                                             <img
@@ -144,15 +138,14 @@ const Home = () => {
                         </div>
                     </div>
 
-                    {/* Hàng thứ 2: các box còn lại */}
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         {categories
                             ?.filter((el) => el.brand.length > 0)
-                            ?.slice(3) // các box còn lại sau 3 cái đầu
+                            ?.slice(3)
                             .map((el) => (
                                 <div
                                     key={el._id}
-                                    className="transition-all duration-300 bg-white border shadow-md rounded-xl hover:shadow-lg"
+                                    className="transition-all duration-300 bg-white border-gray-100 rounded-md shadow-md hover:shadow-lg"
                                 >
                                     <div className="flex items-center p-3">
                                         <img
@@ -197,17 +190,23 @@ const Home = () => {
                 </div>
             </div>
             {flashSales?.length > 0 && (
-                <div className="m-auto my-4 bg-blue-500 rounded-md w-main">
-                    <div className="flex justify-between items-center p-2 border-b-3 border-main py-[15px]">
-                        <h3 className="text-[20px] font-semibold">
-                            {flashSales[0]?.title || 'FLASH SALES'}
-                        </h3>
+                <div className="m-auto my-4 text-white rounded-md shadow-lg w-main bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600">
+                    {/* Header */}
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-white/30">
+                        <div className="flex items-center gap-2 text-[18px] font-semibold">
+                            <span>⚡</span>
+                            <span className="tracking-wide uppercase">
+                                {flashSales[0]?.title}
+                            </span>
+                        </div>
                         <Countdown
                             date={new Date(flashSales[0].endTime)}
                             renderer={renderer}
                         />
                     </div>
-                    <div className="mt-4 mx-[10px] my-[10px] bg-blue-500 ">
+
+                    {/* Slider sản phẩm */}
+                    <div className="relative py-3 bg-white">
                         <CustomSlider products={flashSaleProducts} normal />
                     </div>
                 </div>

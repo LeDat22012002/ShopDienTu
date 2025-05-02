@@ -73,7 +73,10 @@ const DetailsProduct = () => {
         const response = await apiGetProduct({ category });
 
         if (response.success) {
-            setRelatedProducts(response?.products);
+            const filteredProducts = response?.products?.filter(
+                (item) => item._id !== pid
+            );
+            setRelatedProducts(filteredProducts);
         }
     };
 
@@ -217,9 +220,10 @@ const DetailsProduct = () => {
                     <div className="h-[458px] w-[458px] border flex items-center justify-center border-gray-500">
                         <Zoom>
                             <img
+                                key={selectedImg || currentProduct?.thumb}
                                 src={currentImg || currentProduct?.thumb}
                                 alt="product"
-                                className="h-[400px] w-[400px] object-cover"
+                                className="h-[400px] w-[400px] object-contain animate-slide-up"
                             />
                         </Zoom>
                     </div>
@@ -242,14 +246,14 @@ const DetailsProduct = () => {
                                         src={el}
                                         alt="itemImg"
                                         className={`
-                        h-full w-full object-cover cursor-pointer border-2
-                        ${
-                            selectedImg === el
-                                ? 'border-main'
-                                : 'border-gray-200'
-                        }
-                        rounded-md transition
-                    `}
+                                            h-full w-full object-contain cursor-pointer border-2
+                                            ${
+                                                selectedImg === el
+                                                    ? 'border-main'
+                                                    : 'border-white'
+                                            }
+                                            rounded-md transition
+                                        `}
                                     />
                                 </div>
                             ))}

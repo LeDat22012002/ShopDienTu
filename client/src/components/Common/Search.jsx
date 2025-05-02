@@ -1,10 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-    useSearchParams,
-    createSearchParams,
-    useNavigate,
-} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import UseDebouce from '../../hooks/useDebouce';
 import { apiGetProduct } from '../../apis';
 import { InputForm } from '..';
@@ -16,13 +12,13 @@ const Search = () => {
         watch,
         formState: { errors },
     } = useForm();
-    const [params] = useSearchParams();
+    // const [params] = useSearchParams();
     const [products, setProducts] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const navigate = useNavigate();
 
     const query = watch('q');
-    const queryDebounced = UseDebouce(query, 200);
+    const queryDebounced = UseDebouce(query, 400);
 
     // Call API khi từ khóa thay đổi
     useEffect(() => {

@@ -142,7 +142,7 @@ const getAllPrs = asyncHandler(async (req, res) => {
     // Pagination
     // limit : số oject lấy về 1 lần gọi API
     const page = +req.query.page || 1;
-    const limit = +req.query.limit || process.env.LIMIT_PRODUCT;
+    const limit = +req.query.limit || null;
     const skip = (page - 1) * limit;
     queryCommand.skip(skip).limit(limit);
     // Số lượng sp thõa mãn điều kiện !== số lượng sp trả về 1 lần gọi API

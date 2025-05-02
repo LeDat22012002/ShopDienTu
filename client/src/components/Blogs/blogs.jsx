@@ -6,27 +6,22 @@ const Blogs = ({ blogData, className }) => {
     // console.log(blogData);
     const navigate = useNavigate();
     return (
-        <div
-            className={clsx(
-                'w-full px-[10px] text-base mb-4 bg-white',
-                className
-            )}
-        >
+        <div className={clsx('w-full px-[10px] text-base mb-4', className)}>
             <div
-                className="w-full border border-gray-400 p-[10px] flex flex-col items-center"
+                className="w-full overflow-hidden transition duration-300 bg-white rounded-md shadow-md cursor-pointer hover:shadow-lg"
                 onClick={() => navigate(`/${blogData?.title}/${blogData?._id}`)}
             >
-                <div className="relative w-full">
-                    <div className="flex items-center justify-center w-full h-[150px]">
-                        <img
-                            src={blogData?.image}
-                            alt="ảnh Product"
-                            className="object-contain w-[240px] h-[240px]"
-                        />
-                    </div>
+                <div className="w-full h-[180px] bg-white flex items-center justify-center">
+                    <img
+                        src={blogData?.image}
+                        alt="ảnh Blog"
+                        className="object-cover w-full h-full"
+                    />
                 </div>
-                <div className="flex mt-[10px] items-start w-full">
-                    <span className="line-clamp-2">{blogData?.title}</span>
+                <div className="p-3 bg-main">
+                    <span className="text-sm font-medium text-white line-clamp-2">
+                        {blogData?.title}
+                    </span>
                 </div>
             </div>
         </div>

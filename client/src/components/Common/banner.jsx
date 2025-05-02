@@ -13,7 +13,7 @@ const Banner = () => {
             setIndex((prev) => (prev + 1) % images.length);
         }, 5000);
 
-        return () => clearInterval(interval); // Cleanup khi component unmount
+        return () => clearInterval(interval);
     }, []);
 
     return (

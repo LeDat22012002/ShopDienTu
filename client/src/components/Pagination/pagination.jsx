@@ -3,7 +3,7 @@ import usePagination from '../../hooks/usePagination';
 import PagiItem from './PagiItem';
 import { useSearchParams } from 'react-router-dom';
 
-const Pagination = ({ totalCount }) => {
+const Pagination = ({ totalCount, limit }) => {
     // const [first, setfirst] = useState(second)
     const pageSize = +import.meta.env.VITE_LIMIT;
     const [params] = useSearchParams();
@@ -12,7 +12,7 @@ const Pagination = ({ totalCount }) => {
 
     const range = () => {
         const currentPage = +params.get('page');
-        const pageSizes = +import.meta.env.VITE_LIMIT || 10;
+        const pageSizes = +limit || +import.meta.env.VITE_LIMIT;
         const start = Math.min((currentPage - 1) * pageSizes + 1, totalCount);
         const end = Math.min(currentPage * pageSizes, totalCount);
 

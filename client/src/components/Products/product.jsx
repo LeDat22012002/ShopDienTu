@@ -16,7 +16,7 @@ import clsx from 'clsx';
 
 const { AiOutlineEye, FaCartArrowDown, FaHeart } = icons;
 
-const Product = ({ productData, isNew, normal, pid, className }) => {
+const Product = ({ productData, isNew, normal, pid, className, style }) => {
     // console.log(productData);
     const [isShowOption, setIsShowOption] = useState(false);
     const [numProduct, setNumProduct] = useState(1);
@@ -80,14 +80,9 @@ const Product = ({ productData, isNew, normal, pid, className }) => {
     // console.log(productData);
 
     return (
-        <div
-            className={clsx(
-                'w-full px-[10px] text-base mb-4 bg-white',
-                className
-            )}
-        >
+        <div className={clsx('w-full text-base', style, className)}>
             <div
-                className="w-full border border-gray-400 p-[15px] flex flex-col items-center"
+                className="w-full border border-gray-200 p-[15px] flex flex-col items-center"
                 onClick={() =>
                     navigate(
                         `/${productData?.category}/${productData?._id}/${productData?.title}`
@@ -191,7 +186,9 @@ const Product = ({ productData, isNew, normal, pid, className }) => {
                             )
                         )}
                     </span>
-                    <span className="line-clamp-1">{productData?.title}</span>
+                    <span className="line-clamp-1 text-main">
+                        {productData?.title}
+                    </span>
                     <div className="flex items-center gap-2">
                         {/* Check if there's a sale price */}
                         {productData?.salePrice ? (

@@ -14,7 +14,7 @@ import { Search } from '..';
 const Header = () => {
     const { current } = useSelector((state) => state.user);
     const { cartItems, showPreview } = useSelector((state) => state.cart);
-    const { HiPhone, MdEmail, IoBagCheck, HiMiniUserCircle, FaSearch } = icons;
+    const { IoBagCheck, HiMiniUserCircle, FaSearch } = icons;
     const [isShowOption, setIsShowOption] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -53,7 +53,7 @@ const Header = () => {
         };
     }, []);
     return (
-        <div className=" w-main flex items-center justify-between h-[110px] py-[35px]  ">
+        <div className=" w-main flex items-center justify-between h-[110px] py-[35px]   ">
             <Link to={`/${path.HOME}`}>
                 <img
                     src={Logo}
@@ -151,7 +151,7 @@ const Header = () => {
                             {current?.avatar ? (
                                 <img
                                     src={current?.avatar}
-                                    alt="avata"
+                                    alt="avatar"
                                     className="w-[30px] h-[30px] rounded-full object-cover"
                                 ></img>
                             ) : (
