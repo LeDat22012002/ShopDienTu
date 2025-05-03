@@ -10,7 +10,7 @@ import {
 import { useSelector } from 'react-redux';
 import icons from '../../ultils/icons';
 import { createSearchParams, useNavigate } from 'react-router-dom';
-import { apiGetActiveFlashSales, apiGetBlogs } from '../../apis';
+import { apiGetActiveFlashSales, apiGetBlogs, apiGetProduct } from '../../apis';
 import Countdown from 'react-countdown';
 const Home = () => {
     const { IoIosArrowForward } = icons;
@@ -19,6 +19,8 @@ const Home = () => {
     const { categories } = useSelector((state) => state.app);
     const [flashSales, setFlashSales] = useState(null);
     const [BLOGS, setBLOGS] = useState(null);
+    const [products, setProducts] = useState(null);
+    const [tainghes, setProductsTainghe] = useState(null);
 
     const fetchApiBlogs = async () => {
         const response = await apiGetBlogs();
@@ -26,8 +28,29 @@ const Home = () => {
             setBLOGS(response?.blogs);
         }
     };
+    const fetchProducts = async () => {
+        const response = await apiGetProduct({
+            sort: '-sold',
+            category: 'Laptop',
+        });
+        if (response?.success) {
+            setProducts(response?.products);
+        }
+    };
+    const fetchTaiNgheProducts = async () => {
+        const response = await apiGetProduct({
+            sort: '-sold',
+            category: 'Tai nghe',
+        });
+        if (response?.success) {
+            setProductsTainghe(response?.products);
+        }
+    };
+
     useEffect(() => {
         fetchApiBlogs();
+        fetchTaiNgheProducts();
+        fetchProducts();
     }, []);
 
     const fetchFlashSale = async () => {
@@ -227,6 +250,28 @@ const Home = () => {
                     <CustomSlider products={newProducts} />
                 </div>
             </div>
+
+            {products?.length > 0 && (
+                <div className="m-auto mt-4 w-main">
+                    <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
+                        LAPTOP SELL WELL
+                    </h3>
+                    <div className="mt-4 mx-[-10px]">
+                        <CustomSlider products={products} normal />
+                    </div>
+                </div>
+            )}
+            {tainghes?.length > 0 && (
+                <div className="m-auto mt-4 w-main">
+                    <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
+                        TAI NGHE SELL WELL
+                    </h3>
+                    <div className="mt-4 mx-[-10px]">
+                        <CustomSlider products={tainghes} normal />
+                    </div>
+                </div>
+            )}
+
             <div className="m-auto my-4 w-main">
                 <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                     BLOGS

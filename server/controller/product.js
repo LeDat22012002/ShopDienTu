@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Order = require('../models/order');
 const Category = require('../models/productCategory');
 const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
@@ -207,6 +208,16 @@ const updatePr = asyncHandler(async (req, res) => {
 
 const deletePr = asyncHandler(async (req, res) => {
     const { pid } = req.params;
+    const existingOrder = await Order.findOne({
+        status: { $in: ['PENDING', 'CONFIRMED'] },
+        'products.product': pid,
+    });
+    if (existingOrder) {
+        return res.status(400).json({
+            success: false,
+            mess: 'Can not delete product because it is in processing orders!',
+        });
+    }
     const deletedPr = await Product.findByIdAndDelete(pid);
     return res.status(200).json({
         success: deletedPr ? true : false,
@@ -221,6 +232,17 @@ const ratings = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     const { star, comment, pid, updatedAt } = req.body;
     if (!star || !pid) throw new Error(' Missing inputs');
+    const purchasedOrder = await Order.findOne({
+        orderby: _id,
+        status: 'COMPLETED',
+        'products.product': pid,
+    });
+    if (!purchasedOrder) {
+        return res.status(400).json({
+            success: false,
+            mess: 'Please purchase the product before rating!',
+        });
+    }
     const ratingProduct = await Product.findById(pid);
     const alreadyRating = ratingProduct?.ratings?.find(
         (el) => el.postedBy.toString() === _id
@@ -271,7 +293,8 @@ const ratings = asyncHandler(async (req, res) => {
     await updatedProduct.save();
 
     return res.status(200).json({
-        status: true,
+        success: true,
+        mess: 'Successful product reviews !',
         updatedProduct,
     });
 });

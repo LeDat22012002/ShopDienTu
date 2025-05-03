@@ -5,7 +5,11 @@ import icons from '../../ultils/icons';
 import { Button } from '..';
 const { BsStarFill } = icons;
 
-const VoteOptions = ({ nameProduct, handleSubmitVoteOption }) => {
+const VoteOptions = ({
+    nameProduct,
+    handleSubmitVoteOption,
+    handleCancelSubmitVoteOption,
+}) => {
     const modalRef = useRef();
     const [chosenScore, setChosenScore] = useState(null);
     const [comment, setComment] = useState('');
@@ -68,6 +72,7 @@ const VoteOptions = ({ nameProduct, handleSubmitVoteOption }) => {
                     style={
                         'bg-gray-500 w-full px-4 py-2 rounded-md text-white  text-semibold my-2'
                     }
+                    handleOnclick={handleCancelSubmitVoteOption}
                 >
                     Back
                 </Button>

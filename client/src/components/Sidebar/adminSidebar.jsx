@@ -20,7 +20,7 @@ const AdminSidebar = () => {
     };
     // console.log(actived);
     return (
-        <div className="h-full py-4 bg-white border border-gray-100">
+        <div className="h-screen py-4 overflow-y-auto bg-white border border-gray-100">
             <Link
                 to={'/'}
                 className="flex flex-col items-center justify-center gap-2 p-4"

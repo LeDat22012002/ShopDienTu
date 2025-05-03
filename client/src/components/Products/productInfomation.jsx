@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 // import { productInfoTabs } from '../../ultils/contains';
 import DOMPurify from 'dompurify';
 import { Votebar, Button, VoteOptions, Comment } from '..';
@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import path from '../../ultils/path';
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
-
+import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 const ProductInfomation = ({
     totalRatings,
     ratings,
@@ -26,12 +26,47 @@ const ProductInfomation = ({
     const { isLoggedIn } = useSelector((state) => state.user);
 
     const navigate = useNavigate();
+    // Description
+    const [expanded, setExpanded] = useState(false);
+    const [isOverflowing, setIsOverflowing] = useState(false);
+    const descriptionRef = useRef(null);
+    const titleRef = useRef(null);
+
+    useEffect(() => {
+        if (descriptionRef.current) {
+            const lineHeight = parseFloat(
+                getComputedStyle(descriptionRef.current).lineHeight || '24'
+            );
+            const lines = descriptionRef.current.scrollHeight / lineHeight;
+            if (lines > 10) setIsOverflowing(true);
+        }
+    }, [description]);
+    useEffect(() => {
+        if (!expanded && titleRef.current) {
+            titleRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [expanded]);
+
     const handleSubmitVoteOption = async ({ comment, score }) => {
         if (!comment || !score || !pid) {
             toast.error('Please vote when click submit');
             return;
         }
-        await apiRatings({ star: score, comment, pid, updatedAt: Date.now() });
+        const response = await apiRatings({
+            star: score,
+            comment,
+            pid,
+            updatedAt: Date.now(),
+        });
+        if (response.succsess) {
+            toast.success(response.mess);
+        } else {
+            toast.error(response.mess);
+        }
+        dispatch(showModal({ isShowModal: false, modalChildren: null }));
+        rerender();
+    };
+    const handleCancelSubmit = () => {
         dispatch(showModal({ isShowModal: false, modalChildren: null }));
         rerender();
     };
@@ -61,12 +96,18 @@ const ProductInfomation = ({
                         <VoteOptions
                             nameProduct={nameProduct}
                             handleSubmitVoteOption={handleSubmitVoteOption}
+                            handleCancelSubmitVoteOption={handleCancelSubmit}
                         />
                     ),
                 })
             );
         }
     };
+
+    const handleToggleExpand = () => {
+        setExpanded((prev) => !prev);
+    };
+
     return (
         <div>
             <div className="flex items-center gap-2 relative bottom-[-1px]">
@@ -84,6 +125,7 @@ const ProductInfomation = ({
                 ))} */}
                 <span
                     className="p-2 px-4 bg-gray-200 cursor-pointer"
+                    ref={titleRef}
                     // onClick={() => setActiveTab(el.id)}
                     // key={el.id}
                 >
@@ -92,12 +134,33 @@ const ProductInfomation = ({
             </div>
             <div className="w-full p-3 border border-gray-200">
                 {description && (
-                    <div
-                        className="text-sm"
-                        dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(description),
-                        }}
-                    ></div>
+                    <>
+                        <div
+                            ref={descriptionRef}
+                            className={`text-sm transition-all overflow-hidden ${
+                                !expanded ? 'max-h-[240px]' : 'max-h-full'
+                            }`}
+                            style={{ lineHeight: '24px' }}
+                            dangerouslySetInnerHTML={{
+                                __html: DOMPurify.sanitize(description),
+                            }}
+                        />
+                        {isOverflowing && (
+                            <div className="flex justify-center w-full mt-2">
+                                <button
+                                    className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                                    onClick={handleToggleExpand}
+                                >
+                                    {expanded ? 'Collapse' : 'Read more'}
+                                    {expanded ? (
+                                        <AiOutlineUp />
+                                    ) : (
+                                        <AiOutlineDown />
+                                    )}
+                                </button>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
 

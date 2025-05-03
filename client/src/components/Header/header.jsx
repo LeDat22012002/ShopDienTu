@@ -69,7 +69,7 @@ const Header = () => {
                     {/* Nút giỏ hàng + badge */}
                     <div
                         onClick={() => navigate(`/${path.CART}`)}
-                        className="relative flex items-center justify-center gap-2 px-6 py-2 border-r cursor-pointer"
+                        className="relative flex items-center justify-center gap-2 px-6 py-2 cursor-pointer"
                     >
                         <IoBagCheck className="text-red-500" size={25} />
                         <span className="absolute z-50 flex items-center justify-center w-6 h-5 text-xs font-bold text-white bg-red-500 border border-gray-100 rounded-full shadow-md -top-0 right-2.5">

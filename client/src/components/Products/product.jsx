@@ -101,6 +101,7 @@ const Product = ({ productData, isNew, normal, pid, className, style }) => {
                     {isShowOption && (
                         <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 animate-slide-up">
                             <span
+                                className="text-gray-800"
                                 title="quickview"
                                 onClick={(e) =>
                                     handleClickOptions(e, 'QUICK_VIEW')
@@ -120,6 +121,7 @@ const Product = ({ productData, isNew, normal, pid, className, style }) => {
                             ) : (
                                 <span
                                     title="Add to cart"
+                                    className="text-gray-800"
                                     onClick={(e) =>
                                         handleClickOptions(e, 'CART')
                                     }
@@ -127,6 +129,7 @@ const Product = ({ productData, isNew, normal, pid, className, style }) => {
                                     <SelectOptions icon={<FaCartArrowDown />} />
                                 </span>
                             )}
+
                             <span
                                 title="Add to wishlist"
                                 onClick={(e) =>

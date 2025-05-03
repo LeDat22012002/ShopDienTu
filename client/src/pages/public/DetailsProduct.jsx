@@ -375,13 +375,16 @@ const DetailsProduct = () => {
                     rerender={rerender}
                 />
             </div>
-            <div className="m-auto mt-8 w-main">
-                <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main mb-5">
-                    PRODUCTS OF THE SAME TYPE
-                </h3>
-                <CustomSlider normal={true} products={relatedProducts} />
-            </div>
-            <div className="h-[100px] w-full"></div>
+
+            {relatedProducts?.length > 0 && (
+                <div className="m-auto mt-8 w-main">
+                    <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main mb-5">
+                        PRODUCTS OF THE SAME TYPE
+                    </h3>
+                    <CustomSlider normal={true} products={relatedProducts} />
+                </div>
+            )}
+            <div className="h-[30px] w-full"></div>
         </div>
     );
 };
