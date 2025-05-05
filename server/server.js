@@ -31,6 +31,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 dbConnect();
+
 initRoutes(app);
 
 // app.use('/' , (req , res) =>  {res.send('SERVER ON')})

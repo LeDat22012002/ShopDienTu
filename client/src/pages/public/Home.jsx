@@ -10,7 +10,12 @@ import {
 import { useSelector } from 'react-redux';
 import icons from '../../ultils/icons';
 import { createSearchParams, useNavigate } from 'react-router-dom';
-import { apiGetActiveFlashSales, apiGetBlogs, apiGetProduct } from '../../apis';
+import {
+    apiCreateVisit,
+    apiGetActiveFlashSales,
+    apiGetBlogs,
+    apiGetProduct,
+} from '../../apis';
 import Countdown from 'react-countdown';
 const Home = () => {
     const { IoIosArrowForward } = icons;
@@ -21,7 +26,9 @@ const Home = () => {
     const [BLOGS, setBLOGS] = useState(null);
     const [products, setProducts] = useState(null);
     const [tainghes, setProductsTainghe] = useState(null);
-
+    const fetchApiCreateVisit = async () => {
+        const visit = await apiCreateVisit();
+    };
     const fetchApiBlogs = async () => {
         const response = await apiGetBlogs();
         if (response.success) {
@@ -51,6 +58,7 @@ const Home = () => {
         fetchApiBlogs();
         fetchTaiNgheProducts();
         fetchProducts();
+        fetchApiCreateVisit();
     }, []);
 
     const fetchFlashSale = async () => {
