@@ -23,6 +23,11 @@ export const apiGetVisitsToday = () =>
         method: 'get',
     });
 
+export const apiGetVisits30days = () =>
+    axios({
+        url: '/dashboard/visits-30days',
+        method: 'get',
+    });
 export const apiCreateVisit = () =>
     axios({
         url: '/visit/createVisit',

@@ -99,9 +99,42 @@ const getTodayVisits = AsyncHandler(async (req, res) => {
     });
 });
 
+const getLast30DaysVisits = AsyncHandler(async (req, res) => {
+    const startDate = new Date();
+    startDate.setUTCDate(startDate.getUTCDate() - 30);
+
+    const result = await Visit.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: startDate },
+            },
+        },
+        {
+            $group: {
+                _id: {
+                    $dateToString: {
+                        format: '%Y-%m-%d',
+                        date: '$createdAt',
+                    },
+                },
+                total: { $sum: 1 },
+            },
+        },
+        {
+            $sort: { _id: 1 },
+        },
+    ]);
+
+    return res.json({
+        success: true,
+        datas: result,
+    });
+});
+
 module.exports = {
     getOrdersToday,
     getRevenueToday,
     getRevenueLast30Days,
     getTodayVisits,
+    getLast30DaysVisits,
 };

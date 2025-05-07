@@ -10,6 +10,7 @@ const colorRouter = require('./color');
 const promotionRouter = require('./promotion');
 const flashSaleRouter = require('./flashSale');
 const paymentRouter = require('./payment');
+const chatboxRouter = require('./chatbox');
 const paymentVNpayRouter = require('./paymentVNpay');
 const paymentZalopayRouter = require('./paymentZalopay');
 const dashboardRouter = require('./dashboard');
@@ -31,6 +32,7 @@ const initRoutes = (app) => {
     app.use('/api/flashsale', flashSaleRouter);
     app.use('/api/dashboard', dashboardRouter);
     app.use('/api/visit', visitRouter);
+    app.use('/api/chatbox', chatboxRouter);
     app.use('/api/payment', paymentRouter);
     app.use('/api/paymentVNpay', paymentVNpayRouter);
     app.use('/api/paymentZalopay', paymentZalopayRouter);

@@ -8,7 +8,11 @@ const Pagination = ({ totalCount, limit }) => {
     const pageSize = +import.meta.env.VITE_LIMIT;
     const [params] = useSearchParams();
 
-    const pagination = usePagination(totalCount, params.get('page') || 1);
+    const pagination = usePagination(
+        totalCount,
+        params.get('page') || 1,
+        limit || pageSize
+    );
 
     const range = () => {
         const currentPage = +params.get('page');

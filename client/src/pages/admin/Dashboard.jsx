@@ -13,6 +13,7 @@ import {
     apiGetOrder30days,
     apiGetOrderToday,
     apiGetRevenueToday,
+    apiGetVisits30days,
     apiGetVisitsToday,
 } from '../../apis';
 import { formatMoney } from '../../ultils/helpers';
@@ -22,6 +23,7 @@ const Dashboard = () => {
     const [ordersToday, setOrdersToday] = useState(0);
     const [revenueToday, setRevenueToday] = useState(0);
     const [revenue30Days, setRevenue30Days] = useState([]);
+    const [visits30Days, setVisits30Days] = useState([]);
 
     const fetchApiGetOrderToday = async () => {
         const orderRes = await apiGetOrderToday();
@@ -49,12 +51,19 @@ const Dashboard = () => {
             setVisitsToday(visitRes?.data);
         }
     };
+    const fetchApiGetVisits30Days = async () => {
+        const res = await apiGetVisits30days();
+        if (res.success) {
+            setVisits30Days(res.datas);
+        }
+    };
 
     useEffect(() => {
         fetchApiGetOrder30days();
         fetchApiGetOrderToday();
         fetchApiGetRevenueToday();
         fetchApiGetVisitsToday();
+        fetchApiGetVisits30Days();
     }, []);
 
     return (
@@ -88,10 +97,31 @@ const Dashboard = () => {
                         <YAxis />
                         <Tooltip />
                         <Line
-                            type="monotone"
+                            type="linear"
                             dataKey="total"
-                            stroke="#8884d8"
+                            stroke="#82ca9d"
                             strokeWidth={2}
+                            dot={{ r: 3 }} // hiện các chấm ở từng điểm
+                        />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
+            <div className="p-6 mt-8 bg-white shadow rounded-xl">
+                <h2 className="mb-4 text-xl font-bold">
+                    Lượt truy cập 30 ngày gần nhất
+                </h2>
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={visits30Days}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="_id" />
+                        <YAxis />
+                        <Tooltip />
+                        <Line
+                            type="linear"
+                            dataKey="total"
+                            stroke="#82ca9d"
+                            strokeWidth={2}
+                            dot={{ r: 3 }} // hiện các chấm ở từng điểm
                         />
                     </LineChart>
                 </ResponsiveContainer>

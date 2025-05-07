@@ -3,9 +3,14 @@ import { generateRange } from '../ultils/helpers';
 import icons from '../ultils/icons';
 
 const { HiOutlineDotsHorizontal } = icons;
-const usePagination = (totalProductCount, currentPage, siblingCount = 1) => {
+const usePagination = (
+    totalProductCount,
+    currentPage,
+    limit,
+    siblingCount = 1
+) => {
     const paginationArray = useMemo(() => {
-        const pageSize = +import.meta.env.VITE_LIMIT || 10;
+        const pageSize = +limit || +import.meta.env.VITE_LIMIT || 10;
         const paginationCount = Math.ceil(+totalProductCount / pageSize);
         const totalPaginationItem = +siblingCount + 5;
 

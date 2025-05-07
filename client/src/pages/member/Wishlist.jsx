@@ -14,13 +14,13 @@ const Wishlist = () => {
             <div className="grid grid-cols-1 gap-2 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {current?.wishlist?.map((el) => (
                     <div
-                        className="flex flex-col gap-3 pt-3 transition-shadow duration-300 bg-white rounded-md shadow hover:shadow-lg"
+                        className="flex flex-col gap-3 mx-1 duration-300 bg-white rounded-md shadow -transition-shadow hover:shadow-lg"
                         key={el?._id}
                     >
                         <Product
-                            className="bg-white"
                             pid={el?._id}
                             productData={el}
+                            className="bg-white "
                         />
                     </div>
                 ))}

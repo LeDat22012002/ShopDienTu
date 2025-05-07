@@ -39,3 +39,5 @@ export { default as CustomSelect } from './Inputs/customSelect';
 export { default as ProductFlashSale } from './Products/productFlashSale';
 export { default as Blogs } from './Blogs/blogs';
 export { default as Search } from './Common/Search';
+export { default as Chatbox } from './Chatbox/chatbox';
+export { default as ChatWidget } from './Chatbox/chatwidget';

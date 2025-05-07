@@ -11,3 +11,4 @@ export * from './vnpay';
 export * from './zalopay';
 export * from './blogs';
 export * from './dashboard';
+export * from './chatbox';

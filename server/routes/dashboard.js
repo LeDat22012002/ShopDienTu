@@ -8,6 +8,11 @@ router.get(
     DashBoard.getTodayVisits
 );
 router.get(
+    '/visits-30days',
+    [verifyAccessToken, isAdmin],
+    DashBoard.getLast30DaysVisits
+);
+router.get(
     '/order-today',
     [verifyAccessToken, isAdmin],
     DashBoard.getOrdersToday

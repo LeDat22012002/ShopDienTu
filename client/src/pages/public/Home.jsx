@@ -6,6 +6,7 @@ import {
     DealDaily,
     FeatureProducts,
     CustomSlider,
+    ChatWidget,
 } from '../../components';
 import { useSelector } from 'react-redux';
 import icons from '../../ultils/icons';
@@ -288,6 +289,7 @@ const Home = () => {
                     <CustomSlider blogs={BLOGS} />
                 </div>
             </div>
+            <ChatWidget />
         </div>
     );
 };
