@@ -19,24 +19,32 @@ const chatBoxAI = asyncHandler(async (req, res) => {
     }
 
     const prompt = `
-        Bạn là trợ lý thông minh cho một trang web bán hàng.
-
-        Phân tích câu sau và trả lời theo 1 trong 2 dạng:
-
-        1. Nếu câu liên quan đến sản phẩm (ví dụ: mua gì, giá bao nhiêu, gợi ý sản phẩm...), trả về JSON như sau:
-        {
-        "intent": "product_query",
-        "keywords": ["keyword1", "keyword2"]
-        }
-
-        2. Nếu không liên quan đến sản phẩm (ví dụ: hỏi kiến thức, hỏi người nổi tiếng...), trả về JSON như sau:
-        {
-        "intent": "general_question",
-        "reply": "Trả lời của bạn ở đây"
-        }
-
-        Câu: "${message}"
-        `;
+    Bạn là trợ lý thông minh cho một trang web bán hàng.
+    
+    Phân tích câu sau và trả về JSON theo định dạng:
+    
+    Nếu là tìm kiếm sản phẩm:
+    {
+      "intent": "product_query",
+      "keywords": ["keyword1", "keyword2"],
+      "minPrice": 0,
+      "maxPrice": 0
+    }
+    
+    Nếu là tìm sản phẩm bán chạy nhất, trả về:
+    {
+      "intent": "bestseller_query",
+      "keywords": ["keyword1", "keyword2"]
+    }
+    
+    Nếu là câu hỏi chung, trả về:
+    {
+      "intent": "general_question",
+      "reply": "Trả lời của bạn ở đây"
+    }
+    
+    Câu: "${message}"
+    `;
 
     let geminiResponse;
     try {
@@ -99,15 +107,40 @@ const chatBoxAI = asyncHandler(async (req, res) => {
     ) {
         const regexArray = intentData.keywords.map((k) => new RegExp(k, 'i'));
 
-        const products = await Product.find({
-            $or: [
-                { title: { $in: regexArray } },
-                { description: { $in: regexArray } },
-                { shortDescription: { $in: regexArray } },
-                { brand: { $in: regexArray } },
-                { category: { $in: regexArray } },
-            ],
-        });
+        const query = {
+            $and: [],
+        };
+
+        if (intentData.keywords?.length) {
+            const regexArray = intentData.keywords.map(
+                (k) => new RegExp(k, 'i')
+            );
+            query.$and.push({
+                $or: [
+                    { title: { $in: regexArray } },
+                    { color: { $in: regexArray } },
+                    { brand: { $in: regexArray } },
+                    { category: { $in: regexArray } },
+                ],
+            });
+        }
+
+        // Thêm điều kiện lọc theo giá
+        const priceQuery = {};
+        if (intentData.minPrice && !isNaN(intentData.minPrice)) {
+            priceQuery.$gte = intentData.minPrice;
+        }
+        if (intentData.maxPrice && !isNaN(intentData.maxPrice)) {
+            priceQuery.$lte = intentData.maxPrice;
+        }
+        if (Object.keys(priceQuery).length > 0) {
+            query.$and.push({ price: priceQuery });
+        }
+
+        // Nếu không có $and nào thì dùng {} để tránh lỗi
+        const products = await Product.find(
+            query.$and.length ? { $and: query.$and } : {}
+        );
 
         const result = products.map((p) => ({
             id: p._id,
@@ -124,6 +157,42 @@ const chatBoxAI = asyncHandler(async (req, res) => {
             products: result,
         });
     }
+    if (
+        intentData.intent === 'bestseller_query' &&
+        Array.isArray(intentData.keywords)
+    ) {
+        const regexArray = intentData.keywords.map((k) => new RegExp(k, 'i'));
+
+        const products = await Product.find({
+            $or: [
+                { title: { $in: regexArray } },
+                { color: { $in: regexArray } },
+                { brand: { $in: regexArray } },
+                { category: { $in: regexArray } },
+            ],
+        })
+            .sort({ sold: -1 }) // Sắp xếp theo số lượng đã bán
+            .limit(1);
+
+        const result = products.map((p) => ({
+            id: p._id,
+            title: p.title,
+            price: p.price,
+            category: p.category,
+            color: p.color,
+            thumb: p.thumb,
+        }));
+
+        return res.status(200).json({
+            success: true,
+            reply: `Dưới đây là những sản phẩm bán chạy nhất.`,
+            products: result,
+        });
+    }
+    return res.status(200).json({
+        success: true,
+        reply: 'Xin lỗi, tôi không hiểu yêu cầu của bạn.',
+    });
 });
 
 module.exports = { chatBoxAI };

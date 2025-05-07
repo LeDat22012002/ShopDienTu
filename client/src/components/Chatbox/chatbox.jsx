@@ -3,8 +3,10 @@ import React, { memo, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { apiCreateChatbox } from '../../apis';
 import { formatMoney } from '../../ultils/helpers';
+import { useNavigate } from 'react-router-dom';
 
 const ChatBox = () => {
+    const navigate = useNavigate();
     const [messages, setMessages] = useState([
         { sender: 'bot', text: 'Xin chào! Tôi có thể giúp gì cho bạn?' },
     ]);
@@ -31,8 +33,15 @@ const ChatBox = () => {
             ) {
                 const productMessages = response?.products.map((p) => ({
                     sender: 'bot',
-                    text: `${p.title} - ${formatMoney(p.price)} VNĐ`,
+                    product: {
+                        id: p.id,
+                        title: p.title,
+                        price: formatMoney(p.price),
+                        thumb: p.thumb,
+                        category: p.category,
+                    },
                 }));
+
                 setMessages((prev) => [
                     ...prev,
                     ...replyMessages,
@@ -83,15 +92,40 @@ const ChatBox = () => {
                                 : 'justify-start'
                         }`}
                     >
-                        <div
-                            className={`px-3 py-2 rounded-lg text-sm max-w-[75%] ${
-                                msg.sender === 'user'
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-gray-200 text-gray-800'
-                            }`}
-                        >
-                            {msg.text}
-                        </div>
+                        {msg.product ? (
+                            <div
+                                onClick={() =>
+                                    navigate(
+                                        `/${msg.product?.category}/${msg.product?.id}/${msg.product?.title}`
+                                    )
+                                }
+                                className="flex items-center gap-3 p-2 border border-gray-200 rounded-md shadow max-w-[90%] hover:bg-gray-100 transition"
+                            >
+                                <img
+                                    src={msg.product?.thumb}
+                                    alt={msg.product?.title}
+                                    className="object-cover w-12 h-12 rounded-md"
+                                />
+                                <div className="flex flex-col">
+                                    <span className="text-sm font-medium">
+                                        {msg.product?.title}
+                                    </span>
+                                    <span className="text-sm font-semibold text-main">
+                                        {msg.product?.price} VNĐ
+                                    </span>
+                                </div>
+                            </div>
+                        ) : (
+                            <div
+                                className={`px-3 py-2 rounded-lg text-sm max-w-[75%] ${
+                                    msg.sender === 'user'
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-gray-200 text-gray-800'
+                                }`}
+                            >
+                                {msg.text}
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
