@@ -3,8 +3,6 @@ import {
     Banner,
     Sidebar,
     BestSeller,
-    DealDaily,
-    FeatureProducts,
     CustomSlider,
     ChatWidget,
 } from '../../components';
@@ -18,6 +16,9 @@ import {
     apiGetProduct,
 } from '../../apis';
 import Countdown from 'react-countdown';
+import bannerBuildPC from '../../assets/BuildPC.png';
+import bannerBanghe from '../../assets/banghe.png';
+import path from '../../ultils/path';
 const Home = () => {
     const { IoIosArrowForward } = icons;
     const navigate = useNavigate();
@@ -257,6 +258,35 @@ const Home = () => {
                 </h3>
                 <div className="mt-4 mx-[-10px]">
                     <CustomSlider products={newProducts} />
+                </div>
+                <div className="flex mt-5">
+                    <div
+                        className="flex cursor-pointer flex-1/2"
+                        onClick={() => navigate(`/${path.BUILD_PC}`)}
+                    >
+                        <img
+                            src={bannerBuildPC}
+                            alt="PC"
+                            className="object-cover w-full h-full"
+                        ></img>
+                    </div>
+                    <div
+                        className="flex cursor-pointer flex-1/2"
+                        onClick={() =>
+                            navigate(
+                                `/${path.PRODUCTS__CATEGORY.replace(
+                                    ':category',
+                                    'Bàn ghế'
+                                )}`
+                            )
+                        }
+                    >
+                        <img
+                            src={bannerBanghe}
+                            alt="PC"
+                            className="object-cover w-full h-full"
+                        ></img>
+                    </div>
                 </div>
             </div>
 

@@ -12,6 +12,7 @@ import { apiUpdateWishlist } from '../../apis';
 import { getCurent } from '../../store/user/asyncActions';
 import clsx from 'clsx';
 import { addPartToBuild } from '../../store/buildPc/buidlPcSlice';
+import path from '../../ultils/path';
 
 // import path from '../ultils/path';
 
@@ -90,6 +91,7 @@ const Product = ({ productData, isNew, normal, pid, className, style }) => {
                     },
                 })
             );
+            navigate(`/${path.BUILD_PC}`);
             toast.success('Đã thêm vào cấu hình PC');
         }
     };
@@ -152,17 +154,26 @@ const Product = ({ productData, isNew, normal, pid, className, style }) => {
                                 onClick={(e) =>
                                     handleClickOptions(e, 'WISHLIST')
                                 }
+                                className="text-gray-800 group hover:text-white"
                             >
                                 <SelectOptions
                                     icon={
                                         <FaHeart
-                                            color={
-                                                current?.wishlist?.some(
-                                                    (i) => i?._id === pid
-                                                )
-                                                    ? 'red'
-                                                    : 'black'
-                                            }
+                                            className={clsx(
+                                                'transition-colors duration-300',
+                                                {
+                                                    'text-red-500':
+                                                        current?.wishlist?.some(
+                                                            (i) =>
+                                                                i?._id === pid
+                                                        ),
+                                                    'text-black group-hover:text-white':
+                                                        !current?.wishlist?.some(
+                                                            (i) =>
+                                                                i?._id === pid
+                                                        ),
+                                                }
+                                            )}
                                         />
                                     }
                                 />

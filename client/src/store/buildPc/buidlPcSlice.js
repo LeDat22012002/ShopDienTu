@@ -25,7 +25,11 @@ const builbPcSlice = createSlice({
                 (item) => item.category !== action.payload.category
             );
         },
+        clearAllParts: (state) => {
+            state.selectedParts = [];
+        },
     },
 });
-export const { addPartToBuild, removePartFromBuild } = builbPcSlice.actions;
+export const { addPartToBuild, removePartFromBuild, clearAllParts } =
+    builbPcSlice.actions;
 export default builbPcSlice.reducer;

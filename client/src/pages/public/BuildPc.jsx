@@ -4,7 +4,10 @@ import { Breadcrumb } from '../../components';
 import { apiGetCategories } from '../../apis';
 import path from '../../ultils/path';
 import { useSelector, useDispatch } from 'react-redux';
-import { removePartFromBuild } from '../../store/buildPc/buidlPcSlice';
+import {
+    clearAllParts,
+    removePartFromBuild,
+} from '../../store/buildPc/buidlPcSlice';
 
 const BuildPc = () => {
     const { category } = useParams();
@@ -54,9 +57,16 @@ const BuildPc = () => {
                     <Breadcrumb category={category} />
                 </div>
             </div>
+            <div
+                className="flex px-4 mx-auto mt-2 text-sm w-main"
+                onClick={() => dispatch(clearAllParts())}
+            >
+                <button className="px-4 w-[100px] h-[30px] py-1 text-white transition rounded-md bg-main hover:bg-red-600">
+                    Reset
+                </button>
+            </div>
 
-            <div className="flex gap-4 mx-auto mt-5 w-main">
-                {/* Left - Danh sách linh kiện */}
+            <div className="flex gap-4 mx-auto mt-1 w-main">
                 <div className="flex flex-col gap-4 p-4 rounded-md flex-2/3">
                     {categorys?.length > 0 &&
                         categorys.map((el) => {

@@ -349,9 +349,13 @@ const DetailsProduct = () => {
                                 handleChangeQuantity={handleChangeQuantity}
                             />
                         </div>
-                        <Button handleOnclick={handleAddCart} fw>
-                            Add to Cart
-                        </Button>
+                        {currentProduct?.quantity === 0 ? (
+                            <Button fw>Out of stock</Button>
+                        ) : (
+                            <Button handleOnclick={handleAddCart} fw>
+                                Add to Cart
+                            </Button>
+                        )}
                     </div>
                 </div>
                 <div className="w-1/5 ">
