@@ -18,6 +18,7 @@ import {
     PaymentSuccess,
     OrderSuccess,
     DetailsBlogs,
+    BuildPc,
 } from './pages/public';
 import {
     AdminLayout,
@@ -71,6 +72,7 @@ function App() {
                 <Route path={path.PUBLIC} element={<Public />}>
                     <Route path={path.HOME} element={<Home />} />
                     <Route path={path.BLOGS} element={<Blogs />} />
+                    <Route path={path.BUILD_PC} element={<BuildPc />} />
                     <Route
                         path={path.DETAIL_PRODUCT__CATEGORY__PID__TITLE}
                         element={<DetailsProduct />}

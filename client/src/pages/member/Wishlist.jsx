@@ -21,6 +21,7 @@ const Wishlist = () => {
                             pid={el?._id}
                             productData={el}
                             className="bg-white "
+                            normal
                         />
                     </div>
                 ))}

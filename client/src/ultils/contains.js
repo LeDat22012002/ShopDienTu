@@ -18,11 +18,16 @@ export const navigation = [
     },
     {
         id: 4,
+        value: 'BUILDPC',
+        path: `/${path.BUILD_PC}`,
+    },
+    {
+        id: 5,
         value: 'OUR SERVIECS',
         path: `/${path.OUR_SERVICES}`,
     },
     {
-        id: 5,
+        id: 6,
         value: 'FAQs',
         path: `/${path.FAQ}`,
     },

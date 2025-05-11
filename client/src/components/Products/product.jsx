@@ -11,6 +11,7 @@ import { addCart } from '../../store/cart/cartSlice';
 import { apiUpdateWishlist } from '../../apis';
 import { getCurent } from '../../store/user/asyncActions';
 import clsx from 'clsx';
+import { addPartToBuild } from '../../store/buildPc/buidlPcSlice';
 
 // import path from '../ultils/path';
 
@@ -74,7 +75,23 @@ const Product = ({ productData, isNew, normal, pid, className, style }) => {
                 toast.error(response.mess);
             }
         }
-        if (flag === 'QUICK_VIEW') toast.success('Quick view clicked');
+        if (flag === 'QUICK_VIEW') {
+            dispatch(
+                addPartToBuild({
+                    category: productData?.category,
+                    product: {
+                        product: productData?._id,
+                        sku: selectedSku,
+                        title,
+                        thumb,
+                        color,
+                        price,
+                        quantity: quantityInStock,
+                    },
+                })
+            );
+            toast.success('Đã thêm vào cấu hình PC');
+        }
     };
 
     // console.log(productData);
@@ -102,7 +119,7 @@ const Product = ({ productData, isNew, normal, pid, className, style }) => {
                         <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 animate-slide-up">
                             <span
                                 className="text-gray-800"
-                                title="quickview"
+                                title="Add build PC"
                                 onClick={(e) =>
                                     handleClickOptions(e, 'QUICK_VIEW')
                                 }

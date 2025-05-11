@@ -6,6 +6,7 @@ const path = {
     PRODUCTS__CATEGORY: ':category',
     BLOGS: 'blogs',
     OUR_SERVICES: 'services',
+    BUILD_PC: 'buildPc',
     FAQ: 'faqs',
     DETAIL_PRODUCT__CATEGORY__PID__TITLE: ':category/:pid/:title',
     DETAIL_BLOG__TITLE__BID: ':title/:bid',
