@@ -51,7 +51,7 @@ router.get(
         }
 
         // Tạo URL chứa AccessToken trong route params
-        const redirectURL = `http://localhost:5173/profile/${req.user.accessToken}`;
+        const redirectURL = `https://shop-dien-tu-ecuu.vercel.app/profile/${req.user.accessToken}`;
 
         res.redirect(redirectURL);
     }
@@ -64,7 +64,7 @@ router.get('/google/user', (req, res) => {
 // Đăng xuất
 router.get('/google/logout', (req, res) => {
     req.logout(() => {
-        res.redirect('http://localhost:5173');
+        res.redirect('https://shop-dien-tu-ecuu.vercel.app');
     });
 });
 
@@ -85,7 +85,7 @@ router.get(
         }
 
         // Tạo URL chứa AccessToken trong route params
-        const redirectURL = `http://localhost:5173/profile_fb/${req.user.accessToken}`;
+        const redirectURL = `https://shop-dien-tu-ecuu.vercel.app/profile_fb/${req.user.accessToken}`;
         res.redirect(redirectURL);
     }
 );
@@ -96,7 +96,7 @@ router.get('/facebook/user', (req, res) => {
 
 router.get('/facebook/logout', (req, res) => {
     req.logout(() => {
-        res.redirect('http://localhost:5173');
+        res.redirect('https://shop-dien-tu-ecuu.vercel.app');
     });
 });
 

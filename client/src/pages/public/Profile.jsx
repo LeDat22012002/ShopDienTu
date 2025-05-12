@@ -29,14 +29,6 @@ const Profile = () => {
         }
     }, [token]);
 
-    // const handleLogout = () => {
-    //     window.open('http://localhost:5000/api/user/google/logout', '_self');
-    // };
-
-    // if (!user) {
-    //     return <p>Loading user data...</p>;
-    // }
-
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100"></div>
     );

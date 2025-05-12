@@ -127,10 +127,16 @@ const Login = () => {
     };
 
     const handleLogin = () => {
-        window.open('http://localhost:5000/api/user/google', '_self');
+        window.open(
+            'https://shopdientu-rg6y.onrender.com/api/user/google',
+            '_self'
+        );
     };
     const handleFacebookLogin = () => {
-        window.open('http://localhost:5000/api/user/facebook', '_self');
+        window.open(
+            'https://shopdientu-rg6y.onrender.com/api/user/facebook',
+            '_self'
+        );
     };
     return (
         <div className="relative flex items-center justify-center min-h-screen overflow-hidden bg-[rgba(0,0,0,0.5)] ">
