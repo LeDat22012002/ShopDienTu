@@ -6,8 +6,8 @@ const MOMO_CONFIG = {
     accessKey: 'F8BBA842ECF85',
     secretKey: 'K951B6PE1waDMi640xX08PD3vg6EkVlz',
     requestType: 'captureWallet',
-    redirectUrl: 'http://localhost:5173/payment-success',
-    ipnUrl: 'https://996c-2405-4802-90fc-6530-4050-e304-c937-5c13.ngrok-free.app/api/payment/momo-ipn',
+    redirectUrl: 'shop-dien-tu-ecuu.vercel.app/payment-success',
+    ipnUrl: 'https://shopdientu-rg6y.onrender.com/api/payment/momo-ipn',
 };
 
 exports.createMomoPayment = async ({ amount, orderId, orderInfo }) => {

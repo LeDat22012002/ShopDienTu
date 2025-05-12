@@ -39,9 +39,9 @@ const createZaloPayOrder = async ({
         itemsPrice,
         paymentMethod,
         userId,
-        redirecturl: 'http://localhost:5173/',
+        redirecturl: 'shop-dien-tu-ecuu.vercel.app',
         callback_url:
-            'https://6911-2405-4802-90fc-6530-189a-3fcb-cddc-90de.ngrok-free.app/api/paymentZalopay/zalopay-callback',
+            'https://shopdientu-rg6y.onrender.com/api/paymentZalopay/zalopay-callback',
     };
 
     const items = products.map((p) => ({
@@ -66,7 +66,7 @@ const createZaloPayOrder = async ({
         description: `Shop - Payment for order #${transID}`,
         bank_code: '',
         callback_url:
-            'https://6911-2405-4802-90fc-6530-189a-3fcb-cddc-90de.ngrok-free.app/api/paymentZalopay/zalopay-callback',
+            'https://shopdientu-rg6y.onrender.com/api/paymentZalopay/zalopay-callback',
     };
 
     //  Tạo MAC theo chuẩn ZaloPay

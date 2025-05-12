@@ -7,8 +7,9 @@ const VNPAY_CONFIG = {
     vnp_TmnCode: '9GYA9JM2', // Mã TMN Code bạn nhận từ VNPay
     vnp_HashSecret: 'QW7RZNPIQN5D8YFYIHH9TWMPT4IM78UG', // Secret Key bạn nhận từ VNPay
     vnp_Url: 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html', // URL VNPay
-    vnp_ReturnUrl: 'http://localhost:5173/payment-success', // URL trả về sau khi thanh toán
-    vnp_IpnUrl: 'http://localhost:5000/api/paymentVnpay/vnpay-ipn', // URL nhận thông báo IPN
+    vnp_ReturnUrl: 'shop-dien-tu-ecuu.vercel.app/payment-success', // URL trả về sau khi thanh toán
+    vnp_IpnUrl:
+        'https://shopdientu-rg6y.onrender.com/api/paymentVnpay/vnpay-ipn', // URL nhận thông báo IPN
 };
 
 // Tạo URL thanh toán VNPay
