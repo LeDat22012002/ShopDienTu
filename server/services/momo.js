@@ -6,7 +6,7 @@ const MOMO_CONFIG = {
     accessKey: 'F8BBA842ECF85',
     secretKey: 'K951B6PE1waDMi640xX08PD3vg6EkVlz',
     requestType: 'captureWallet',
-    redirectUrl: 'shop-dien-tu-ecuu.vercel.app/payment-success',
+    redirectUrl: 'https://shop-dien-tu-ecuu.vercel.app/payment-success',
     ipnUrl: 'https://shopdientu-rg6y.onrender.com/api/payment/momo-ipn',
 };
 

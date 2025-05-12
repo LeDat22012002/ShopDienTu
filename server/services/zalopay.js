@@ -39,7 +39,7 @@ const createZaloPayOrder = async ({
         itemsPrice,
         paymentMethod,
         userId,
-        redirecturl: 'shop-dien-tu-ecuu.vercel.app',
+        redirecturl: 'https://shop-dien-tu-ecuu.vercel.app',
         callback_url:
             'https://shopdientu-rg6y.onrender.com/api/paymentZalopay/zalopay-callback',
     };
