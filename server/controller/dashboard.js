@@ -1,6 +1,6 @@
 const AsyncHandler = require('express-async-handler');
 const Order = require('../models/order');
-const Visit = require('../models/Visit');
+const Visit = require('../models/visit');
 
 const getOrdersToday = AsyncHandler(async (req, res) => {
     const today = new Date();
