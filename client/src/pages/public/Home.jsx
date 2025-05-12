@@ -28,6 +28,7 @@ const Home = () => {
     const [BLOGS, setBLOGS] = useState(null);
     const [products, setProducts] = useState(null);
     const [tainghes, setProductsTainghe] = useState(null);
+    const [pc, setPc] = useState(null);
     const fetchApiCreateVisit = async () => {
         const visit = await apiCreateVisit();
     };
@@ -55,10 +56,20 @@ const Home = () => {
             setProductsTainghe(response?.products);
         }
     };
+    const fetchPCGaming = async () => {
+        const response = await apiGetProduct({
+            sort: '-sold',
+            category: 'PC Gaming',
+        });
+        if (response?.success) {
+            setPc(response?.products);
+        }
+    };
 
     useEffect(() => {
         fetchApiBlogs();
         fetchTaiNgheProducts();
+        fetchPCGaming();
         fetchProducts();
         fetchApiCreateVisit();
     }, []);
@@ -289,11 +300,21 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            {pc?.length > 0 && (
+                <div className="m-auto mt-4 w-main">
+                    <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
+                        PC BÁN CHẠY
+                    </h3>
+                    <div className="mt-4 mx-[-10px]">
+                        <CustomSlider products={pc} normal />
+                    </div>
+                </div>
+            )}
 
             {products?.length > 0 && (
                 <div className="m-auto mt-4 w-main">
                     <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
-                        LAPTOP SELL WELL
+                        LAPTOP BÁN CHẠY
                     </h3>
                     <div className="mt-4 mx-[-10px]">
                         <CustomSlider products={products} normal />
@@ -303,7 +324,7 @@ const Home = () => {
             {tainghes?.length > 0 && (
                 <div className="m-auto mt-4 w-main">
                     <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
-                        TAI NGHE SELL WELL
+                        TAI NGHE BÁN CHẠY
                     </h3>
                     <div className="mt-4 mx-[-10px]">
                         <CustomSlider products={tainghes} normal />
