@@ -69,7 +69,8 @@ passport.use(
         {
             clientID: process.env.FACEBOOK_APP_ID,
             clientSecret: process.env.FACEBOOK_APP_SECRET,
-            callbackURL: '/api/user/facebook/callback',
+            callbackURL:
+                'https://shopdientu-rg6y.onrender.com/api/user/facebook/callback',
             profileFields: ['id', 'displayName', 'email', 'photos'],
         },
         async (accessToken, refreshToken, profile, done) => {
