@@ -4,12 +4,7 @@ import { apiGetProduct } from '../../apis/product';
 import { Product, CustomSlider } from '..';
 
 import { getNewProduct } from '../../store/products/asyncActions';
-import { useDispatch, useSelector } from 'react-redux';
-
-const tabs = [
-    { id: 1, name: 'best sellers' },
-    // { id: 2, name: 'new arrivals' },
-];
+import { useDispatch } from 'react-redux';
 
 const BestSeller = () => {
     const [bestSeller, setBestSeller] = useState(null);
@@ -18,7 +13,7 @@ const BestSeller = () => {
     const [activeTab, setActiveTab] = useState(1);
 
     const dispatch = useDispatch();
-    const { newProducts } = useSelector((state) => state.products);
+
     // console.log(newProducts);
     const fetchProducts = async () => {
         const response = await apiGetProduct({ sort: '-sold' });
@@ -39,20 +34,7 @@ const BestSeller = () => {
     }, [activeTab]);
     return (
         <div>
-            {/* <div className="flex text-[20px] ml-[-32px]">
-                {tabs.map((el) => (
-                    <span
-                        key={el.id}
-                        className={`font-semibold uppercase px-8  cursor-pointer ${
-                            activeTab === el.id ? 'text-black' : 'text-gray-400'
-                        }`}
-                        onClick={() => setActiveTab(el.id)}
-                    >
-                        {el.name}
-                    </span>
-                ))}
-            </div> */}
-            <div className=" mx-[-10px] pt-4">
+            <div className=" mt-4 mx-[-10px]">
                 <CustomSlider products={products} activeTab={activeTab} />
             </div>
         </div>

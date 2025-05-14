@@ -204,9 +204,9 @@ const DetailsProduct = () => {
 
     return (
         <div className="w-full ">
-            <div className="h-[81px] flex justify-center items-center bg-gray-100">
-                <div className="w-main">
-                    <h3 className="font-semibold">
+            <div className=" h-[81px] flex justify-center items-center bg-gray-100">
+                <div className="w-full ml-[10px] lg:w-main lg:ml-0">
+                    <h3 className="text-[12px] lg:text-[16px] font-semibold">
                         {currentProduct?.title || product?.title}
                     </h3>
                     <Breadcrumb
@@ -215,20 +215,20 @@ const DetailsProduct = () => {
                     />
                 </div>
             </div>
-            <div className="flex gap-4 m-auto mt-4 w-main">
-                <div className="flex flex-col w-[458px] gap-4">
-                    <div className="h-[458px] w-[458px] border flex items-center justify-center border-gray-500">
+            <div className="flex flex-col w-full gap-4 m-auto mt-4 lg:flex-row lg:w-main">
+                <div className="flex flex-col gap-4 w-full px-[5px] lg:w-[458px] lg:px-0">
+                    <div className="flex items-center justify-center w-full lg:w-[458px] lg:h-[458px] lg:border lg:border-gray-500">
                         <Zoom>
                             <img
                                 key={selectedImg || currentProduct?.thumb}
                                 src={currentImg || currentProduct?.thumb}
                                 alt="product"
-                                className="h-[400px] w-[400px] object-contain animate-slide-up"
+                                className="w-full h-[200px] lg:h-[400px] lg:w-[400px] object-contain animate-slide-up"
                             />
                         </Zoom>
                     </div>
 
-                    <div className="w-[458px]">
+                    <div className="w-fulllg:w-[458px]">
                         <Slider
                             className="flex gap-2 imageSlider"
                             {...settings}
@@ -239,7 +239,7 @@ const DetailsProduct = () => {
                             )?.map((el, index) => (
                                 <div
                                     key={index}
-                                    className="w-[143px] h-[143px] px-1"
+                                    className="w-full h-[100px] lg:w-[143px] lg:h-[143px] px-1"
                                 >
                                     <img
                                         onClick={(e) => handleClickImage(e, el)}
@@ -261,8 +261,8 @@ const DetailsProduct = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col w-2/5 gap-3 ">
-                    <h2 className="text-xl w-[500px] font-semibold text-gray-800 truncate">
+                <div className="flex flex-col gap-3 ml-[10px] lg:ml-0 ">
+                    <h2 className="w-full text-[14px] lg:text-xl lg:w-[500px] font-semibold text-gray-800 truncate">
                         {currentProduct?.title || product?.title}
                     </h2>
 
@@ -358,7 +358,7 @@ const DetailsProduct = () => {
                         )}
                     </div>
                 </div>
-                <div className="w-1/5 ">
+                <div className="hidden w-1/5 lg:block">
                     {productExtraInfomation?.map((el) => (
                         <ProductExtrainInfo
                             key={el.id}
@@ -369,7 +369,7 @@ const DetailsProduct = () => {
                     ))}
                 </div>
             </div>
-            <div className="m-auto mt-8 w-main">
+            <div className="w-full ml-[10px] lg:m-auto mt-4 lg:mt-8 lg:w-main">
                 <ProductInfomation
                     totalRatings={product?.totalRatings}
                     ratings={product?.ratings}
@@ -381,11 +381,16 @@ const DetailsProduct = () => {
             </div>
 
             {relatedProducts?.length > 0 && (
-                <div className="m-auto mt-8 w-main">
+                <div className="w-full px-4 mx-auto mt-2 lg:px-0 lg:w-main">
                     <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main mb-5">
                         PRODUCTS OF THE SAME TYPE
                     </h3>
-                    <CustomSlider normal={true} products={relatedProducts} />
+                    <div className="mt-4 mx-[-10px]">
+                        <CustomSlider
+                            normal={true}
+                            products={relatedProducts}
+                        />
+                    </div>
                 </div>
             )}
             <div className="h-[30px] w-full"></div>

@@ -109,7 +109,7 @@ const ProductInfomation = ({
     };
 
     return (
-        <div>
+        <div className="w-[97%]  lg:w-main">
             <div className="flex items-center gap-2 relative bottom-[-1px]">
                 {/* {productInfoTabs?.map((el) => (
                     <span
@@ -164,9 +164,9 @@ const ProductInfomation = ({
                 )}
             </div>
 
-            <div className="flex flex-col py-8 w-main">
-                <div className="flex border border-gray-300 ">
-                    <div className="flex flex-col items-center justify-center gap-1.5  flex-4/12">
+            <div className="flex flex-col w-full py-4 lg:py-8 lg:w-main">
+                <div className="flex flex-col gap-4 border border-gray-300 lg:flex-row ">
+                    <div className="flex flex-col mt-[10px] lg:mt-0 items-center justify-center gap-1.5 flex-4/12">
                         <span className="text-3xl font-semi">{`${totalRatings}/5`}</span>
                         <span className="flex items-center gap-1">
                             {renderStar(totalRatings)?.map((el, index) => (
@@ -175,7 +175,7 @@ const ProductInfomation = ({
                         </span>
                         <span className="text-sm">{`${ratings?.length} reviewers and commentors`}</span>
                     </div>
-                    <div className="flex flex-col gap-3 p-4 flex-6/12">
+                    <div className="flex flex-col gap-1 p-2 lg:gap-3 lg:p-4 flex-6/12">
                         {Array.from(Array(5).keys())
                             .reverse()
                             .map((el) => (

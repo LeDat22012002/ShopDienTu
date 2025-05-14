@@ -13,6 +13,7 @@ const InputForm = ({
     defaultValue,
     style,
     readOnly,
+    className,
 }) => {
     return (
         <div className={clsx('flex flex-col h-[78px] gap-2', style)}>
@@ -32,6 +33,7 @@ const InputForm = ({
                     ' px-4 py-2 border bg-white border-gray-500 focus:outline-none cursor-pointer my-auto',
                     fullWith && 'w-full',
                     style,
+                    className,
                     type === 'number' && 'input-no-spinner '
                 )}
                 readOnly={readOnly}

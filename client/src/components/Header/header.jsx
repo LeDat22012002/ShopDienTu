@@ -10,6 +10,7 @@ import { logout } from '../../store/user/userSlice';
 import { formatMoney } from '../../ultils/helpers';
 import { hidePreview } from '../../store/cart/cartSlice';
 import { Search } from '..';
+import { HiMenu } from 'react-icons/hi';
 
 const Header = () => {
     const { current } = useSelector((state) => state.user);
@@ -53,141 +54,157 @@ const Header = () => {
         };
     }, []);
     return (
-        <div className=" w-main flex items-center justify-between h-[110px] py-[35px]   ">
-            <Link to={`/${path.HOME}`}>
-                <img
-                    src={Logo}
-                    alt="Logo"
-                    className="w-[234px] object-contain"
-                ></img>
-            </Link>
-            <div className="flex w-[500px] text-[13px]">
-                <Search />
-            </div>
-            <div className="flex">
-                <div className="relative group">
-                    {/* Nút giỏ hàng + badge */}
-                    <div
-                        onClick={() => navigate(`/${path.CART}`)}
-                        className="relative flex items-center justify-center gap-2 px-6 py-2 cursor-pointer"
-                    >
-                        <IoBagCheck className="text-red-500" size={25} />
-                        <span className="absolute z-50 flex items-center justify-center w-6 h-5 text-xs font-bold text-white bg-red-500 border border-gray-100 rounded-full shadow-md -top-0 right-2.5">
-                            {cartItems?.length || 0}
-                        </span>
-                    </div>
+        <div className="w-full px-4 bg-white ">
+            <div className="max-w-main mx-auto flex items-center md:w-full xl:w-main justify-between  gap-4 py-4 lg:py-[35px] lg:h-[110px]">
+                <div className="block lg:hidden ">
+                    <HiMenu size={28} />
+                </div>
 
-                    {/* Dropdown giỏ hàng khi hover */}
-                    <div
-                        className={`absolute right-0 top-[25px] mt-3 w-[400px] bg-white rounded-xl shadow-xl z-50 flex-col animate-slide-up-sm border border-gray-200
-                        ${
-                            showCartPreview ? 'flex' : 'hidden'
-                        } group-hover:flex`}
-                    >
-                        {cartItems?.length > 0 ? (
-                            <>
-                                <h3 className="flex items-center justify-center px-4 py-2 font-semibold text-main ">
-                                    Sản phẩm đã thêm
-                                </h3>
-                                <div className="px-4 py-2 overflow-y-auto max-h-60">
-                                    {/* Map cartItems tại đây */}
-                                    {cartItems?.map((item) => (
-                                        <div
-                                            key={item?.product}
-                                            className="flex items-center gap-2 py-2"
-                                        >
-                                            <img
-                                                src={item?.thumb}
-                                                alt="thumb"
-                                                className="object-cover w-10 h-10"
-                                            ></img>
-                                            <div className="flex flex-col">
-                                                <span className="truncate max-w-[300px] block">
-                                                    {item.title}
-                                                </span>
+                {/* Logo */}
+                <Link to={`/${path.HOME}`} className="hidden sm:block md:block">
+                    <img
+                        src={Logo}
+                        alt="Logo"
+                        className=" lg:w-[234px] object-contain "
+                    />
+                </Link>
+
+                {/* Search */}
+                <div className="w-full flex lg:ml-[130px] md:ml-[50px] sm:w-[300px] md:w-[500px] lg:w-[500px] xl:w-[500px]">
+                    <Search />
+                </div>
+
+                {/* Cart & Profile */}
+                <div className="relative flex items-center gap-4 ml-auto">
+                    {/* Cart Icon */}
+                    <div className="relative group">
+                        <div
+                            onClick={() => navigate(`/${path.CART}`)}
+                            className="relative flex items-center justify-center md:ml-[40px] gap-2 px-3 py-2 cursor-pointer"
+                        >
+                            <IoBagCheck className="text-red-500" size={24} />
+                            <span className="absolute z-50 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border border-gray-100 rounded-full shadow-md -top-1 right-1.5">
+                                {cartItems?.length || 0}
+                            </span>
+                        </div>
+
+                        {/* Dropdown giỏ hàng */}
+                        <div
+                            className={`absolute right-0 top-[35px] mt-2 w-[300px] sm:w-[400px] bg-white rounded-xl shadow-xl z-50 flex-col animate-slide-up-sm border border-gray-200
+                            hidden sm:${
+                                showCartPreview ? 'flex' : 'hidden'
+                            } sm:group-hover:flex`}
+                        >
+                            {cartItems?.length > 0 ? (
+                                <>
+                                    <h3 className="flex items-center justify-center px-4 py-2 font-semibold text-main ">
+                                        Sản phẩm đã thêm
+                                    </h3>
+                                    <div className="px-4 py-2 overflow-y-auto max-h-60">
+                                        {cartItems.map((item) => (
+                                            <div
+                                                key={item.product}
+                                                className="flex items-center gap-2 py-2"
+                                            >
+                                                <img
+                                                    src={item.thumb}
+                                                    alt="thumb"
+                                                    className="object-cover w-10 h-10"
+                                                />
                                                 <div className="flex flex-col">
-                                                    <span>{item?.color}</span>
-                                                    <span className="text-sm font-semibold">
-                                                        {formatMoney(
-                                                            item?.price
-                                                        )}
-                                                        VNĐ
+                                                    <span className="truncate max-w-[200px] block text-sm">
+                                                        {item.title}
                                                     </span>
+                                                    <div className="flex flex-col text-xs">
+                                                        <span>
+                                                            {item.color}
+                                                        </span>
+                                                        <span className="font-semibold">
+                                                            {formatMoney(
+                                                                item.price
+                                                            )}{' '}
+                                                            VNĐ
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+                                    <div
+                                        onClick={() =>
+                                            navigate(`/${path.CART}`)
+                                        }
+                                        className="flex items-center justify-center p-2"
+                                    >
+                                        <button className="text-white bg-main hover:bg-red-700 cursor-pointer w-[160px] h-[36px] rounded-md text-sm">
+                                            Xem giỏ hàng
+                                        </button>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="flex flex-col items-center py-6">
+                                    <img
+                                        src={noCart}
+                                        alt="Giỏ hàng trống"
+                                        className="w-[80px] h-[60px] object-cover"
+                                    />
+                                    <span className="text-sm text-gray-600">
+                                        Chưa có sản phẩm
+                                    </span>
                                 </div>
-                                <div
-                                    onClick={() => navigate(`/${path.CART}`)}
-                                    className="flex items-center justify-center p-2 rounded-xl"
-                                >
-                                    <button className="text-white bg-main hover:bg-red-700 cursor-pointer w-[200px] h-[40px] rounded-md ">
-                                        Xem giỏ hàng
-                                    </button>
-                                </div>
-                            </>
-                        ) : (
-                            <div className="flex flex-col items-center py-6">
-                                <img
-                                    src={noCart}
-                                    alt="Giỏ hàng trống"
-                                    className="w-[100px] h-[80px] object-cover"
-                                />
-                                <span className="text-sm text-gray-600">
-                                    Chưa có sản phẩm
-                                </span>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
-                </div>
-                {current && (
-                    <Fragment>
+
+                    {/* Profile - chỉ hiển thị từ lg trở lên */}
+                    {current && (
                         <div
                             onClick={() => setIsShowOption((prev) => !prev)}
-                            id="profile"
-                            className="relative flex items-center justify-center gap-2 px-6 cursor-pointer "
+                            className="relative items-center hidden gap-2 px-3 cursor-pointer lg:flex"
                         >
-                            {current?.avatar ? (
+                            {current.avatar ? (
                                 <img
-                                    src={current?.avatar}
+                                    src={current.avatar}
                                     alt="avatar"
-                                    className="w-[30px] h-[30px] rounded-full object-cover"
-                                ></img>
+                                    className="w-[28px] h-[28px] rounded-full object-cover"
+                                />
                             ) : (
-                                <HiMiniUserCircle size={30} />
+                                <HiMiniUserCircle size={28} />
                             )}
-                            <span>Profile</span>
+                            <span className="hidden text-sm sm:block">
+                                Profile
+                            </span>
+
                             {isShowOption && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
-                                    className="absolute z-50 w-[170px] mt-2 bg-white border border-gray-200 shadow-lg top-full left-4 rounded-xl"
+                                    className="absolute z-50 w-[160px] mt-2 bg-white border border-gray-200 shadow-lg top-full left-2 rounded-xl text-sm"
                                 >
                                     <Link
                                         to={`/${path.MEMBER}/${path.PERSONAL}`}
-                                        className="block px-4 py-2 text-sm text-gray-700 transition-all hover:bg-sky-100"
+                                        className="block px-4 py-2 text-gray-700 hover:bg-sky-100"
                                     >
                                         Personal
                                     </Link>
                                     {current.role === 'admin' && (
                                         <Link
                                             to={`/${path.ADMIN}/${path.DASHBOAD}`}
-                                            className="block px-4 py-2 text-sm text-gray-700 transition-all hover:bg-sky-100"
+                                            className="block px-4 py-2 text-gray-700 hover:bg-sky-100"
                                         >
                                             Admin workspace
                                         </Link>
                                     )}
                                     <button
                                         onClick={() => dispatch(logout())}
-                                        className="w-full px-4 py-2 text-sm text-left text-red-600 transition-all hover:bg-red-50"
+                                        className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50"
                                     >
                                         Logout
                                     </button>
                                 </div>
                             )}
                         </div>
-                    </Fragment>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );

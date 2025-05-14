@@ -120,18 +120,18 @@ const Home = () => {
 
     return (
         <div className="w-full bg-gray-50">
-            <div className="flex m-auto mt-4 w-main">
-                <div className="flex flex-col gap-5 w-[20%] flex-auto ">
+            <div className="flex w-full m-auto mt-4 lg:w-main">
+                <div className="hidden lg:flex flex-col gap-5 w-[20%] flex-auto ">
                     <Sidebar />
                     {/* <DealDaily /> */}
                 </div>
-                <div className="w-[80%] pl-5 flex flex-col gap-2">
+                <div className="w-full  lg:w-[80%] pl-4 flex flex-col gap-2">
                     <div className="flex gap-2">
-                        <div className="w-[80%]">
+                        <div className="flex mx-auto w-full lg:w-[80%]">
                             <Banner />
                         </div>
 
-                        <div className="w-[25%] flex flex-col gap-2">
+                        <div className="w-[25%]  flex-col gap-2 hidden lg:flex">
                             {categories
                                 ?.filter((el) => el.brand.length > 0)
                                 ?.slice(0, 3)
@@ -182,7 +182,7 @@ const Home = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div className="hidden grid-cols-1 gap-2 lg:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         {categories
                             ?.filter((el) => el.brand.length > 0)
                             ?.slice(3)
@@ -256,21 +256,21 @@ const Home = () => {
                 </div>
             )}
 
-            <div className="m-auto mt-4 w-main">
+            <div className="w-full px-4 mx-auto mt-4 lg:w-main">
                 <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                     BEST SELLERS
                 </h3>
                 <BestSeller />
             </div>
 
-            <div className="m-auto mt-4 w-main">
+            <div className="w-full px-4 mx-auto mt-4 lg:w-main">
                 <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                     NEW ARRIVALS
                 </h3>
                 <div className="mt-4 mx-[-10px]">
                     <CustomSlider products={newProducts} />
                 </div>
-                <div className="flex mt-5">
+                <div className="flex flex-col mt-1 lg:mt-5 lg:flex-row">
                     <div
                         className="flex cursor-pointer flex-1/2"
                         onClick={() => navigate(`/${path.BUILD_PC}`)}
@@ -301,7 +301,7 @@ const Home = () => {
                 </div>
             </div>
             {pc?.length > 0 && (
-                <div className="m-auto mt-4 w-main">
+                <div className="w-full px-4 mx-auto mt-4 lg:w-main">
                     <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                         PC BÁN CHẠY
                     </h3>
@@ -312,7 +312,7 @@ const Home = () => {
             )}
 
             {products?.length > 0 && (
-                <div className="m-auto mt-4 w-main">
+                <div className="w-full px-4 mx-auto mt-4 lg:w-main">
                     <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                         LAPTOP BÁN CHẠY
                     </h3>
@@ -322,7 +322,7 @@ const Home = () => {
                 </div>
             )}
             {tainghes?.length > 0 && (
-                <div className="m-auto mt-4 w-main">
+                <div className="w-full px-4 mx-auto mt-4 lg:w-main">
                     <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                         TAI NGHE BÁN CHẠY
                     </h3>
@@ -332,7 +332,7 @@ const Home = () => {
                 </div>
             )}
 
-            <div className="m-auto my-4 w-main">
+            <div className="w-full px-4 mx-auto mt-4 lg:w-main">
                 <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
                     BLOGS
                 </h3>

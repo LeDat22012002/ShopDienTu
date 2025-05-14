@@ -9,6 +9,22 @@ const settings = {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
+    responsive: [
+        {
+            breakpoint: 1024, // dưới 1024px (lg)
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2,
+            },
+        },
+        {
+            breakpoint: 640, // dưới 640px (sm)
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+            },
+        },
+    ],
 };
 
 const CustomSlider = ({ products, activeTab, normal, blogs }) => {

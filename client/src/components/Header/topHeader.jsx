@@ -31,22 +31,33 @@ const TopHeader = () => {
             });
     }, [mess]);
     return (
-        <div className="h-[38px] w-full bg-main flex items-center justify-center">
-            <div className="flex items-center justify-between text-xs text-white w-main ">
-                <span>ORDER ONLINE OR CALL US (+1800) 000 8808</span>
+        <div className="h-[38px] w-full bg-main flex items-center justify-center px-4">
+            <div className="flex items-center justify-between text-white w-full lg:w-main text-[10px] lg:text-[16px] ">
+                {/* Left side - hide text on very small screens */}
+                <span className=" sm:block">
+                    ORDER ONLINE OR CALL US (+1800) 000 8808
+                </span>
+
+                {/* Right side */}
                 {isLoggedIn ? (
-                    <div className="flex items-center gap-4 text-sm">
-                        <span>{`Wellcome, ${current?.name} `}</span>
+                    <div className="flex items-center gap-2 sm:gap-4 text-[11px] sm:text-sm">
+                        <span className=" sm:inline">{`Welcome, ${current?.name}`}</span>
                         <span
                             onClick={() => dispatch(logout())}
-                            className="p-2 cursor-pointer hover:bg-gray-100 hover:rounded-full hover:text-main"
+                            className="p-1 cursor-pointer sm:p-2 hover:bg-gray-100 hover:rounded-full hover:text-main"
                         >
-                            <RiLogoutCircleRLine size={20} />
+                            <RiLogoutCircleRLine
+                                size={18}
+                                className="sm:size-5"
+                            />
                         </span>
                     </div>
                 ) : (
-                    <Link className="hover:text-gray-800" to={`/${path.LOGIN}`}>
-                        Sign In or Create Account
+                    <Link
+                        className="hover:text-gray-200 text-[11px] sm:text-sm"
+                        to={`/${path.LOGIN}`}
+                    >
+                        Sign In / Create Account
                     </Link>
                 )}
             </div>

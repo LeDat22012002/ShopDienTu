@@ -24,14 +24,14 @@ const VoteOptions = ({
         <div
             onClick={(e) => e.stopPropagation()}
             ref={modalRef}
-            className="bg-white w-[700px] p-4 flex items-center flex-col gap-4 justify-center"
+            className=" w-full bg-white lg:w-[700px]  p-4 flex items-center flex-col gap-4 justify-center"
         >
             <img
                 src={logo}
                 alt="logo"
-                className="w-[300px] object-contain my-8"
+                className="w-[200px] lg:w-[300px] object-contain my-8"
             ></img>
-            <h2 className="text-lg text-center text-medium">{`Voting product ${nameProduct}`}</h2>
+            <h2 className=" text-[14px] lg:text-lg text-center text-medium">{`Voting product ${nameProduct}`}</h2>
             <textarea
                 placeholder="Type something"
                 className="w-full p-2 text-sm border form-textarea focus:outline-none placeholder:italic placeholder:text-sm placeholder:text-gray-500"
@@ -42,11 +42,11 @@ const VoteOptions = ({
                 <p className="flex items-center justify-center">
                     How do you like this product ?
                 </p>
-                <div className="flex items-center justify-center gap-4">
+                <div className="flex items-center justify-center w-full gap-2 lg:gap-4">
                     {voteOptions.map((el) => (
                         <div
                             onClick={() => setChosenScore(el.id)}
-                            className="w-[80px] h-[80px] bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-md p-4 flex items-center justify-center flex-col gap-2"
+                            className=" w-[60px] lg:w-[80px] lg:h-[80px] bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-md p-4 flex items-center justify-center flex-col gap-2"
                             key={el.id}
                         >
                             {Number(chosenScore) && chosenScore >= el.id ? (
@@ -54,7 +54,7 @@ const VoteOptions = ({
                             ) : (
                                 <BsStarFill color="gray"></BsStarFill>
                             )}
-                            <span>{el.text}</span>
+                            <span className="text-[10px]">{el.text}</span>
                         </div>
                     ))}
                 </div>

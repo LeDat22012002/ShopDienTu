@@ -16,7 +16,7 @@ const VoteBar = ({ number, ratingCount, ratingTotal }) => {
                 <span className="w-[10px]">{number}</span>
                 <BsStarFill color="orange" />
             </div>
-            <div className=" flex-9/12">
+            <div className=" flex-5/12 lg:flex-9/12">
                 <div className="w-full h-[7px] relative bg-gray-200 rounded-l-full rounded-r-full">
                     <div
                         ref={percentRef}

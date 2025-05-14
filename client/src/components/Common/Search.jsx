@@ -75,19 +75,22 @@ const Search = () => {
                 errors={errors}
                 placeholder="Tìm kiếm sản phẩm..."
                 fullWith
-                className="rounded-md bg-[#F04640] text-white placeholder:text-white placeholder:italic px-4 py-2 w-full outline-none"
+                className="px-2 py-1 text-[12px] text-gray-900 rounded-md outline-none 
+                            placeholder:text-gray-400 placeholder:italic placeholder:text-[12px]
+                            sm:px-4 sm:py-2 sm:text-[14px] sm:placeholder:text-base  "
             />
+
             {suggestions.length > 0 && (
-                <div className="absolute z-50 w-full bg-white shadow-lg mt-1 max-h-[360px] top-[60px] overflow-y-auto rounded-md border border-gray-200">
+                <div className="absolute z-50 w-full bg-white shadow-lg mt-1 max-h-[360px] top-[105%] overflow-y-auto rounded-md border border-gray-200">
                     {suggestions.map((product) => (
                         <div
                             key={product._id}
                             onClick={() => handleSelect(product)}
                             id="productSearch"
-                            className="flex items-center justify-between gap-2 px-3 py-2 cursor-pointer hover:bg-gray-100"
+                            className="flex items-center justify-between gap-3 px-3 py-2 cursor-pointer hover:bg-gray-100"
                         >
-                            <div className="flex flex-col max-w-[75%]">
-                                <p className="text-sm font-medium text-gray-800 line-clamp-1">
+                            <div className="flex flex-col max-w-[70%] sm:max-w-[75%]">
+                                <p className="text-sm font-medium text-gray-800 truncate">
                                     {product.title}
                                 </p>
                                 <div className="text-sm font-semibold text-red-600">
@@ -97,7 +100,7 @@ const Search = () => {
                             <img
                                 src={product?.thumb}
                                 alt="product"
-                                className="object-contain w-12 h-12"
+                                className="object-contain w-10 h-10 sm:w-12 sm:h-12"
                             />
                         </div>
                     ))}

@@ -169,8 +169,10 @@ const YourCart = () => {
     return (
         <div className="w-full">
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
-                <div className="w-main">
-                    <h3 className="font-semibold uppercase">My cart</h3>
+                <div className="w-full ml-[10px] lg:w-main lg:ml-0">
+                    <h3 className="text-[12px] lg:text-[16px] font-semibold uppercase">
+                        My cart
+                    </h3>
                     <Breadcrumb category={location?.pathname} />
                 </div>
             </div>
@@ -193,25 +195,28 @@ const YourCart = () => {
                     </div>
                 </div>
             ) : (
-                <div className="flex flex-col items-start gap-2 mx-auto my-8 lg:flex-row w-main bg-gray-50">
+                <div className="flex flex-col items-start w-full gap-2 mx-auto my-8 lg:flex-row lg:w-main bg-gray-50">
                     {/* Danh sách sản phẩm */}
-                    <div className="w-full p-4 bg-white border border-gray-200 rounded-md shadow lg:w-2/3">
+                    <div className="w-full p-1 bg-white border border-gray-200 rounded-md shadow md:p-4 lg:w-2/3">
                         {/* Header */}
-                        <div className="flex items-center justify-center pb-3 mb-3 border-b border-gray-200">
-                            <input
-                                type="checkbox"
-                                className="w-5 h-5 mr-2"
-                                onChange={handleOnchangeCheckAll}
-                                checked={
-                                    listChecked?.length === cartItems?.length
-                                }
-                            />
-                            <span className="font-medium">
-                                All ({cartItems?.length} product)
-                            </span>
-                            <div className="hidden md:grid grid-cols-5 gap-4 ml-auto w-[65%] text-sm font-semibold text-center text-gray-600">
+                        <div className="flex items-center justify-between w-full gap-2 pb-1 mb-1 border-b border-gray-200 md:pb-3 md:mb-2">
+                            <div className="flex w-[30%] ">
+                                <input
+                                    type="checkbox"
+                                    className="w-3 h-3 mr-1 md:w-5 md:h-5 md:mr-3"
+                                    onChange={handleOnchangeCheckAll}
+                                    checked={
+                                        listChecked?.length ===
+                                        cartItems?.length
+                                    }
+                                />
+                                <span className="text-[10px] md:text-[14px] font-medium">
+                                    All ({cartItems?.length} product)
+                                </span>
+                            </div>
+                            <div className="hidden md:grid md:grid-cols-5 md:justify-items-end gap-6 md:ml-auto md:w-[70%] text-[8px] md:text-sm font-semibold text-center text-gray-600">
                                 <span>Color</span>
-                                <span>Unit price</span>
+                                <span>Price</span>
                                 <span>Quantity</span>
                                 <span> Money</span>
                                 <span
@@ -228,16 +233,16 @@ const YourCart = () => {
                             cartItems.map((el, index) => (
                                 <div
                                     key={`${el?.product}_${el?.sku}`}
-                                    className={`flex flex-col items-center justify-center gap-4 py-4 md:flex-row ${
+                                    className={` w-full flex items-center justify-between gap-2 md:gap-4 py-4  ${
                                         index !== cartItems.length - 1
                                             ? 'border-b border-gray-200'
                                             : ''
                                     }`}
                                 >
-                                    <div className="flex items-center justify-center w-[258px] ">
+                                    <div className="flex w-[30%] items-center justify-center ">
                                         <input
                                             type="checkbox"
-                                            className="w-5 h-5 mr-3"
+                                            className="w-2 h-2 mr-1 md:w-5 md:h-5 md:mr-3"
                                             onChange={onChange}
                                             value={`${el.product}_${el.sku}`}
                                             checked={listChecked.includes(
@@ -247,20 +252,22 @@ const YourCart = () => {
                                         <img
                                             src={el?.thumb}
                                             alt="thumb"
-                                            className="object-cover mr-3 w-14 h-14"
+                                            className="object-cover w-10 h-10 mr-1 md:mr-3 md:w-14 md:h-14"
                                         />
-                                        <div className="flex items-center font-medium w-[200px] ">
+                                        <div className="flex justify-start text-[10px] md:text-[16px] items-center font-medium md:w-[200px] ">
                                             {el?.title}
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:w-[65%] w-full text-center items-center text-sm">
-                                        <span>{el?.color}</span>
-                                        <span>
+                                    <div className="w-[70%] flex justify-center md:justify-items-end md:grid md:grid-cols-5 gap-4 text-[8px] md:w-[70%] md:mr-[10px] text-center items-center md:text-sm">
+                                        <span className=" md:mr-[10px]">
+                                            {el?.color}
+                                        </span>
+                                        <span className="  md:ml-[50px]">
                                             {formatMoney(el?.price)} VNĐ
                                         </span>
 
-                                        <div className="flex items-center justify-center gap-2">
+                                        <div className="flex items-center justify-center gap-1 ml-[10px] md:ml-0">
                                             <button
                                                 onClick={() =>
                                                     handleChangeCount(
@@ -270,11 +277,11 @@ const YourCart = () => {
                                                         el?.count === 1
                                                     )
                                                 }
-                                                className="px-2 border rounded hover:bg-gray-100"
+                                                className="px-1 border hover:bg-gray-100"
                                             >
                                                 -
                                             </button>
-                                            <span className="min-w-[20px] text-center">
+                                            <span className="min-w-[8px] md:min-w-[10px] text-center">
                                                 {el?.count}
                                             </span>
                                             <button
@@ -287,13 +294,13 @@ const YourCart = () => {
                                                             el?.quantity
                                                     )
                                                 }
-                                                className="px-2 border rounded hover:bg-gray-100"
+                                                className="px-1 border hover:bg-gray-100"
                                             >
                                                 +
                                             </button>
                                         </div>
 
-                                        <span className="font-semibold text-red-500">
+                                        <span className="font-semibold text-red-500 mr-[10px] md:mr-0 md:ml-[50px]">
                                             {formatMoney(el?.price * el?.count)}{' '}
                                             VNĐ
                                         </span>
@@ -307,7 +314,7 @@ const YourCart = () => {
                                             }
                                             className="flex items-center justify-center text-gray-500 hover:text-red-600"
                                         >
-                                            <ImBin size={16} />
+                                            <ImBin className="mr-[10px] md:mr-0 text-[12px] md:text-[25px]" />
                                         </button>
                                     </div>
                                 </div>
@@ -316,18 +323,12 @@ const YourCart = () => {
 
                     {/* Thanh toán */}
                     <div className="w-full p-4 bg-white border border-gray-200 rounded-md shadow lg:w-1/3">
-                        {/* <div className="mb-2">
-                            <span className="text-gray-600">
-                                Địa chỉ nhận hàng:
-                            </span>
-                            <span className="font-medium">_</span>
-                        </div> */}
                         <div className="mt-1">
                             <label className="text-[16px] font-medium">
                                 Chose code promotion:
                             </label>
                             <select
-                                className="w-full p-2 mt-1 border border-gray-300 rounded"
+                                className="w-full p-2 mt-1 overflow-hidden border border-gray-300 rounded text-ellipsis whitespace-nowrap"
                                 onChange={(e) =>
                                     setSelectedPromo(e.target.value)
                                 }
@@ -335,13 +336,12 @@ const YourCart = () => {
                             >
                                 <option value="">-- Chose code --</option>
                                 {promotions?.map((promo) => (
-                                    <option key={promo._id} value={promo.code}>
+                                    <option
+                                        key={promo._id}
+                                        value={promo.code}
+                                        className="truncate "
+                                    >
                                         {promo?.description}
-                                        {/* {promo?.discountType === 'fixed'
-                                            ? `${formatMoney(
-                                                  promo?.discountValue
-                                              )} VNĐ`
-                                            : `${promo?.discountValue}%`} */}
                                     </option>
                                 ))}
                             </select>
