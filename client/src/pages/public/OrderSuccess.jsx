@@ -36,11 +36,11 @@ const OrderSuccess = () => {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-            <h1 className="text-4xl font-bold text-green-600">
+        <div className=" w-full px-[10px] flex flex-col items-center justify-center min-h-[60vh] text-center">
+            <h1 className="text-xl font-bold text-green-600  lg:text-4xl">
                 Thanh toán thành công!
             </h1>
-            <p className="mt-4 text-lg text-gray-600">
+            <p className="mt-4 text-gray-600 text-md lg:text-xl">
                 Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn đang được xử lý.
             </p>
             <div className="flex gap-2">

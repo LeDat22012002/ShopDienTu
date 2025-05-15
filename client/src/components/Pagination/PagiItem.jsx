@@ -24,7 +24,7 @@ const PagiItem = ({ children }) => {
     return (
         <button
             className={clsx(
-                'flex  justify-center w-10 h-10 m-1 ',
+                'flex justify-center w-5 h-5 m-1 lg:w-10 lg:h-10 ',
                 !Number(children) && 'items-end pb-2',
                 Number(children) && 'items-center  cursor-pointer',
                 +params.get('page') === +children && 'rounded-full bg-gray-300',

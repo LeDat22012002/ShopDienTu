@@ -32,15 +32,12 @@ const TopHeader = () => {
     }, [mess]);
     return (
         <div className="h-[38px] w-full bg-main flex items-center justify-center px-4">
-            <div className="flex items-center justify-between text-white w-full lg:w-main text-[10px] lg:text-[16px] ">
-                {/* Left side - hide text on very small screens */}
-                <span className=" sm:block">
-                    ORDER ONLINE OR CALL US (+1800) 000 8808
-                </span>
+            <div className="flex items-center justify-between text-white w-full lg:w-main text-[10px] lg:text-[12px] ">
+                <span className="sm:block"></span>
 
                 {/* Right side */}
                 {isLoggedIn ? (
-                    <div className="flex items-center gap-2 sm:gap-4 text-[11px] sm:text-sm">
+                    <div className="flex items-center gap-2 sm:gap-4 text-[11px] sm:text-[12px]">
                         <span className=" sm:inline">{`Welcome, ${current?.name}`}</span>
                         <span
                             onClick={() => dispatch(logout())}
@@ -57,7 +54,7 @@ const TopHeader = () => {
                         className="hover:text-gray-200 text-[11px] sm:text-sm"
                         to={`/${path.LOGIN}`}
                     >
-                        Sign In / Create Account
+                        Sign In or Create Account
                     </Link>
                 )}
             </div>

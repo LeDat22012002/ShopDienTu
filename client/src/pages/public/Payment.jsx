@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, InputForm, Select } from '../../components';
 import { useForm } from 'react-hook-form';
@@ -14,7 +14,7 @@ import {
 } from '../../apis';
 import { toast } from 'react-toastify';
 import dataGoogleMap from '../../data/data.json';
-import { resetCart } from '../../store/cart/cartSlice';
+// import { resetCart } from '../../store/cart/cartSlice';
 import momo from '../../assets/momo.png';
 import vnpay from '../../assets/vnpay.png';
 import paypal from '../../assets/paypal.png';
@@ -35,7 +35,7 @@ const Payment = () => {
 
     const { productsSelected } = useSelector((state) => state.cart);
     const { current } = useSelector((state) => state.user);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     // console.log(productsSelected);
     const location = useLocation();
     const navigate = useNavigate();
@@ -181,7 +181,7 @@ const Payment = () => {
                 toast.success(response.mess);
 
                 reset();
-                dispatch(resetCart());
+                // dispatch(resetCart());
                 navigate(`/${path.ORDER_SUCCESS}`);
             } else {
                 toast.error(response.mess);
@@ -211,7 +211,7 @@ const Payment = () => {
             toast.success(response.mess);
 
             reset();
-            dispatch(resetCart());
+            // dispatch(resetCart());
             navigate(`/${path.ORDER_SUCCESS}`);
         } else {
             toast.error(response.mess);
@@ -221,20 +221,22 @@ const Payment = () => {
     return (
         <div className="w-full">
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
-                <div className="w-main">
-                    <h3 className="font-semibold uppercase">Payment</h3>
+                <div className="w-full ml-[10px] lg:w-main lg:ml-0">
+                    <h3 className="text-[12px] lg:text-[16px] font-semibold uppercase">
+                        Payment
+                    </h3>
                     <Breadcrumb category={location?.pathname} />
                 </div>
             </div>
             <form
                 onSubmit={handleSubmit(handleCheckout)}
-                className="flex flex-col items-start gap-2 mx-auto my-8 lg:flex-row w-main bg-gray-50"
+                className="flex flex-col items-start w-full gap-2 mx-auto my-8 lg:flex-row lg:w-main bg-gray-50"
             >
                 <div className="w-full lg:w-2/3">
                     <div className="p-4 mb-4 bg-white border border-gray-200 rounded-md shadow">
                         {/* Header */}
                         <div className="flex items-center justify-center pb-3 mb-3 border-b border-gray-200">
-                            <div className="hidden md:grid grid-cols-4 gap-4 ml-auto w-[65%] text-sm font-semibold text-center text-gray-600">
+                            <div className="hidden w-full md:grid grid-cols-4 gap-4 ml-auto md:w-[65%] text-sm font-semibold text-center text-gray-600">
                                 <span>Color</span>
                                 <span>Unit price</span>
                                 <span>Quantity</span>
@@ -247,13 +249,13 @@ const Payment = () => {
                             productsSelected.map((el, index) => (
                                 <div
                                     key={`${el?.product}_${el?.sku}`}
-                                    className={`flex flex-col items-center justify-center gap-4 py-4 md:flex-row ${
+                                    className={`flex items-center justify-center gap-1 md:gap-4 py-4 flex-row ${
                                         index !== productsSelected?.length - 1
                                             ? 'border-b border-gray-200'
                                             : ''
                                     }`}
                                 >
-                                    <div className="flex items-center justify-center w-[258px] ">
+                                    <div className="flex items-center justify-center w-[200px] md:w-[250px] text-[10px] md:text-sm ">
                                         <img
                                             src={el?.thumb}
                                             alt="thumb"
@@ -264,7 +266,7 @@ const Payment = () => {
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:w-[65%] w-full text-center items-center text-sm">
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:w-[65%] w-full text-center items-center text-[10px] md:text-sm ">
                                         <span>{el?.color}</span>
                                         <span>
                                             {formatMoney(el?.price)} VNĐ
@@ -284,7 +286,7 @@ const Payment = () => {
                                 </div>
                             ))}
                     </div>
-                    <div className="p-4 bg-white border border-gray-200 rounded-md shadow">
+                    <div className="p-4 bg-white border border-gray-200 rounded-md shadow ">
                         <h3 className="flex text-[16px] font-medium">
                             Thông tin người nhận
                         </h3>
@@ -293,7 +295,7 @@ const Payment = () => {
                                 // onSubmit={handleSubmit(handleUpdateInformation)}
                                 className="flex flex-col gap-4"
                             >
-                                <div className="flex gap-2">
+                                <div className="flex flex-col gap-2 md:flex-row">
                                     <InputForm
                                         label="Name"
                                         register={register}

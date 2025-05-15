@@ -23,9 +23,9 @@ const Pagination = ({ totalCount, limit }) => {
         return `${start} - ${end}`;
     };
     return (
-        <div className="flex items-center justify-between w-full">
+        <div className="flex text-[10px] lg:text-sm items-center justify-between w-full">
             {!+params.get('page') ? (
-                <span className="text-sm italic">{`Show products ${Math.min(
+                <span className="text-[10px] lg:text-sm italic">{`Show products ${Math.min(
                     totalCount,
                     1
                 )} - ${Math.min(pageSize, totalCount)} of ${totalCount}`}</span>
@@ -33,7 +33,7 @@ const Pagination = ({ totalCount, limit }) => {
                 ''
             )}
             {+params.get('page') ? (
-                <span className="text-sm italic">{`Show products ${range()} of ${totalCount}`}</span>
+                <span className="text-[10px] lg:text-sm italic">{`Show products ${range()} of ${totalCount}`}</span>
             ) : (
                 ''
             )}

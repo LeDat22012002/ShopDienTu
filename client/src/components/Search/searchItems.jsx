@@ -109,7 +109,7 @@ const SearchItems = ({
     return (
         <div
             onClick={() => changeActiveFilter(name)}
-            className="relative flex items-center justify-between gap-6 p-2 text-sm border border-gray-800 cursor-pointer"
+            className="sm:w-[80px] relative flex items-center justify-between gap-2 p-2 text-sm border border-gray-800 cursor-pointer"
         >
             <span className="capitalize">{name}</span>
             <FaChevronDown />

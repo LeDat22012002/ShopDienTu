@@ -17,6 +17,7 @@ const Header = () => {
     const { cartItems, showPreview } = useSelector((state) => state.cart);
     const { IoBagCheck, HiMiniUserCircle, FaSearch } = icons;
     const [isShowOption, setIsShowOption] = useState(false);
+    console.log('dat', isShowOption);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     // Tự động hiển thị giỏ hàng
@@ -61,7 +62,7 @@ const Header = () => {
                 </div>
 
                 {/* Logo */}
-                <Link to={`/${path.HOME}`} className="hidden sm:block md:block">
+                <Link to={`/${path.HOME}`} className="hidden lg:block">
                     <img
                         src={Logo}
                         alt="Logo"
@@ -70,7 +71,7 @@ const Header = () => {
                 </Link>
 
                 {/* Search */}
-                <div className="w-full flex lg:ml-[130px] md:ml-[50px] sm:w-[300px] md:w-[500px] lg:w-[500px] xl:w-[500px]">
+                <div className="w-full flex ml-[20px] md:ml-[125px] lg:ml-[130px] sm:w-[300px] md:w-[500px] lg:w-[500px] xl:w-[500px]">
                     <Search />
                 </div>
 
@@ -159,6 +160,7 @@ const Header = () => {
                     {/* Profile - chỉ hiển thị từ lg trở lên */}
                     {current && (
                         <div
+                            id="profile"
                             onClick={() => setIsShowOption((prev) => !prev)}
                             className="relative items-center hidden gap-2 px-3 cursor-pointer lg:flex"
                         >

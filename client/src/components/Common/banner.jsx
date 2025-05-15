@@ -17,7 +17,7 @@ const Banner = () => {
     }, []);
 
     return (
-        <div className="relative w-[96%] h-[200px] md:w-[98%] md:h-[360px] lg:w-[720px] lg:h-[360px] xl:w-[720px] xl:h-[360px]">
+        <div className="relative w-[98%] h-[200px] md:w-[98%] md:h-[360px] lg:w-[720px] lg:h-[360px] xl:w-[720px] xl:h-[360px]">
             <img
                 src={images[index]}
                 alt="banner"

@@ -139,20 +139,20 @@ const Login = () => {
         );
     };
     return (
-        <div className="relative flex items-center justify-center min-h-screen overflow-hidden bg-[rgba(0,0,0,0.5)] ">
+        <div className="fixed flex items-center justify-center inset-0 bg-[rgba(0,0,0,0.5)] ">
             <img
-                className="absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-80"
+                className=" absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-40"
                 src={trongdong}
                 alt="trongdong"
             ></img>
             {isVerifiedEmail && (
                 <div className="fixed inset-0 z-40 flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-opacity-80">
                     <img
-                        className="absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-40"
+                        className="  absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-40"
                         src={trongdong}
                         alt="trongdong"
                     ></img>
-                    <div className="relative flex flex-col items-center justify-center w-[400px] min-h-[450px] bg-white rounded-2xl shadow-2xl p-8 animate-slide-up">
+                    <div className="relative w-[370px] h-[370px] md:w-[450px] md:h-[450px] flex flex-col items-center justify-center lg:w-[500px] lg:min-h-[550px] bg-white rounded-2xl shadow-2xl p-8 animate-slide-up">
                         <h4 className="text-[14px] font-semibold text-center text-gray-800">
                             We sent code your Email. Please check your Email and
                             enter your code !
@@ -190,7 +190,7 @@ const Login = () => {
                         src={trongdong}
                         alt="trongdong"
                     ></img>
-                    <div className="relative flex flex-col items-center justify-center w-[400px] min-h-[450px] bg-white rounded-2xl shadow-2xl p-8 animate-slide-up">
+                    <div className="w-[370px] h-[370px] md:w-[450px] md:h-[450px] relative flex flex-col items-center justify-center lg:w-[500px] lg:min-h-[500px] bg-white rounded-md shadow-2xl p-8 animate-slide-up">
                         <h2 className="text-2xl font-semibold text-center text-gray-800">
                             Nhập Email của bạn
                         </h2>
@@ -222,7 +222,7 @@ const Login = () => {
                 </div>
             )}
 
-            <div className="p-8 bg-white rounded-md min-w-[500px] flex flex-col items-center shadow-lg z-10">
+            <div className=" w-[370px] p-8 md:w-[450px] bg-white rounded-md lg:w-[500px] flex flex-col items-center shadow-lg z-10">
                 <h1 className="text-[28px] font-semibold text-main mb-8">
                     {isRegiter ? 'Regiter' : 'Login'}
                 </h1>

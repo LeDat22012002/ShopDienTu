@@ -53,7 +53,7 @@ const PaymentSuccess = () => {
                 {status === 'success' ? (
                     <>
                         <CheckCircle className="w-16 h-16 mx-auto text-green-500" />
-                        <h2 className="text-2xl font-bold text-green-600">
+                        <h2 className="font-bold text-green-600 text-md lg:text-2xl">
                             Thanh toán thành công!
                         </h2>
                         <p className="text-gray-600">
@@ -82,7 +82,7 @@ const PaymentSuccess = () => {
                 ) : status === 'fail' ? (
                     <>
                         <XCircle className="w-16 h-16 mx-auto text-red-500" />
-                        <h2 className="text-2xl font-bold text-red-600">
+                        <h2 className="font-bold text-red-600  text-md lg:text-2xl">
                             Thanh toán thất bại!
                         </h2>
                         <p className="text-gray-600">

@@ -97,15 +97,17 @@ const Products = () => {
     }, [sort]);
 
     return (
-        <div className="w-full">
-            <div className="h-[81px] flex  justify-center items-center bg-gray-100">
-                <div className="w-main">
-                    <h3 className="font-semibold uppercase">{category}</h3>
+        <div className="w-full ">
+            <div className="h-[81px] flex justify-center items-center bg-gray-100">
+                <div className="w-full ml-[10px] lg:w-main lg:ml-0">
+                    <h3 className="text-[12px] lg:text-[16px] font-semibold uppercase">
+                        {category}
+                    </h3>
                     <Breadcrumb category={category} />
                 </div>
             </div>
-            <div className="flex items-center justify-between p-4 m-auto mt-8 border w-main">
-                <div className="flex flex-col flex-auto w-4/5 gap-3 ">
+            <div className="flex items-center justify-between w-[96%] p-4 mx-auto mt-8 border lg:w-main ">
+                <div className="flex flex-col flex-auto w-3/5 gap-3 lg:w-4/5 ">
                     <span className="text-sm font-semibold ">Filter by</span>
                     <div className="flex items-center gap-4 ">
                         <SearchItems
@@ -122,18 +124,19 @@ const Products = () => {
                         />
                     </div>
                 </div>
-                <div className="flex flex-col w-1/5 gap-3">
+                <div className="flex flex-col w-2/5 gap-3 lg:w-1/5 ">
                     <span className="text-sm font-semibold ">Sort by</span>
                     <div className="w-full">
                         <InputSelect
                             changeValue={changeValue}
                             value={sort}
                             options={sorts}
+                            style="w-full sm:w-auto"
                         />
                     </div>
                 </div>
             </div>
-            <div className="m-auto my-4 w-main ">
+            <div className="w-[94%] m-auto my-4 lg:w-main ">
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
                     className="flex my-masonry-grid mx-[-10px] mb-[-10px]"
@@ -145,13 +148,13 @@ const Products = () => {
                             pid={el._id}
                             productData={el}
                             normal={true}
-                            style="px-[10px] mb-4"
+                            style="px-[10px] md:px-[3px] lg:px-[10px] mb-4"
                         ></Product>
                     ))}
                 </Masonry>
             </div>
 
-            <div className="flex justify-center m-auto my-4 w-main">
+            <div className="flex justify-center w-full px-[10px] m-auto my-4 lg:px-0 lg:w-main">
                 <Pagination totalCount={products?.counts} limit={8} />
             </div>
         </div>

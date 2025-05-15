@@ -52,13 +52,15 @@ const BuildPc = () => {
     return (
         <div className="w-full">
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
-                <div className="w-main">
-                    <h3 className="font-semibold uppercase">{category}</h3>
+                <div className="w-full ml-[10px] lg:w-main lg:ml-0">
+                    <h3 className="text-[12px] lg:text-[16px] font-semibold uppercase">
+                        {category}
+                    </h3>
                     <Breadcrumb category={category} />
                 </div>
             </div>
             <div
-                className="flex px-4 mx-auto mt-2 text-sm w-main"
+                className="flex w-full px-4 mx-auto mt-5 text-sm lg:w-main"
                 onClick={() => dispatch(clearAllParts())}
             >
                 <button className="px-4 w-[100px] h-[30px] py-1 text-white transition rounded-md bg-main hover:bg-red-600">
@@ -66,8 +68,8 @@ const BuildPc = () => {
                 </button>
             </div>
 
-            <div className="flex gap-4 mx-auto mt-1 w-main">
-                <div className="flex flex-col gap-4 p-4 rounded-md flex-2/3">
+            <div className="flex flex-col w-full gap-4 mx-auto mt-1 lg:flex-row lg:w-main ">
+                <div className="flex flex-col w-full gap-4 p-4 rounded-md lg:flex-2/3">
                     {categorys?.length > 0 &&
                         categorys.map((el) => {
                             const selected = getSelectedProduct(el.title);
@@ -81,7 +83,7 @@ const BuildPc = () => {
                                             <img
                                                 src={selected.product.thumb}
                                                 alt="thumb"
-                                                className="object-cover w-16 h-16 border border-gray-200"
+                                                className="object-cover w-10 h-10 border border-gray-200 md:w-16 md:h-16"
                                             />
                                             <div className="flex flex-col">
                                                 <span className="font-medium text-gray-800">
@@ -150,7 +152,7 @@ const BuildPc = () => {
                 </div>
 
                 {/* Right - Tổng giá trị */}
-                <div className="p-4 bg-white shadow-md flex-1/3 rounded-xl">
+                <div className="w-full p-4 rounded-md shadow-md lg:flex-1/3">
                     <h3 className="mb-3 text-lg font-semibold">Tổng quan</h3>
                     {selectedParts.length > 0 ? (
                         <>
@@ -173,7 +175,7 @@ const BuildPc = () => {
                                 ))}
                             </ul>
                             <div className="flex justify-between pt-2 text-base font-bold border-t">
-                                <span>Tổng:</span>
+                                <span>Tổng tiền:</span>
                                 <span className="text-red-600">
                                     {totalPrice.toLocaleString()}₫
                                 </span>

@@ -178,7 +178,7 @@ const YourCart = () => {
             </div>
 
             {cartItems.length === 0 ? (
-                <div className="flex flex-col items-center justify-center gap-4 py-10 mx-auto bg-white w-main ">
+                <div className="flex flex-col items-center justify-center w-full gap-4 py-10 mx-auto bg-white  lg:w-main">
                     <img
                         src={noCart}
                         alt="Giỏ hàng trống"
@@ -242,7 +242,7 @@ const YourCart = () => {
                                     <div className="flex w-[30%] items-center justify-center ">
                                         <input
                                             type="checkbox"
-                                            className="w-2 h-2 mr-1 md:w-5 md:h-5 md:mr-3"
+                                            className="w-3 h-3 mr-1 md:w-5 md:h-5 md:mr-3"
                                             onChange={onChange}
                                             value={`${el.product}_${el.sku}`}
                                             checked={listChecked.includes(

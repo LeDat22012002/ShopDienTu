@@ -204,7 +204,7 @@ const DetailsProduct = () => {
 
     return (
         <div className="w-full ">
-            <div className=" h-[81px] flex justify-center items-center bg-gray-100">
+            <div className=" h-[81px] flex justify-center items-center b">
                 <div className="w-full ml-[10px] lg:w-main lg:ml-0">
                     <h3 className="text-[12px] lg:text-[16px] font-semibold">
                         {currentProduct?.title || product?.title}
@@ -215,8 +215,8 @@ const DetailsProduct = () => {
                     />
                 </div>
             </div>
-            <div className="flex flex-col w-full gap-4 m-auto mt-4 lg:flex-row lg:w-main">
-                <div className="flex flex-col gap-4 w-full px-[5px] lg:w-[458px] lg:px-0">
+            <div className="flex flex-col w-full gap-4 m-auto lg:flex-row lg:w-main ">
+                <div className="flex flex-col gap-4 w-full px-[5px] lg:w-[458px] lg:px-0 ">
                     <div className="flex items-center justify-center w-full lg:w-[458px] lg:h-[458px] lg:border lg:border-gray-500">
                         <Zoom>
                             <img
@@ -261,7 +261,7 @@ const DetailsProduct = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-3 ml-[10px] lg:ml-0 ">
+                <div className="flex flex-col gap-3 ml-[10px] lg:ml-0  ">
                     <h2 className="w-full text-[14px] lg:text-xl lg:w-[500px] font-semibold text-gray-800 truncate">
                         {currentProduct?.title || product?.title}
                     </h2>
@@ -358,7 +358,7 @@ const DetailsProduct = () => {
                         )}
                     </div>
                 </div>
-                <div className="hidden w-1/5 lg:block">
+                <div className="hidden w-1/5 lg:block ">
                     {productExtraInfomation?.map((el) => (
                         <ProductExtrainInfo
                             key={el.id}
@@ -369,7 +369,7 @@ const DetailsProduct = () => {
                     ))}
                 </div>
             </div>
-            <div className="w-full ml-[10px] lg:m-auto mt-4 lg:mt-8 lg:w-main">
+            <div className="w-ful pl-[10px] lg:pl-0 lg:m-auto mt-4 lg:mt-8  lg:w-main">
                 <ProductInfomation
                     totalRatings={product?.totalRatings}
                     ratings={product?.ratings}
@@ -393,7 +393,7 @@ const DetailsProduct = () => {
                     </div>
                 </div>
             )}
-            <div className="h-[30px] w-full"></div>
+            <div className="h-[30px] w-full "></div>
         </div>
     );
 };

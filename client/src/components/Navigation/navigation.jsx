@@ -27,7 +27,7 @@ const Navigation = () => {
             </div> */}
 
             {/* Tablet/PC: layout cố định */}
-            <div className="w-full flex h-[48px] py-2 m-auto overflow-x-auto  scrollbar-hide md:overflow-visible md:scrollbar-default lg:w-main items-center gap-12 text-sm">
+            <div className="w-full flex h-[48px] overflow-y-hidden py-2 m-auto overflow-x-auto scrollbar-hide md:overflow-visible md:scrollbar-default lg:w-main items-center gap-12 text-sm">
                 <div className="flex h-[48px] px-4 lg:px-0 items-center gap-6 text-sm whitespace-nowrap">
                     {navigation.map((el) => (
                         <NavLink

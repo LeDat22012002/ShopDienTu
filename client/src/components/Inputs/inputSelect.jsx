@@ -1,9 +1,13 @@
+import clsx from 'clsx';
 import React, { memo } from 'react';
 
-const InputSelect = ({ value, changeValue, options }) => {
+const InputSelect = ({ value, changeValue, options, style }) => {
     return (
         <select
-            className="p-2 text-sm bg-white border border-gray-800 shadow-sm focus:outline-none"
+            className={clsx(
+                'p-2 text-sm bg-white border border-gray-800 shadow-sm focus:outline-none ',
+                style
+            )}
             value={value}
             onChange={(e) => changeValue(e.target.value)}
         >

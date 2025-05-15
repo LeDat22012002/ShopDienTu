@@ -125,7 +125,7 @@ const Home = () => {
                     <Sidebar />
                     {/* <DealDaily /> */}
                 </div>
-                <div className="w-full  lg:w-[80%] pl-4 flex flex-col gap-2">
+                <div className="w-full lg:w-[80%] pl-3 lg:pl-4 flex flex-col gap-2">
                     <div className="flex gap-2">
                         <div className="flex mx-auto w-full lg:w-[80%]">
                             <Banner />
@@ -234,12 +234,12 @@ const Home = () => {
                 </div>
             </div>
             {flashSales?.length > 0 && (
-                <div className="m-auto my-4 text-white rounded-md shadow-lg w-main bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600">
+                <div className="w-[92%] ml-4 lg:ml-0 md:w-[96%] m-auto my-4 text-white rounded-md shadow-lg lg:w-main bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600">
                     {/* Header */}
                     <div className="flex items-center justify-between px-4 py-3 border-b border-white/30">
                         <div className="flex items-center gap-2 text-[18px] font-semibold">
                             <span>⚡</span>
-                            <span className="tracking-wide uppercase">
+                            <span className="text-[20px] tracking-wide uppercase ">
                                 {flashSales[0]?.title}
                             </span>
                         </div>
