@@ -12,10 +12,9 @@ const ChatWidget = () => {
     }, []);
     return (
         <>
-            {/* Nút biểu tượng chat */}
             <button
                 onClick={() => setShowChat(!showChat)}
-                className="fixed z-50 p-3 text-white rounded-full shadow-lg bg-main bottom-5 right-5 hover:bg-red-700"
+                className="fixed z-50 p-3 text-white rounded-full shadow-lg bg-main bottom-25 right-5 hover:bg-red-700"
             >
                 {!showChat && (
                     <span className="absolute w-12 h-12 transform -translate-x-1/2 -translate-y-1/2 rounded-full opacity-75 -z-10 animate-ping bg-main top-1/2 left-1/2"></span>
@@ -23,7 +22,6 @@ const ChatWidget = () => {
                 <FaCommentDots size={24} />
             </button>
 
-            {/* Khung chatbox */}
             {showChat && (
                 <div className="fixed z-50 bottom-20 right-5">
                     <Chatbox />

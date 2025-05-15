@@ -45,7 +45,7 @@ import path from './ultils/path';
 import { getCategories } from './store/app/asyncAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import { Modal, ModalCart } from './components';
+import { Modal, ModalBottom, ModalCart } from './components';
 import { showModalCart } from './store/app/appSlice';
 
 function App() {
@@ -157,6 +157,7 @@ function App() {
                 <Route path={path.PROFILE_FB} element={<ProfileFb />} />
                 <Route path={path.PROFILE} element={<Profile />} />
             </Routes>
+            <ModalBottom />
             <ToastContainer
                 position="top-right"
                 autoClose={5000}

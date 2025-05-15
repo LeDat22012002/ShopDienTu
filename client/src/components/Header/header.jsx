@@ -9,7 +9,7 @@ import { logout } from '../../store/user/userSlice';
 // import { showModalCart } from '../../store/app/appSlice';
 import { formatMoney } from '../../ultils/helpers';
 import { hidePreview } from '../../store/cart/cartSlice';
-import { Search } from '..';
+import { ModalMobile, Search } from '..';
 import { HiMenu } from 'react-icons/hi';
 
 const Header = () => {
@@ -17,7 +17,8 @@ const Header = () => {
     const { cartItems, showPreview } = useSelector((state) => state.cart);
     const { IoBagCheck, HiMiniUserCircle, FaSearch } = icons;
     const [isShowOption, setIsShowOption] = useState(false);
-    console.log('dat', isShowOption);
+    const [showModalMobile, setShowModalMobile] = useState(false);
+    // console.log('dat', isShowOption);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     // Tự động hiển thị giỏ hàng
@@ -57,7 +58,10 @@ const Header = () => {
     return (
         <div className="w-full px-4 bg-white ">
             <div className="max-w-main mx-auto flex items-center md:w-full xl:w-main justify-between  gap-4 py-4 lg:py-[35px] lg:h-[110px]">
-                <div className="block lg:hidden ">
+                <div
+                    className="block lg:hidden"
+                    onClick={() => setShowModalMobile(true)}
+                >
                     <HiMenu size={28} />
                 </div>
 
@@ -208,6 +212,11 @@ const Header = () => {
                     )}
                 </div>
             </div>
+            {showModalMobile && (
+                <div className="fixed top-18 left-0 w-[80%] h-full bg-white z-[40] shadow-lg animate-slide-in">
+                    <ModalMobile onClose={() => setShowModalMobile(false)} />
+                </div>
+            )}
         </div>
     );
 };

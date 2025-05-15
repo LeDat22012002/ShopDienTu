@@ -41,3 +41,5 @@ export { default as Blogs } from './Blogs/blogs';
 export { default as Search } from './Common/Search';
 export { default as Chatbox } from './Chatbox/chatbox';
 export { default as ChatWidget } from './Chatbox/chatwidget';
+export { default as ModalMobile } from './Products/modalMobile';
+export { default as ModalBottom } from './Products/modalBottom';

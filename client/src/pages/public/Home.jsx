@@ -340,6 +340,7 @@ const Home = () => {
                     <CustomSlider blogs={BLOGS} />
                 </div>
             </div>
+
             <ChatWidget />
         </div>
     );

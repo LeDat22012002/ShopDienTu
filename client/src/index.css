@@ -17,6 +17,7 @@
     --animate-slide-up: slide-up 0.5s ease-out;
     --animate-slide-up-sm: slide-up-sm 0.2s ease-out;
     --animate-spin-slow: spin-show 30s linear infinite;
+    --animate-slide-in: slide-in 0.3s ease-out;
     @keyframes spin-show {
         0% {
             transform: rotate(0deg);
@@ -44,6 +45,14 @@
         100% {
             opacity: 1;
             transform: translateY(0) scale(1);
+        }
+    }
+    @keyframes slide-in {
+        from {
+            transform: translateX(-100%);
+        }
+        to {
+            transform: translateX(0);
         }
     }
 }
