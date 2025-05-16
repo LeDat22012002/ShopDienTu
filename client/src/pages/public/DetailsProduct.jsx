@@ -204,7 +204,7 @@ const DetailsProduct = () => {
 
     return (
         <div className="w-full ">
-            <div className=" h-[81px] flex justify-center items-center b">
+            <div className=" h-[81px] flex justify-center items-center ">
                 <div className="w-full ml-[10px] lg:w-main lg:ml-0">
                     <h3 className="text-[12px] lg:text-[16px] font-semibold">
                         {currentProduct?.title || product?.title}
@@ -350,11 +350,15 @@ const DetailsProduct = () => {
                             />
                         </div>
                         {currentProduct?.quantity === 0 ? (
-                            <Button fw>Out of stock</Button>
+                            <div className="w-[97%]">
+                                <Button fw>Out of stock</Button>
+                            </div>
                         ) : (
-                            <Button handleOnclick={handleAddCart} fw>
-                                Add to Cart
-                            </Button>
+                            <div className="w-[97%]">
+                                <Button handleOnclick={handleAddCart} fw>
+                                    Add to Cart
+                                </Button>
+                            </div>
                         )}
                     </div>
                 </div>

@@ -22,6 +22,7 @@ const InputForm = ({
                     {label}
                 </label>
             )}
+
             <input
                 type={type}
                 id={id}
@@ -30,7 +31,7 @@ const InputForm = ({
                 placeholder={placeholder}
                 defaultValue={defaultValue}
                 className={clsx(
-                    ' px-4 py-2 border bg-white border-gray-500 focus:outline-none cursor-pointer my-auto',
+                    ' px-2 md:px-4 py-2 border bg-white border-gray-500 focus:outline-none cursor-pointer my-auto',
                     fullWith && 'w-full',
                     style,
                     className,

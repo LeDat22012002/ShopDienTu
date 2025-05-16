@@ -5,7 +5,7 @@ import UseDebouce from '../../hooks/useDebouce';
 import { apiGetProduct } from '../../apis';
 import { InputForm } from '..';
 import { formatMoney } from '../../ultils/helpers';
-
+import { FiSearch } from 'react-icons/fi';
 const Search = () => {
     const {
         register,
@@ -18,7 +18,7 @@ const Search = () => {
     const navigate = useNavigate();
 
     const query = watch('q');
-    const queryDebounced = UseDebouce(query, 400);
+    const queryDebounced = UseDebouce(query, 500);
 
     // Call API khi từ khóa thay đổi
     useEffect(() => {
@@ -68,20 +68,27 @@ const Search = () => {
     }, []);
 
     return (
-        <div className="relative w-full text-[13px]">
-            <InputForm
-                id="q"
-                register={register}
-                errors={errors}
-                placeholder="Tìm kiếm sản phẩm..."
-                fullWith
-                className="px-2 py-1 text-[12px] text-gray-900 rounded-md outline-none 
+        <div className="relative flex items-center justify-center w-full text-[13px]">
+            <div className="w-[85%]">
+                <InputForm
+                    id="q"
+                    register={register}
+                    errors={errors}
+                    placeholder="Tìm kiếm sản phẩm..."
+                    fullWith
+                    className="text-[12px] text-gray-900 outline-none 
                             placeholder:text-gray-400 placeholder:italic placeholder:text-[12px]
-                            sm:px-4 sm:py-2 sm:text-[14px] sm:placeholder:text-base  "
-            />
+                            px-1 sm:text-[14px] sm:placeholder:text-base md:px-2 md:py-3 h-[30px] md:h-[40px]"
+                />
+            </div>
+            <div className="w-[15%] ml-[-1px] flex items-center text-white justify-center bg-main h-[30.5px] md:h-[40.5px] p-1 border-t border-b border-r border-l-0 border-gray-500">
+                <div className="text-[10px] md:text-[14px] lg:text-[18px]">
+                    <FiSearch />
+                </div>
+            </div>
 
             {suggestions.length > 0 && (
-                <div className="absolute z-50 w-full bg-white shadow-lg mt-1 max-h-[360px] top-[105%] overflow-y-auto rounded-md border border-gray-200">
+                <div className="absolute z-50 w-full bg-white shadow-lg mt-1 max-h-[360px] top-[80%] overflow-y-auto rounded-md border border-gray-200">
                     {suggestions.map((product) => (
                         <div
                             key={product._id}

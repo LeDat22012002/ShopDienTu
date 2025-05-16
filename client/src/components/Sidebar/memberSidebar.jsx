@@ -21,12 +21,12 @@ const MemberSidebar = () => {
     };
     // console.log(current);
     return (
-        <div className="h-full py-4 bg-white border border-gray-100">
+        <div className="w-full h-full py-4 bg-white border border-gray-100">
             <div className="flex flex-col items-center justify-center w-full gap-4 py-4">
                 <img
                     src={current?.avatar || avatarDefault}
                     alt="avatar"
-                    className="object-cover w-16 h-16 rounded-full"
+                    className="object-cover w-10 h-10 rounded-full md:w-16 md:h-16"
                 />
                 <small>{current?.name}</small>
             </div>
@@ -43,19 +43,25 @@ const MemberSidebar = () => {
                                     )
                                 }
                             >
-                                <span>{el.icon}</span>
-                                <span>{el.text}</span>
+                                <span className="text-[10px] md:text-[16px]">
+                                    {el.icon}
+                                </span>
+                                <span className="text-[10px] md:text-[16px]">
+                                    {el.text}
+                                </span>
                             </NavLink>
                         )}
                         {el.type === 'PARENT' && (
                             <div
                                 onClick={() => handleShowTabs(+el.id)}
-                                className="flex flex-col "
+                                className="flex flex-col"
                             >
                                 <div className="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-gray-200">
                                     <div className="flex items-center gap-2">
                                         <span>{el.icon}</span>
-                                        <span>{el.text}</span>
+                                        <span className="text-[10px] md:text-[16px]">
+                                            {el.text}
+                                        </span>
                                     </div>
                                     {actived.some((id) => id === el.id) ? (
                                         <FaCaretRight />
@@ -81,7 +87,9 @@ const MemberSidebar = () => {
                                                     )
                                                 }
                                             >
-                                                {item.text}
+                                                <span className="text-[10px] md:text-[16px]">
+                                                    {item.text}
+                                                </span>
                                             </NavLink>
                                         ))}
                                     </div>

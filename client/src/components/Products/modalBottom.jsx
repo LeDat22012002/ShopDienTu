@@ -66,7 +66,7 @@ const ModalBottom = () => {
 
     return (
         <div
-            className={`fixed bottom-0 left-0 right-0 z-50 flex justify-center transition-transform duration-300 lg:hidden ${
+            className={`fixed bottom-0 left-0 right-0 z-[100] flex justify-center transition-transform duration-300 lg:hidden ${
                 visible ? 'translate-y-0' : 'translate-y-full'
             }`}
         >
@@ -113,7 +113,11 @@ const ModalBottom = () => {
                             <FaUser size={20} />
                         )}
 
-                        <span>Profile</span>
+                        {current?.name ? (
+                            <span>{current?.name}</span>
+                        ) : (
+                            <span>Account</span>
+                        )}
                         {current && isShowOption && (
                             <div
                                 onClick={(e) => e.stopPropagation()}

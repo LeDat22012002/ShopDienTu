@@ -168,7 +168,7 @@ const SearchItems = ({
                                 onClick={(e) => e.stopPropagation()}
                                 className="flex items-center justify-between gap-8 p-4 border-b border-gray-300"
                             >
-                                <span className="whitespace-nowrap">{`The highest price is ${formatMoney(
+                                <span className="whitespace-nowrap text-[11px] md:text-[14px]">{`The highest price is ${formatMoney(
                                     bestPrice
                                 )} VND`}</span>
                                 <span
@@ -177,7 +177,7 @@ const SearchItems = ({
                                             setPrice({ from: '', to: '' }),
                                             changeActiveFilter(null);
                                     }}
-                                    className="underline cursor-pointer hover:text-main"
+                                    className="underline text-[11px] md:text-[14px] cursor-pointer hover:text-main"
                                 >
                                     Reset
                                 </span>

@@ -99,13 +99,13 @@ const Personal = () => {
     };
     return (
         <div className="relative w-full px-4 ">
-            <header className="w-full py-4 text-3xl font-semibold border-b border-gray-200">
+            <header className="w-full py-4 text-xl font-semibold border-b border-gray-200 lg:text-3xl">
                 Personal
             </header>
-            <div className="w-3/5 py-8 mx-auto">
+            <div className="w-4/5 py-8 mx-auto md:w-3/5">
                 <form
                     onSubmit={handleSubmit(handleUpdateInformation)}
-                    className="flex flex-col gap-4"
+                    className="flex flex-col gap-2 md:gap-4"
                 >
                     <InputForm
                         label="Name"
@@ -150,16 +150,6 @@ const Personal = () => {
                         }}
                     />
 
-                    {/* <Select
-                        label="City"
-                        register={register}
-                        fullWith
-                        errors={errors}
-                        id="city"
-                        validate={{
-                            required: 'Required fill',
-                        }}
-                    /> */}
                     <Select
                         label="Province / City"
                         options={dataGoogleMap?.map((el) => ({
@@ -168,9 +158,6 @@ const Personal = () => {
                         }))}
                         register={register}
                         id="city"
-                        // validate={{
-                        //     required: 'Please select a province / City!',
-                        // }}
                         withFull
                         errors={errors}
                     />
@@ -207,27 +194,7 @@ const Personal = () => {
                         errors={errors}
                         withFull
                     />
-                    {/* <InputForm
-                        label="District"
-                        register={register}
-                        fullWith
-                        errors={errors}
-                        id="district"
-                        validate={{
-                            required: 'Required fill',
-                        }}
-                    /> */}
 
-                    {/* <InputForm
-                        label="Ward"
-                        register={register}
-                        fullWith
-                        errors={errors}
-                        id="ward"
-                        validate={{
-                            required: 'Required fill',
-                        }}
-                    /> */}
                     <InputForm
                         label="Home address"
                         register={register}
@@ -239,31 +206,31 @@ const Personal = () => {
                         // }}
                     />
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex text-[13px] md:text-[16px] items-center gap-2">
                         <span className="font-medium">Account Status: </span>
                         <span>
                             {current?.isBlocked ? 'Blocked' : 'Actived'}
                         </span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex text-[13px] md:text-[16px] items-center gap-2">
                         <span className="font-medium">Role: </span>
                         <span>{current?.role}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex text-[13px] md:text-[16px] items-center gap-2">
                         <span className="font-medium">Type login: </span>
                         <span>{current?.loginType}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex text-[13px] md:text-[16px] items-center gap-2">
                         <span className="font-medium">Create At: </span>
                         <span>{moment(current?.createdAt).fromNow()}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex text-[13px] md:text-[16px] items-center gap-2">
                         <span className="font-medium">Avatar: </span>
                         <label htmlFor="file">
                             <img
                                 src={current?.avatar || avatarDefault}
                                 alt="avatar"
-                                className="object-cover w-20 h-20 rounded-full"
+                                className="object-cover w-10 h-10 rounded-full md:w-20 md:h-20"
                             />
                         </label>
                         <input
@@ -274,7 +241,7 @@ const Personal = () => {
                         />
                     </div>
                     {current?.loginType === 'account' && isDirty && (
-                        <div className="flex justify-end my-6">
+                        <div className="flex text-[13px] md:text-[16px] justify-end my-6">
                             <Button type="submit">Update information</Button>
                         </div>
                     )}

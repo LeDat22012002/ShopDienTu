@@ -1,5 +1,6 @@
 import React, { Fragment, memo, useEffect, useState } from 'react';
 import Logo from '../../assets/logo.png';
+import avatarDefault from '../../assets/avt1.png';
 import noCart from '../../assets/no-cart.png';
 import icons from '../../ultils/icons';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,6 +12,8 @@ import { formatMoney } from '../../ultils/helpers';
 import { hidePreview } from '../../store/cart/cartSlice';
 import { ModalMobile, Search } from '..';
 import { HiMenu } from 'react-icons/hi';
+import { FaUser } from 'react-icons/fa';
+import { FaShoppingCart } from 'react-icons/fa';
 
 const Header = () => {
     const { current } = useSelector((state) => state.user);
@@ -55,45 +58,48 @@ const Header = () => {
             document.removeEventListener('click', handleClickOutOption);
         };
     }, []);
+
     return (
-        <div className="w-full px-4 bg-white ">
-            <div className="max-w-main mx-auto flex items-center md:w-full xl:w-main justify-between  gap-4 py-4 lg:py-[35px] lg:h-[110px]">
-                <div
-                    className="block lg:hidden"
-                    onClick={() => setShowModalMobile(true)}
-                >
-                    <HiMenu size={28} />
+        <div className="w-full bg-white ">
+            <div className="flex items-center justify-center w-full mx-auto lg:w-main ">
+                <div className="flex items-center w-1/3 ">
+                    <div
+                        className="block border-white lg:hidden ml-2.5 "
+                        onClick={() => setShowModalMobile(true)}
+                    >
+                        <HiMenu size={28} />
+                    </div>
+
+                    {/* Logo */}
+                    <Link to={`/${path.HOME}`} className="hidden lg:block ">
+                        <img
+                            src={Logo}
+                            alt="Logo"
+                            className=" lg:w-[234px] object-contain "
+                        />
+                    </Link>
                 </div>
 
-                {/* Logo */}
-                <Link to={`/${path.HOME}`} className="hidden lg:block">
-                    <img
-                        src={Logo}
-                        alt="Logo"
-                        className=" lg:w-[234px] object-contain "
-                    />
-                </Link>
-
                 {/* Search */}
-                <div className="w-full flex ml-[20px] md:ml-[125px] lg:ml-[130px] sm:w-[300px] md:w-[500px] lg:w-[500px] xl:w-[500px]">
+                <div className="flex w-2/3">
                     <Search />
                 </div>
 
-                {/* Cart & Profile */}
-                <div className="relative flex items-center gap-4 ml-auto">
-                    {/* Cart Icon */}
-                    <div className="relative group">
+                <div className="relative flex items-center justify-end w-1/3 gap-4 lg:justify-center ">
+                    <div className="relative flex mr-2.5 group">
                         <div
                             onClick={() => navigate(`/${path.CART}`)}
                             className="relative flex items-center justify-center md:ml-[40px] gap-2 px-3 py-2 cursor-pointer"
                         >
-                            <IoBagCheck className="text-red-500" size={24} />
-                            <span className="absolute z-50 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border border-gray-100 rounded-full shadow-md -top-1 right-1.5">
+                            <FaShoppingCart
+                                className="text-red-500"
+                                size={24}
+                            />
+                            <span className="absolute z-29 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border border-gray-100 rounded-full shadow-md -top-1 right-1.5">
                                 {cartItems?.length || 0}
                             </span>
                         </div>
 
-                        {/* Dropdown giỏ hàng */}
                         <div
                             className={`absolute right-0 top-[35px] mt-2 w-[300px] sm:w-[400px] bg-white rounded-xl shadow-xl z-50 flex-col animate-slide-up-sm border border-gray-200
                             hidden sm:${
@@ -161,62 +167,86 @@ const Header = () => {
                         </div>
                     </div>
 
-                    {/* Profile - chỉ hiển thị từ lg trở lên */}
-                    {current && (
-                        <div
-                            id="profile"
-                            onClick={() => setIsShowOption((prev) => !prev)}
-                            className="relative items-center hidden gap-2 px-3 cursor-pointer lg:flex"
-                        >
-                            {current.avatar ? (
-                                <img
-                                    src={current.avatar}
-                                    alt="avatar"
-                                    className="w-[28px] h-[28px] rounded-full object-cover"
-                                />
-                            ) : (
-                                <HiMiniUserCircle size={28} />
-                            )}
+                    <div
+                        id="profile"
+                        onClick={() => {
+                            if (current) {
+                                setIsShowOption((prev) => !prev);
+                            } else {
+                                navigate(`/${path.LOGIN}`);
+                            }
+                        }}
+                        className="relative items-center justify-center hidden gap-2 text-white px-3 cursor-pointer lg:flex w-[80px] bg-main rounded-md hover:bg-red-600 "
+                    >
+                        {current ? (
+                            <img
+                                src={current?.avatar || avatarDefault}
+                                alt="avatar"
+                                className="w-[28px] h-[28px] rounded-full object-cover"
+                            />
+                        ) : (
+                            <div>
+                                <FaUser size={20} />
+                            </div>
+                        )}
+                        {current?.name ? (
                             <span className="hidden text-sm sm:block">
-                                Profile
+                                {current?.name}
                             </span>
+                        ) : (
+                            <span className="hidden text-[12px] sm:block">
+                                Đăng nhập
+                            </span>
+                        )}
 
-                            {isShowOption && (
-                                <div
-                                    onClick={(e) => e.stopPropagation()}
-                                    className="absolute z-50 w-[160px] mt-2 bg-white border border-gray-200 shadow-lg top-full left-2 rounded-xl text-sm"
+                        {isShowOption && (
+                            <div
+                                onClick={(e) => e.stopPropagation()}
+                                className="absolute z-50 w-[160px] mt-2 bg-white border border-gray-200 shadow-lg top-full left-2 rounded-xl text-sm"
+                            >
+                                <Link
+                                    to={`/${path.MEMBER}/${path.PERSONAL}`}
+                                    className="block px-4 py-2 text-gray-700 hover:bg-sky-100"
                                 >
+                                    Personal
+                                </Link>
+                                {current?.role === 'admin' && (
                                     <Link
-                                        to={`/${path.MEMBER}/${path.PERSONAL}`}
+                                        to={`/${path.ADMIN}/${path.DASHBOAD}`}
                                         className="block px-4 py-2 text-gray-700 hover:bg-sky-100"
                                     >
-                                        Personal
+                                        Admin workspace
                                     </Link>
-                                    {current.role === 'admin' && (
-                                        <Link
-                                            to={`/${path.ADMIN}/${path.DASHBOAD}`}
-                                            className="block px-4 py-2 text-gray-700 hover:bg-sky-100"
-                                        >
-                                            Admin workspace
-                                        </Link>
-                                    )}
-                                    <button
-                                        onClick={() => dispatch(logout())}
-                                        className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50"
-                                    >
-                                        Logout
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                                )}
+                                <button
+                                    onClick={() => dispatch(logout())}
+                                    className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-            {showModalMobile && (
-                <div className="fixed top-18 left-0 w-[80%] h-full bg-white z-[40] shadow-lg animate-slide-in">
-                    <ModalMobile onClose={() => setShowModalMobile(false)} />
-                </div>
-            )}
+            <>
+                {/* Overlay - z-40 */}
+                {showModalMobile && (
+                    <div
+                        className="fixed inset-0 bg-[rgba(0,0,0,0.5)] z-40"
+                        onClick={() => setShowModalMobile(false)}
+                    ></div>
+                )}
+
+                {/* Sidebar - z-50 */}
+                {showModalMobile && (
+                    <div className="fixed top-10 left-0 w-[81%] md:w-[75%] h-full bg-white z-50 shadow-lg animate-slide-in">
+                        <ModalMobile
+                            onClose={() => setShowModalMobile(false)}
+                        />
+                    </div>
+                )}
+            </>
         </div>
     );
 };

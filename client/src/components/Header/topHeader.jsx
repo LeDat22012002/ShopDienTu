@@ -32,7 +32,7 @@ const TopHeader = () => {
     }, [mess]);
     return (
         <div className="h-[38px] w-full bg-main flex items-center justify-center px-4">
-            <div className="flex items-center justify-between text-white w-full lg:w-main text-[10px] lg:text-[12px] ">
+            <div className="hidden  items-center justify-between text-white w-full lg:w-main text-[10px] lg:text-[12px]">
                 <span className="sm:block"></span>
 
                 {/* Right side */}
@@ -51,7 +51,7 @@ const TopHeader = () => {
                     </div>
                 ) : (
                     <Link
-                        className="hover:text-gray-200 text-[11px] sm:text-sm"
+                        className="hover:text-gray-200 text-[11px] sm:text-sm hidden lg:inline"
                         to={`/${path.LOGIN}`}
                     >
                         Sign In or Create Account

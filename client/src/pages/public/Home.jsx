@@ -8,7 +8,7 @@ import {
 } from '../../components';
 import { useSelector } from 'react-redux';
 import icons from '../../ultils/icons';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 import {
     apiCreateVisit,
     apiGetActiveFlashSales,
@@ -29,6 +29,9 @@ const Home = () => {
     const [products, setProducts] = useState(null);
     const [tainghes, setProductsTainghe] = useState(null);
     const [pc, setPc] = useState(null);
+    const midIndex = Math.ceil(categories?.length / 2);
+    const firstRow = categories?.slice(0, midIndex);
+    const secondRow = categories?.slice(midIndex);
     const fetchApiCreateVisit = async () => {
         const visit = await apiCreateVisit();
     };
@@ -125,13 +128,13 @@ const Home = () => {
                     <Sidebar />
                     {/* <DealDaily /> */}
                 </div>
-                <div className="w-full lg:w-[80%] pl-3 lg:pl-4 flex flex-col gap-2">
+                <div className="w-full lg:w-[80%] pl-2 lg:pl-4 flex flex-col gap-2">
                     <div className="flex gap-2">
                         <div className="flex mx-auto w-full lg:w-[80%]">
                             <Banner />
                         </div>
 
-                        <div className="w-[25%]  flex-col gap-2 hidden lg:flex">
+                        <div className="w-[25%] flex-col gap-2 hidden lg:flex">
                             {categories
                                 ?.filter((el) => el.brand.length > 0)
                                 ?.slice(0, 3)
@@ -321,6 +324,50 @@ const Home = () => {
                     </div>
                 </div>
             )}
+            <div className="block w-full px-4 mx-auto mt-4 lg:hidden">
+                <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">
+                    DANH MỤC SẢN PHẨM
+                </h3>
+
+                <div className="flex items-center w-full gap-4 mt-4 overflow-x-auto overflow-y-hidden scrollbar-hide">
+                    {firstRow?.map((el) => (
+                        <Link
+                            key={el._id}
+                            to={el?.title}
+                            className="flex flex-col items-center justify-center gap-2 mx-[10px] md:mx-[20px] shrink-0"
+                        >
+                            <img
+                                src={el.image}
+                                alt="category"
+                                className="object-cover w-12 h-12 md:w-20 md:h-20"
+                            />
+                            <div className="text-[8px] md:text-sm font-semibold text-center">
+                                {el.title}
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+
+                <div className="flex items-center w-full gap-4 mt-2 overflow-x-auto overflow-y-hidden scrollbar-hide">
+                    {secondRow?.map((el) => (
+                        <Link
+                            to={el?.title}
+                            key={el._id}
+                            className="flex flex-col items-center justify-center gap-2 mx-[10px] md:mx-[20px] shrink-0"
+                        >
+                            <img
+                                src={el.image}
+                                alt="category"
+                                className="object-cover w-12 h-12 md:w-20 md:h-20"
+                            />
+                            <div className="text-[8px] md:text-sm font-semibold text-center">
+                                {el.title}
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+
             {tainghes?.length > 0 && (
                 <div className="w-full px-4 mx-auto mt-4 lg:w-main">
                     <h3 className="py-[15px] text-[20px] font-semibold border-b-3 border-main">

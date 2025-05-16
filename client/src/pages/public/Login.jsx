@@ -141,14 +141,15 @@ const Login = () => {
     return (
         <div className="fixed flex items-center justify-center inset-0 bg-[rgba(0,0,0,0.5)] ">
             <img
-                className=" absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-40"
+                className="hidden sm:block absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-40"
                 src={trongdong}
                 alt="trongdong"
-            ></img>
+            />
+
             {isVerifiedEmail && (
                 <div className="fixed inset-0 z-40 flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-opacity-80">
                     <img
-                        className="  absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-40"
+                        className=" hidden sm:block absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-40"
                         src={trongdong}
                         alt="trongdong"
                     ></img>
@@ -186,7 +187,7 @@ const Login = () => {
             {isForgotPassword && (
                 <div className="fixed inset-0 z-20 flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-opacity-80">
                     <img
-                        className="absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-40"
+                        className=" hidden sm:block absolute z-0 object-center w-[1200px] h-[1200px] animate-spin-slow opacity-40"
                         src={trongdong}
                         alt="trongdong"
                     ></img>
