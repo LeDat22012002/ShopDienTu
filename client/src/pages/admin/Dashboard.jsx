@@ -67,27 +67,27 @@ const Dashboard = () => {
     }, []);
 
     return (
-        <div className="p-6 space-y-6">
-            <h2 className="text-2xl font-bold">Thống kê hôm nay</h2>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                <div className="p-4 bg-white shadow rounded-xl">
+        <div className="p-2 space-y-6 ">
+            <h2 className="font-bold text-md lg:text-xl">Thống kê hôm nay</h2>
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+                <div className="p-4 bg-white rounded-sm shadow">
                     <p className="text-gray-500">Lượt truy cập hôm nay</p>
                     <h3 className="text-xl font-semibold">{visitsToday}</h3>
                 </div>
-                <div className="p-4 bg-white shadow rounded-xl">
+                <div className="p-4 bg-white rounded-sm shadow">
                     <p className="text-gray-500">Đơn hàng hôm nay</p>
                     <h3 className="text-xl font-semibold">{ordersToday}</h3>
                 </div>
-                <div className="p-4 bg-white shadow rounded-xl">
+                <div className="p-4 bg-white rounded-sm shadow">
                     <p className="text-gray-500">Doanh thu hôm nay</p>
                     <h3 className="text-xl font-semibold">
-                        {formatMoney(revenueToday) + 'VNĐ'}
+                        {formatMoney(revenueToday)} VNĐ
                     </h3>
                 </div>
             </div>
 
-            <div className="p-6 mt-8 bg-white shadow rounded-xl">
-                <h2 className="mb-4 text-xl font-bold">
+            <div className="p-2 mt-2 bg-white rounded-sm shadow">
+                <h2 className="mb-4 font-bold text-md lg:text-xl">
                     Doanh thu 30 ngày gần nhất
                 </h2>
                 <ResponsiveContainer width="100%" height={300}>
@@ -101,13 +101,13 @@ const Dashboard = () => {
                             dataKey="total"
                             stroke="#82ca9d"
                             strokeWidth={2}
-                            dot={{ r: 3 }} // hiện các chấm ở từng điểm
+                            dot={{ r: 3 }}
                         />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
-            <div className="p-6 mt-8 bg-white shadow rounded-xl">
-                <h2 className="mb-4 text-xl font-bold">
+            <div className="p-2 mt-2 bg-white rounded-sm shadow">
+                <h2 className="mb-4 font-bold text-md lg:text-xl">
                     Lượt truy cập 30 ngày gần nhất
                 </h2>
                 <ResponsiveContainer width="100%" height={300}>

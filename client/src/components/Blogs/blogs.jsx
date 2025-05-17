@@ -8,7 +8,7 @@ const Blogs = ({ blogData, className }) => {
     return (
         <div className={clsx('w-full px-[10px] text-base mb-4', className)}>
             <div
-                className="w-full overflow-hidden transition duration-300 bg-white rounded-md shadow-md cursor-pointer hover:shadow-lg"
+                className="w-full overflow-hidden transition duration-300 bg-white shadow-md cursor-pointer hover:shadow-lg"
                 onClick={() => navigate(`/${blogData?.title}/${blogData?._id}`)}
             >
                 <div className="w-full h-[180px] bg-white flex items-center justify-center">

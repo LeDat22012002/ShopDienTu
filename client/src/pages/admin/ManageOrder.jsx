@@ -34,7 +34,7 @@ const getPaymentMethodIcon = (method) => {
         case 'paypal':
             return paypal;
         default:
-            return null; // Hoặc có thể trả về một icon mặc định nếu không có phương thức phù hợp
+            return null;
     }
 };
 
@@ -129,7 +129,7 @@ const ManageOrder = () => {
     return (
         <div className="relative w-full px-4">
             {isModalOpen && selectedOrder && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.5)]">
                     <div className="relative w-full max-w-md p-6 bg-white shadow-lg rounded-xl">
                         <h2 className="mb-4 text-xl font-semibold">
                             Cập nhật trạng thái đơn hàng

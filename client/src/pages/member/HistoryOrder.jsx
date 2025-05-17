@@ -103,9 +103,9 @@ const HistoryOrder = () => {
     };
 
     return (
-        <div className="relative w-full md:w-[96%] md:px-4 ">
+        <div className="relative w-full flex flex-col md:w-[96%] md:px-4 ">
             {editStatus && (
-                <div className="absolute inset-0 z-50 min-h-screen bg-gray-100">
+                <div className="absolute inset-0 z-50 w-[95%]  min-h-screen mx-auto bg-gray-100">
                     <CancelOrder
                         editStatus={editStatus}
                         render={render}

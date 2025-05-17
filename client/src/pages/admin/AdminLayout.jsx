@@ -9,10 +9,10 @@ const AdminLayout = () => {
         return <Navigate to={`/${path.LOGIN}`} replace={true} />;
     return (
         <div className="relative flex w-full min-h-screen text-gray-900 bg-gray-100">
-            <div className="w-[327px] flex-none fixed top-0 bottom-0">
+            <div className="w-[327px] flex-none fixed top-0 bottom-0 hidden lg:block">
                 <AdminSidebar />
             </div>
-            <div className="w-[327px]"></div>
+            <div className="w-[327px] hidden lg:block"></div>
             <div className="flex-auto w-[1000px] overflow-x-auto">
                 <Outlet />
             </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, InputForm, Select } from '../../components';
 import { useForm } from 'react-hook-form';
 import { formatMoney } from '../../ultils/helpers';
@@ -22,6 +22,7 @@ import cod from '../../assets/cod.png';
 import zalopay from '../../assets/zalopay.png';
 import path from '../../ultils/path';
 import { PayPalButtons } from '@paypal/react-paypal-js';
+import Swal from 'sweetalert2';
 
 const Payment = () => {
     const {
@@ -117,11 +118,30 @@ const Payment = () => {
 
     //Xử lý checkout
     const handleCheckout = async (data) => {
-        if (!current || !productsSelected.length) {
+        if (!productsSelected.length) {
             toast.error('Không có sản phẩm để đặt hàng');
             return;
         }
-
+        // Chưa đăng nhập
+        if (!current) {
+            Swal.fire({
+                title: 'Oops!',
+                text: 'Bạn cần đăng nhập để thanh toán',
+                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Đăng nhập',
+                showCancelButton: true,
+            }).then((rs) => {
+                if (rs.isConfirmed) {
+                    navigate({
+                        pathname: `/${path.LOGIN}`,
+                        search: createSearchParams({
+                            redirect: location?.pathname,
+                        }).toString(),
+                    });
+                }
+            });
+            return;
+        }
         const orderData = {
             products: productsSelected.map((item) => ({
                 productId: item.product,

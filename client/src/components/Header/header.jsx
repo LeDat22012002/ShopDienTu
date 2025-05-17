@@ -86,22 +86,24 @@ const Header = () => {
                 </div>
 
                 <div className="relative flex items-center justify-end w-1/3 gap-4 lg:justify-center ">
-                    <div className="relative flex mr-2.5 group">
+                    <div className="relative flex mr-2.5 lg:ml-4 group ">
                         <div
                             onClick={() => navigate(`/${path.CART}`)}
                             className="relative flex items-center justify-center md:ml-[40px] gap-2 px-3 py-2 cursor-pointer"
                         >
-                            <FaShoppingCart
-                                className="text-red-500"
-                                size={24}
-                            />
+                            <FaShoppingCart className="text-red-500 text-[25px] lg:text-[30px]" />
                             <span className="absolute z-29 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border border-gray-100 rounded-full shadow-md -top-1 right-1.5">
                                 {cartItems?.length || 0}
                             </span>
                         </div>
+                        <div
+                            className={`absolute w-0 h-0 top-[35px] right-4 border-b-9 border-l-9 border-r-9 border-l-transparent border-r-transparent animate-slide-up-sm z-50 border-b-gray-100 hidden sm:${
+                                showCartPreview ? 'flex' : 'hidden'
+                            } sm:group-hover:flex `}
+                        ></div>
 
                         <div
-                            className={`absolute right-0 top-[35px] mt-2 w-[300px] sm:w-[400px] bg-white rounded-xl shadow-xl z-50 flex-col animate-slide-up-sm border border-gray-200
+                            className={`absolute right-0 top-[35px] mt-2 w-[300px] bg-white rounded-md shadow-xl z-48 flex-col animate-slide-up-sm border border-gray-200
                             hidden sm:${
                                 showCartPreview ? 'flex' : 'hidden'
                             } sm:group-hover:flex`}
@@ -176,7 +178,7 @@ const Header = () => {
                                 navigate(`/${path.LOGIN}`);
                             }
                         }}
-                        className="relative items-center justify-center hidden gap-2 text-white px-3 cursor-pointer lg:flex w-[80px] bg-main rounded-md hover:bg-red-600 "
+                        className="relative items-center justify-center hidden gap-2 px-3 cursor-pointer lg:flex w-[80px]  "
                     >
                         {current ? (
                             <img
@@ -202,7 +204,7 @@ const Header = () => {
                         {isShowOption && (
                             <div
                                 onClick={(e) => e.stopPropagation()}
-                                className="absolute z-50 w-[160px] mt-2 bg-white border border-gray-200 shadow-lg top-full left-2 rounded-xl text-sm"
+                                className="absolute z-50 w-[160px] mt-2 bg-white border border-gray-200 shadow-lg top-full left-2 rounded-sm text-sm"
                             >
                                 <Link
                                     to={`/${path.MEMBER}/${path.PERSONAL}`}

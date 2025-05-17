@@ -32,9 +32,10 @@ const Home = () => {
     const midIndex = Math.ceil(categories?.length / 2);
     const firstRow = categories?.slice(0, midIndex);
     const secondRow = categories?.slice(midIndex);
-    const fetchApiCreateVisit = async () => {
-        const visit = await apiCreateVisit();
-    };
+    // const fetchApiCreateVisit = async () => {
+    //     const visit = await apiCreateVisit();
+    // };
+
     const fetchApiBlogs = async () => {
         const response = await apiGetBlogs();
         if (response.success) {
@@ -74,7 +75,7 @@ const Home = () => {
         fetchTaiNgheProducts();
         fetchPCGaming();
         fetchProducts();
-        fetchApiCreateVisit();
+        // fetchApiCreateVisit();
     }, []);
 
     const fetchFlashSale = async () => {

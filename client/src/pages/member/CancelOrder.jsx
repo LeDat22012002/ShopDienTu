@@ -24,7 +24,7 @@ const getPaymentMethodIcon = (method) => {
         case 'paypal':
             return paypal;
         default:
-            return null; // Hoặc có thể trả về một icon mặc định nếu không có phương thức phù hợp
+            return null;
     }
 };
 
@@ -49,8 +49,8 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
     // console.log(editStatus);
     const handleCancelOrder = async () => {
         Swal.fire({
-            title: 'Are you sure...?',
-            text: 'Are you sure cancel this  ? ',
+            title: 'Oops!',
+            text: 'Are you sure cancel this ? ',
             showCancelButton: true,
         }).then(async (rs) => {
             if (rs.isConfirmed) {
@@ -66,29 +66,27 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
         });
     };
     return (
-        <div className="relative flex flex-col w-full min-h-screen p-4 bg-gray-100">
+        <div className="relative flex flex-col w-[100%] p-2  min-h-screen mx-auto bg-gray-100">
             {/* Header */}
-            <div className="h-[75px] fixed top-0 left-[270px] right-10 z-10 bg-gray-100 border-b border-gray-300 flex justify-between items-center px-6">
-                <h1 className="text-2xl font-bold">Detail Order</h1>
+            <div className="h-[75px] w-[100%] ml-2 z-10 border-b mx-auto border-gray-300 flex justify-between items-center ">
+                <h1 className="w-5/6 text-sm font-bold">Detail Order</h1>
                 <span
                     onClick={() => setEditStatus(null)}
-                    className="text-base cursor-pointer text-main hover:underline"
+                    className="w-1/6 text-base cursor-pointer text-main hover:underline "
                 >
                     Back
                 </span>
             </div>
 
-            <div className="h-[75px] w-full" />
+            <div className=" md:h-[75px] w-[100%] ml-2 mx-auto " />
 
-            {/* Order Info */}
-            <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
-                {/* Trạng thái đơn hàng */}
-                <div className="p-5 bg-white shadow-sm rounded-xl">
-                    <h3 className="mb-2 font-semibold text-gray-700">
+            <div className="w-[100%] ml-2 mx-auto grid grid-cols-1 gap-2 mt-2 md:grid-cols-2 lg:grid-cols-3 ">
+                <div className="flex flex-col gap-1 p-5 bg-white rounded-sm shadow-sm">
+                    <h3 className="text-gray-700 text-md mb-2font-semibold">
                         Trạng thái đơn hàng
                     </h3>
                     <span
-                        className={`inline-block px-3 py-1 text-sm font-medium rounded-full 
+                        className={`inline-block px-3 py-1 text-sm font-medium rounded-sm w-[100px]
                             ${
                                 editStatus?.status === 'PENDING'
                                     ? 'bg-yellow-100 text-yellow-800'
@@ -109,8 +107,8 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
                 </div>
 
                 {/* Thông tin giao hàng */}
-                <div className="p-5 bg-white shadow-sm rounded-xl">
-                    <h3 className="mb-2 font-semibold text-gray-700">
+                <div className="p-5 bg-white rounded-sm shadow-sm">
+                    <h3 className="mb-2 font-semibold text-gray-700 text-md">
                         Thông tin giao hàng
                     </h3>
                     <p>
@@ -133,7 +131,7 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
                 </div>
 
                 {/* Thanh toán */}
-                <div className="p-5 bg-white shadow-sm rounded-xl">
+                <div className="p-5 bg-white rounded-sm shadow-sm">
                     <h3 className="mb-2 font-semibold text-gray-700">
                         Thanh toán
                     </h3>
@@ -173,11 +171,9 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
                 </div>
             </div>
 
-            {/* Danh sách sản phẩm */}
-            <div className="grid grid-cols-1 gap-6 mt-6 lg:grid-cols-2">
-                {/* LEFT: Danh sách sản phẩm */}
-                <div className="p-6 bg-white shadow-sm rounded-xl">
-                    <h3 className="mb-4 text-lg font-semibold">Sản phẩm</h3>
+            <div className="grid w-[100%] ml-2 mx-auto grid-cols-1 gap-6 mt-2 lg:grid-cols-2">
+                <div className="p-6 bg-white rounded-sm shadow-sm">
+                    <h3 className="mb-4 font-semibold text-md">Sản phẩm</h3>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left">
                             <thead>
@@ -199,9 +195,9 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
                                             <img
                                                 src={el?.thumb}
                                                 alt="thumb"
-                                                className="object-cover w-12 h-12 rounded"
+                                                className="object-cover w-8 h-8 rounded md:w-12 md:h-12"
                                             />
-                                            <span className="block max-w-[200px] truncate whitespace-nowrap overflow-hidden">
+                                            <span className="block max-w-[100px] text-sm md:max-w-[200px] truncate whitespace-nowrap overflow-hidden">
                                                 {el?.title}
                                             </span>
                                         </td>
@@ -233,17 +229,16 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
                                     ' VNĐ'}
                             </span>
                         </p>
-                        <p className="mt-1 text-lg font-bold text-red-600">
+                        <p className="mt-1 font-bold text-red-600 text-md md:text-xl">
                             Tổng cộng: {formatMoney(editStatus?.total) + ' VNĐ'}
                         </p>
                     </div>
                 </div>
 
-                {/* RIGHT: Lịch sử trạng thái đơn hàng */}
-                <div className="p-6 bg-white shadow-sm rounded-xl">
+                <div className="p-6 bg-white rounded-sm shadow-sm">
                     {editStatus?.status !== 'PENDING' && (
                         <>
-                            <h3 className="mb-4 text-lg font-semibold">
+                            <h3 className="mb-4 font-semibold text-md md:text-lg">
                                 Lịch sử trạng thái
                             </h3>
                             <div className="space-y-4">
@@ -253,14 +248,14 @@ const CancelOrder = ({ editStatus, render, setEditStatus }) => {
                                         className="pl-4 border-l-4 border-blue-500"
                                     >
                                         <span
-                                            className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${getStatusClass(
+                                            className={`inline-block px-3 py-1 text-sm font-medium rounded-sm ${getStatusClass(
                                                 item.status
                                             )}`}
                                         >
                                             {item.status}
                                         </span>
 
-                                        <p className="text-gray-600">
+                                        <p className="text-sm text-gray-600 md:text-md">
                                             {item.note}
                                         </p>
                                         <p className="text-xs text-gray-400">
