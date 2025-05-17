@@ -97,16 +97,15 @@ const Header = () => {
                             </span>
                         </div>
                         <div
-                            className={`absolute w-0 h-0 top-[35px] right-4 border-b-9 border-l-9 border-r-9 border-l-transparent border-r-transparent animate-slide-up-sm z-50 border-b-gray-100 hidden sm:${
+                            className={`absolute w-0 h-0 top-[35px] right-4 border-b-9 border-l-9 border-r-9 border-l-transparent border-r-transparent animate-slide-up-sm z-50 border-b-gray-100 ${
                                 showCartPreview ? 'flex' : 'hidden'
-                            } sm:group-hover:flex `}
-                        ></div>
+                            }`}
+                        />
 
                         <div
-                            className={`absolute right-0 top-[35px] mt-2 w-[300px] bg-white rounded-md shadow-xl z-48 flex-col animate-slide-up-sm border border-gray-200
-                            hidden sm:${
+                            className={`absolute right-0 top-[35px] mt-2 w-[300px] bg-white rounded-md shadow-xl z-48 flex-col animate-slide-up-sm border border-gray-200 ${
                                 showCartPreview ? 'flex' : 'hidden'
-                            } sm:group-hover:flex`}
+                            }`}
                         >
                             {cartItems?.length > 0 ? (
                                 <>

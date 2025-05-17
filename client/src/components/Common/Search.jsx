@@ -76,9 +76,9 @@ const Search = () => {
                     errors={errors}
                     placeholder="Tìm kiếm sản phẩm..."
                     fullWith
-                    className="text-[12px] text-gray-900 outline-none 
+                    className="text-[16px] text-gray-900 outline-none 
                             placeholder:text-gray-400 placeholder:italic placeholder:text-[12px]
-                            px-1 sm:text-[14px] sm:placeholder:text-base md:px-2 md:py-3 h-[30px] md:h-[40px]"
+                            px-1 sm:text-[16px] sm:placeholder:text-base md:px-2 md:py-3 h-[30px] md:h-[40px]"
                 />
             </div>
             <div className="w-[15%] ml-[-1px] flex items-center text-white justify-center bg-main h-[30.5px] md:h-[40.5px] p-1 border-t border-b border-r border-l-0 border-gray-500">
