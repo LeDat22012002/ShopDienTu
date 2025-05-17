@@ -88,7 +88,7 @@ const Search = () => {
             </div>
 
             {suggestions.length > 0 && (
-                <div className="absolute z-50 w-full bg-white shadow-lg mt-1 max-h-[360px] top-[80%] overflow-y-auto rounded-md border border-gray-200">
+                <div className="absolute z-50 w-full bg-white shadow-lg mt-1 max-h-[360px] top-[70%] md:top-[80%] overflow-y-auto  border border-gray-200">
                     {suggestions.map((product) => (
                         <div
                             key={product._id}
