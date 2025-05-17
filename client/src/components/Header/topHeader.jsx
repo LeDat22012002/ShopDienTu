@@ -31,8 +31,11 @@ const TopHeader = () => {
             });
     }, [mess]);
     return (
-        <div className="h-[38px] w-full bg-main flex items-center justify-center px-4">
-            <div className="hidden  items-center justify-between text-white w-full lg:w-main text-[10px] lg:text-[12px]">
+        <div className="h-[38px] w-full bg-main flex overflow-hidden items-center  px-4">
+            <div className="text-white text-[14px] md:min-w-full whitespace-nowrap animate-marquee">
+                Xin chào , hãy đợi 1 phút để dữ liệu load xong nhé !!!
+            </div>
+            <div className="hidden items-center justify-between text-white w-full lg:w-main text-[10px] lg:text-[12px]">
                 <span className="sm:block"></span>
 
                 {/* Right side */}

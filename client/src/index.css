@@ -18,6 +18,7 @@
     --animate-slide-up-sm: slide-up-sm 0.2s ease-out;
     --animate-spin-slow: spin-show 30s linear infinite;
     --animate-slide-in: slide-in 0.3s ease-out;
+    --animate-marquee: marquee 10s linear infinite;
     @keyframes spin-show {
         0% {
             transform: rotate(0deg);
@@ -53,6 +54,14 @@
         }
         to {
             transform: translateX(0);
+        }
+    }
+    @keyframes marquee {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(-100%);
         }
     }
 }

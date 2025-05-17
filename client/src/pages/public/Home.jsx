@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import icons from '../../ultils/icons';
 import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 import {
-    apiCreateVisit,
+    // apiCreateVisit,
     apiGetActiveFlashSales,
     apiGetBlogs,
     apiGetProduct,
@@ -239,7 +239,6 @@ const Home = () => {
             </div>
             {flashSales?.length > 0 && (
                 <div className="w-[92%] ml-4 lg:ml-0 md:w-[96%] m-auto my-4 text-white rounded-md shadow-lg lg:w-main bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600">
-                    {/* Header */}
                     <div className="flex items-center justify-between px-4 py-3 border-b border-white/30">
                         <div className="flex items-center gap-2 text-[18px] font-semibold">
                             <span>⚡</span>
@@ -253,7 +252,6 @@ const Home = () => {
                         />
                     </div>
 
-                    {/* Slider sản phẩm */}
                     <div className="relative py-3 bg-white">
                         <CustomSlider products={flashSaleProducts} normal />
                     </div>
