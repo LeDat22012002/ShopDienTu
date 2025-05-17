@@ -68,20 +68,17 @@ const ChatBox = () => {
 
     return (
         <div className="flex flex-col overflow-hidden bg-white rounded-md shadow-xl w-80 h-96">
-            {/* Header */}
             <div className="flex items-center justify-between p-3 text-white bg-main">
                 <span className="font-semibold">Hỗ trợ trực tuyến</span>
                 <IoClose
                     className="text-white transition cursor-pointer hover:scale-110"
                     onClick={() => {
-                        // Ẩn chatbox bằng sự kiện custom (được lắng nghe bởi ChatWidget)
                         const event = new Event('close-chatbox');
                         window.dispatchEvent(event);
                     }}
                 />
             </div>
 
-            {/* Body */}
             <div className="flex-1 p-3 space-y-2 overflow-y-auto">
                 {messages.map((msg, idx) => (
                     <div
@@ -130,19 +127,18 @@ const ChatBox = () => {
                 ))}
             </div>
 
-            {/* Input */}
-            <div className="flex gap-2 p-3 border-t border-gray-200">
+            <div className="flex w-full gap-2 p-3 border-t border-gray-200">
                 <input
                     type="text"
                     placeholder="Nhập tin nhắn..."
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none "
+                    className="w-[85%] px-3 py-2 text-[16px] border rounded-md focus:outline-none "
                 />
                 <button
                     onClick={handleSend}
-                    className="px-3 py-2 text-sm text-white rounded-md bg-main hover:bg-red-700"
+                    className="w-[15%] px-3 py-2 text-sm text-white rounded-sm bg-main hover:bg-red-700"
                 >
                     Gửi
                 </button>
