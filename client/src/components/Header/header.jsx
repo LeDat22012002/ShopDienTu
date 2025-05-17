@@ -181,7 +181,7 @@ const Header = () => {
                                 navigate(`/${path.LOGIN}`);
                             }
                         }}
-                        className="relative items-center justify-center hidden gap-2 px-3 cursor-pointer lg:flex w-[100px] bg-gray-50 border border-red-100 rounded-sm shadow-amber-50 "
+                        className="relative items-center justify-center hidden gap-2 px-3 cursor-pointer lg:flex w-[100px] h-[50px] bg-gray-50 border border-red-100 rounded-sm shadow-amber-50 "
                     >
                         {current ? (
                             <img
