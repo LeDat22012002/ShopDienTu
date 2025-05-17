@@ -97,15 +97,19 @@ const Header = () => {
                             </span>
                         </div>
                         <div
-                            className={`absolute w-0 h-0 top-[35px] right-4 border-b-9 border-l-9 border-r-9 border-l-transparent border-r-transparent animate-slide-up-sm z-50 border-b-gray-100 ${
-                                showCartPreview ? 'flex' : 'hidden'
-                            }`}
+                            className={`absolute w-0 h-0 top-[35px] right-4 border-b-9 border-l-9 border-r-9 
+                                border-l-transparent border-r-transparent animate-slide-up-sm z-50 border-b-gray-100 
+                                ${
+                                    showCartPreview ? 'flex' : 'hidden'
+                                } sm:group-hover:flex`}
                         />
 
                         <div
-                            className={`absolute right-0 top-[35px] mt-2 w-[300px] bg-white rounded-md shadow-xl z-48 flex-col animate-slide-up-sm border border-gray-200 ${
-                                showCartPreview ? 'flex' : 'hidden'
-                            }`}
+                            className={`absolute right-0 top-[35px] mt-2 w-[300px] bg-white rounded-md shadow-xl z-48 
+                                flex-col animate-slide-up-sm border border-gray-200 
+                                ${
+                                    showCartPreview ? 'flex' : 'hidden'
+                                } sm:group-hover:flex`}
                         >
                             {cartItems?.length > 0 ? (
                                 <>
@@ -177,25 +181,25 @@ const Header = () => {
                                 navigate(`/${path.LOGIN}`);
                             }
                         }}
-                        className="relative items-center justify-center hidden gap-2 px-3 cursor-pointer lg:flex w-[80px]  "
+                        className="relative items-center justify-center hidden gap-2 px-3 cursor-pointer lg:flex w-[100px]  "
                     >
                         {current ? (
                             <img
                                 src={current?.avatar || avatarDefault}
                                 alt="avatar"
-                                className="w-[28px] h-[28px] rounded-full object-cover"
+                                className="w-[30px] h-[30px] rounded-full object-cover"
                             />
                         ) : (
                             <div>
-                                <FaUser size={20} />
+                                <FaUser size={26} />
                             </div>
                         )}
                         {current?.name ? (
-                            <span className="hidden text-sm sm:block">
+                            <span className="hidden text-[14px] sm:block">
                                 {current?.name}
                             </span>
                         ) : (
-                            <span className="hidden text-[12px] sm:block">
+                            <span className="hidden text-[14px] sm:block">
                                 Đăng nhập
                             </span>
                         )}
