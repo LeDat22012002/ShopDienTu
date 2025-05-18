@@ -129,20 +129,20 @@ const Home = () => {
                     <Sidebar />
                     {/* <DealDaily /> */}
                 </div>
-                <div className="w-full lg:w-[80%] pl-2 lg:pl-4 flex flex-col gap-2">
-                    <div className="flex gap-2">
-                        <div className="flex mx-auto w-full lg:w-[80%]">
+                <div className="w-full lg:w-[80%] pl-2 lg:pl-1 flex flex-col gap-2">
+                    <div className="flex ">
+                        <div className="flex ml-[-10px] mx-auto w-full lg:w-[80%]">
                             <Banner />
                         </div>
 
-                        <div className="w-[25%] flex-col gap-2 hidden lg:flex">
+                        <div className="w-[25%] flex-col gap-2 ml-[-10px] hidden lg:flex">
                             {categories
                                 ?.filter((el) => el.brand.length > 0)
                                 ?.slice(0, 3)
                                 .map((el) => (
                                     <div
                                         key={el._id}
-                                        className="transition-all duration-300 bg-white border-gray-100 rounded-md shadow-md hover:shadow-lg"
+                                        className="transition-all duration-300 bg-white border-gray-100 rounded-sm shadow-md hover:shadow-lg"
                                     >
                                         <div className="flex items-center p-3">
                                             <img
@@ -186,14 +186,14 @@ const Home = () => {
                         </div>
                     </div>
 
-                    <div className="hidden grid-cols-1 gap-2 lg:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div className="hidden grid-cols-1 gap-2 ml-1.5 lg:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         {categories
                             ?.filter((el) => el.brand.length > 0)
                             ?.slice(3)
                             .map((el) => (
                                 <div
                                     key={el._id}
-                                    className="transition-all duration-300 bg-white border-gray-100 rounded-md shadow-md hover:shadow-lg"
+                                    className="transition-all duration-300 bg-white border-gray-100 rounded-sm shadow-md hover:shadow-lg"
                                 >
                                     <div className="flex items-center p-3">
                                         <img

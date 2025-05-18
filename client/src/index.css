@@ -19,6 +19,7 @@
     --animate-spin-slow: spin-show 30s linear infinite;
     --animate-slide-in: slide-in 0.3s ease-out;
     --animate-marquee: marquee 10s linear infinite;
+    --animatie-slide-right: slide-right 0.5s ease-in-out;
     @keyframes spin-show {
         0% {
             transform: rotate(0deg);
@@ -62,6 +63,16 @@
         }
         100% {
             transform: translateX(-100%);
+        }
+    }
+    @keyframes slide-right {
+        0% {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
         }
     }
 }

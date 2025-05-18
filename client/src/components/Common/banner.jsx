@@ -27,7 +27,7 @@ const Banner = () => {
             <img
                 src={images[index]}
                 alt="banner"
-                className="object-cover w-full h-full transition-all duration-500 rounded-md"
+                className="object-cover w-full h-full transition-all duration-500 rounded-sm "
             />
 
             <div className="absolute flex gap-2 transform -translate-x-1/2 bottom-2 left-1/2">
