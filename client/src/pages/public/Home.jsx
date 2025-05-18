@@ -129,13 +129,13 @@ const Home = () => {
                     <Sidebar />
                     {/* <DealDaily /> */}
                 </div>
-                <div className="w-full lg:w-[80%] pl-0.5 lg:pl-1 flex flex-col gap-2">
-                    <div className="flex ">
-                        <div className="flex lg:ml-[-10px] mx-auto w-full lg:w-[80%]">
+                <div className="w-full lg:w-[80%] pl-0.4 lg:pl-1 flex flex-col gap-2">
+                    <div className="flex gap-2 ">
+                        <div className="flex mx-auto  w-full lg:ml-[-10px] lg:w-[80%] ">
                             <Banner />
                         </div>
 
-                        <div className="w-[25%] flex-col gap-2 lg:ml-[-10px] hidden lg:flex">
+                        <div className="w-[25%] flex-col gap-2 lg:ml-[-17px] hidden lg:flex">
                             {categories
                                 ?.filter((el) => el.brand.length > 0)
                                 ?.slice(0, 3)

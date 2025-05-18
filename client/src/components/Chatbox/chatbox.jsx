@@ -134,7 +134,7 @@ const ChatBox = () => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="w-[85%] px-3 py-2 text-[16px] border rounded-md focus:outline-none "
+                    className="w-[85%] px-3 py-2 text-[16px] border border-gray-400 rounded-sm focus:outline-none "
                 />
                 <button
                     onClick={handleSend}
