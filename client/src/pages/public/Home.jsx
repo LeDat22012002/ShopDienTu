@@ -124,18 +124,18 @@ const Home = () => {
 
     return (
         <div className="w-full bg-gray-50">
-            <div className="flex w-full m-auto mt-4 lg:w-main">
+            <div className="flex w-full m-auto mt-2 lg:mt-3 lg:w-main">
                 <div className="hidden lg:flex flex-col gap-5 w-[20%] flex-auto ">
                     <Sidebar />
                     {/* <DealDaily /> */}
                 </div>
-                <div className="w-full lg:w-[80%] pl-1 lg:pl-1 flex flex-col gap-2">
+                <div className="w-full lg:w-[80%] pl-0.5 lg:pl-1 flex flex-col gap-2">
                     <div className="flex ">
                         <div className="flex lg:ml-[-10px] mx-auto w-full lg:w-[80%]">
                             <Banner />
                         </div>
 
-                        <div className="w-[25%] flex-col gap-2 ml-[-10px] hidden lg:flex">
+                        <div className="w-[25%] flex-col gap-2 lg:ml-[-10px] hidden lg:flex">
                             {categories
                                 ?.filter((el) => el.brand.length > 0)
                                 ?.slice(0, 3)
