@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import icons from '../../ultils/icons';
 import { logout, clearMessage } from '../../store/user/userSlice';
 import Swal from 'sweetalert2';
+import BannerTopHeader from '../../assets/Bground5.png';
 const TopHeader = () => {
     const { RiLogoutCircleRLine } = icons;
     const dispatch = useDispatch();
@@ -31,9 +32,13 @@ const TopHeader = () => {
             });
     }, [mess]);
     return (
-        <div className="h-[38px] w-full bg-main flex overflow-hidden items-center  px-4">
-            <div className="text-white text-[14px] md:min-w-full whitespace-nowrap animate-marquee">
-                Xin chào , hãy đợi 1 phút để dữ liệu load xong nhé !!!
+        <div className="flex items-center w-full ">
+            <div className="w-full">
+                <img
+                    src={BannerTopHeader}
+                    alt="www"
+                    className="object-contain w-full "
+                ></img>
             </div>
             <div className="hidden items-center justify-between text-white w-full lg:w-main text-[10px] lg:text-[12px]">
                 <span className="sm:block"></span>
