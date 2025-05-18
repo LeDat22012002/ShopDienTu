@@ -129,7 +129,7 @@ const Home = () => {
                     <Sidebar />
                     {/* <DealDaily /> */}
                 </div>
-                <div className="w-full lg:w-[80%] pl-2 lg:pl-1 flex flex-col gap-2">
+                <div className="w-full lg:w-[80%] pl-1 lg:pl-1 flex flex-col gap-2">
                     <div className="flex ">
                         <div className="flex lg:ml-[-10px] mx-auto w-full lg:w-[80%]">
                             <Banner />
